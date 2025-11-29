@@ -1,6 +1,7 @@
 package br.com.hospital.sistema;
 
 import br.com.hospital.entidades.Pessoa;
+import br.com.hospital.exceptions.LoginException;
 
 import java.util.List;
 
@@ -13,14 +14,15 @@ public class Login {
         this.usuarios = usuarios;
     }
 
-    public boolean autenticar(String cpf, String senha) {
+    public boolean autenticar(String cpf, String senha) throws LoginException {
         for (Pessoa p : usuarios) {
             if (p.getCpf().equals(cpf) && p.getSenha().equals(senha)) {
                 usuarioLogado = p;
                 return true;
             }
         }
-        return false;
+
+        throw new LoginException("CPF ou senha incorretos!");
     }
 
     public Pessoa getUsuarioLogado() {
