@@ -13,7 +13,7 @@ public abstract class Pessoa implements Identificavel, Acessavel {
     private String senha;
     private String nivelAcesso;
 
-    public Pessoa(int id, String nome, String cpf, String telefone, String email, String endereco, String senha, String nivelAcesso){
+    public Pessoa(int id, String nome, String cpf, String telefone, String email, String endereco, String senha, String nivelAcesso) {
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;
@@ -30,7 +30,7 @@ public abstract class Pessoa implements Identificavel, Acessavel {
     }
 
     @Override
-    public String getNivelAcesso(){
+    public String getNivelAcesso() {
         return nivelAcesso;
     }
 
@@ -46,11 +46,11 @@ public abstract class Pessoa implements Identificavel, Acessavel {
         return false;
     }
 
-    public String getSenha(){
+    public String getSenha() {
         return senha;
     }
 
-    public void setSenha(String senha){
+    public void setSenha(String senha) {
         this.senha = senha;
     }
 
@@ -104,14 +104,14 @@ public abstract class Pessoa implements Identificavel, Acessavel {
 
     public void exibirInformacoes() {
         System.out.printf("""
-                Dados pessoais:
-                Id: %d
-                Nome: %s
-                CPF: %s
-                Telefone: %s
-                Email: %s
-                Endereco: %s
-                """,
+                        Dados pessoais:
+                        Id: %d
+                        Nome: %s
+                        CPF: %s
+                        Telefone: %s
+                        Email: %s
+                        Endereco: %s
+                        """,
                 id, nome, cpf, telefone, email, endereco);
     }
 }
