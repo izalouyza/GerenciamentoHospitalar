@@ -1,8 +1,5 @@
 package br.com.hospital.gerenciadores;
 
-public class GerenciadorConsulta {
-    package br.com.hospital.gerenciadores;
-
 import br.com.hospital.entidades.Consulta;
 import br.com.hospital.interfaces.Gerenciavel;
 import br.com.hospital.utilitarios.Utilitarios;
@@ -129,5 +126,3 @@ import java.util.List;
             return consultas;
         }
     }
-
-}

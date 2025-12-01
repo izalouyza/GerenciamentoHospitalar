@@ -7,6 +7,7 @@ import br.com.hospital.entidades.Consulta;
 import br.com.hospital.gerenciadores.GerenciadorConsulta;
 import br.com.hospital.sistema.Hospital;
 import br.com.hospital.sistema.Login;
+import br.com.hospital.utilitarios.Utilitarios;
 
 import java.util.Scanner;
 
