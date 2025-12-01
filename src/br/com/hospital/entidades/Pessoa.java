@@ -2,6 +2,8 @@ package br.com.hospital.entidades;
 
 import br.com.hospital.interfaces.Identificavel;
 import br.com.hospital.interfaces.Acessavel;
+import br.com.hospital.exceptions.PessoaException;
+import br.com.hospital.utilitarios.Utilitarios;
 
 public abstract class Pessoa implements Identificavel, Acessavel {
     private int id;
@@ -13,7 +15,35 @@ public abstract class Pessoa implements Identificavel, Acessavel {
     private String senha;
     private String nivelAcesso;
 
-    public Pessoa(int id, String nome, String cpf, String telefone, String email, String endereco, String senha, String nivelAcesso) {
+    public Pessoa(int id, String nome, String cpf, String telefone, String email, String endereco, String senha, String nivelAcesso)
+        throws PessoaException {
+
+        //Exceções:
+        if (id <= 0) {
+            throw new PessoaException("ID inválido.");
+        }
+        if (!Utilitarios.textoNaoVazio(nome)) {
+            throw new PessoaException("Nome inválido.");
+        }
+        if (!Utilitarios.cpfValido(cpf)) {
+            throw new PessoaException("CPF inválido.");
+        }
+        if (!Utilitarios.telefoneValido(telefone)) {
+            throw new PessoaException("Telefone inválido.");
+        }
+        if (!Utilitarios.emailValido(email)) {
+            throw new PessoaException("E-mail inválido.");
+        }
+        if (!Utilitarios.textoNaoVazio(endereco)) {
+            throw new PessoaException("Endereço inválido.");
+        }
+        if (!Utilitarios.textoNaoVazio(senha) || senha.length() < 4) {
+            throw new PessoaException("Senha inválida. Mínimo de 4 caracteres.");
+        }
+        if (!Utilitarios.textoNaoVazio(nivelAcesso)) {
+            throw new PessoaException("Nível de acesso inválido.");
+        }
+
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;
