@@ -4,6 +4,7 @@ import br.com.hospital.entidades.Medico;
 import br.com.hospital.entidades.Paciente;
 import br.com.hospital.entidades.Pessoa;
 import br.com.hospital.entidades.Consulta;
+import br.com.hospital.exceptions.LoginException;
 import br.com.hospital.gerenciadores.GerenciadorConsulta;
 import br.com.hospital.sistema.Hospital;
 import br.com.hospital.sistema.Login;
@@ -98,7 +99,7 @@ public class Main {
 
     //Login
 
-    private static void fazerLogin(Scanner sc, Login login) {
+    private static void fazerLogin(Scanner sc, Login login) throws LoginException {
         System.out.print("CPF: ");
         String cpf = sc.nextLine();
         System.out.print("Senha: ");
