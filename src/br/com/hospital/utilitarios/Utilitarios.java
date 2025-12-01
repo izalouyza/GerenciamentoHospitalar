@@ -133,10 +133,4 @@ public class Utilitarios {
         return dt != null;
     }
 
-    // Formata data e hora
-    public static String formatarDataHora(LocalDateTime dt) {
-        if (dt == null) return null;
-        return dt.format(FORMATADOR);
-    }
-
 }
