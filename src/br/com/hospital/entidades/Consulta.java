@@ -1,8 +1,11 @@
 package br.com.hospital.entidades;
 
+import br.com.hospital.exceptions.ConsultaException;
 import br.com.hospital.interfaces.Agendavel;
 import br.com.hospital.interfaces.Identificavel;
 import br.com.hospital.interfaces.Validavel;
+import br.com.hospital.exceptions.FuncionarioException;
+import br.com.hospital.utilitarios.Utilitarios;
 
 public class Consulta implements Identificavel, Agendavel, Validavel {
 
@@ -12,7 +15,37 @@ public class Consulta implements Identificavel, Agendavel, Validavel {
     private String dataHora;
     private String descricao;
 
-    public Consulta(String id, Paciente paciente, Medico medico, String dataHora, String descricao) {
+    public Consulta(String id, Paciente paciente, Medico medico, String dataHora, String descricao)
+        throws ConsultaException {
+
+        //Exceções:
+        if (!Utilitarios.textoNaoVazio(id)) {
+            throw new ConsultaException("ID da consulta inválido.");
+        }
+        if (paciente == null) {
+            throw new ConsultaException("Paciente não pode ser nulo.");
+        }
+        if (medico == null) {
+            throw new ConsultaException("Médico não pode ser nulo.");
+        }
+        if (!Utilitarios.textoNaoVazio(dataHora)) {
+            throw new ConsultaException("Data e hora da consulta inválidas.");
+        }
+        if (!Utilitarios.dataHoraValida(dataHora)) {
+            throw new ConsultaException("Formato de data e hora inválido. Utilize: dd/MM/yyyy HH:mm");
+        }
+        if (!Utilitarios.textoNaoVazio(descricao)) {
+            throw new ConsultaException("Descrição da consulta inválida.");
+        }
+
+        //  -------- Validações específicas de Consulta --------
+        if (!paciente.validar()) {
+            throw new ConsultaException("Paciente inválido: " + paciente.getMensagemValidacao());
+        }
+        if (!medico.validar()) {
+            throw new ConsultaException("Médico inválido: " + medico.getMensagemValidacao());
+        }
+
         this.id = id;
         this.paciente = paciente;
         this.medico = medico;
