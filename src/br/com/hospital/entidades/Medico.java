@@ -1,6 +1,8 @@
 package br.com.hospital.entidades;
 
 import br.com.hospital.interfaces.Validavel;
+import br.com.hospital.exceptions.MedicoException;
+import br.com.hospital.utilitarios.Utilitarios;
 
 public class Medico extends Pessoa implements Validavel {
     private String crm;
@@ -9,8 +11,48 @@ public class Medico extends Pessoa implements Validavel {
     public Medico(int id, String nome, String cpf, String telefone, String email, String endereco,String senha, String nivelAcesso,
                   String crm, String especialidade) {
         super(id, nome, cpf, telefone, email, endereco,senha, nivelAcesso);
+
+        //Exceções:
+        try {
+            // ----- CRM -----
+            if (crm == null || crm.isBlank()) {
+                throw new MedicoException("CRM não pode ser vazio.");
+            }
+            if (crm.length() < 4 || crm.length() > 10) {
+                throw new MedicoException("CRM deve ter entre 4 e 10 caracteres.");
+            }
+            if (crm.contains(" ")) {
+                throw new MedicoException("CRM não pode conter espaços.");
+            }
+
+            // ----- Especialidade -----
+            if (especialidade == null || especialidade.isBlank()) {
+                throw new MedicoException("Especialidade inválida.");
+            }
+            if (especialidade.length() < 3) {
+                throw new MedicoException("Especialidade deve ter no mínimo 3 caracteres.");
+            }
+
+            // ----- Demais -----
+            if (getNome() == null || getNome().isBlank()) {
+                throw new MedicoException("Nome não pode ser vazio.");
+            }
+            if (!Utilitarios.cpfValido(getCpf())) {
+                throw new MedicoException("CPF inválido.");
+            }
+            if (!Utilitarios.telefoneValido(getTelefone())) {
+                throw new MedicoException("Telefone inválido.");
+            }
+            if (!Utilitarios.emailValido(getEmail())) {
+                throw new MedicoException("Email inválido.");
+            }
+
         this.crm = crm;
         this.especialidade = especialidade;
+
+        } catch (MedicoException e) {
+            System.out.println("Erro ao criar médico: " + e.getMessage());
+        }
     }
     @Override
     public void exibirInformacoes() {
