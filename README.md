@@ -39,7 +39,12 @@ O objetivo é aplicar na prática os principais conceitos de POO, como classes, 
 
 O usuário interage com o sistema via menu no terminal:
 
-```text
+```
+====== SISTEMA HOSPITALAR ======
+1 - Fazer login
+0 - Sair
+
+Opção: 
 
 ```
 #### Menu Principal do Sistema:
@@ -56,10 +61,23 @@ GerenciamentoHospitalar/
 │       └── com/
 │           └── hospital/
 │               ├── entidades/
+│               │   ├── Consulta.java
 │               │   ├── Funcionario.java
 │               │   ├── Medico.java
 │               │   ├── Paciente.java
 │               │   └── Pessoa.java
+│               ├── exceptions/
+│               │   ├── ConsultaException.java
+│               │   ├── FuncionarioException.java
+│               │   ├── GerenciadorConsultaException.java
+│               │   ├── HospitalException.java
+│               │   ├── LoginException.java
+│               │   ├── MedicoException.java
+│               │   ├── PacienteException.java
+│               │   ├── PessoaException.java
+│               │   └── UtilitariosException.java
+│               ├── gerenciadores/
+│               │   └── GerenciadorConsulta.java
 │               ├── interfaces/
 │               │   ├── Acessavel.java
 │               │   ├── Agendavel.java
@@ -69,6 +87,8 @@ GerenciamentoHospitalar/
 │               ├── sistema/
 │               │   ├── Hospital.java
 │               │   └── Login.java
+│               ├── utilitarios/
+│               │   └── Utilitarios.java
 │               └── Main.java
 └── README.md
 ```
@@ -94,13 +114,13 @@ cd GerenciamentoHospitalar/src/br/com/hospital
 4. Compile os arquivos  `.java`:
 
 ```bash
-javac */*.java Main.java
+
 ```
 
 5. Execute o programa:
 
 ```bash
-java Main
+
 ```
 ---
 
