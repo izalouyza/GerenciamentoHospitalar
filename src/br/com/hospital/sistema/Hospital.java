@@ -14,6 +14,10 @@ public class Hospital implements Gerenciavel<Pessoa> {
         this.pessoasRegistradas = new ArrayList<>();
     }
 
+    public List<Pessoa> getPessoasRegistradas() {
+        return pessoasRegistradas;
+    }
+
     @Override
     public void adicionar(Pessoa elemento) {
         pessoasRegistradas.add(elemento);
