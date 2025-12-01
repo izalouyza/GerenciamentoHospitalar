@@ -121,20 +121,22 @@ public class Utilitarios {
 
         if (dataHora == null || dataHora.isBlank()) return false;
 
-        // Formato esperado: 16 caracteres → "dd/MM/yyyy HH:mm"
         if (dataHora.length() != 16) return false;
 
-        // Checagem manual do padrão básico
         if (dataHora.charAt(2) != '/' || dataHora.charAt(5) != '/' ||
                 dataHora.charAt(10) != ' ' || dataHora.charAt(13) != ':') {
             return false;
         }
 
-        // Se chegou até aqui, tentamos parsear SEM try/catch
         LocalDateTime dt = LocalDateTime.parse(dataHora, FORMATADOR);
 
-        // Se não explodiu, é válido
         return dt != null;
+    }
+
+    // Formata data e hora
+    public static String formatarDataHora(LocalDateTime dt) {
+        if (dt == null) return null;
+        return dt.format(FORMATADOR);
     }
 
 }
