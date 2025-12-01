@@ -1,6 +1,8 @@
 package br.com.hospital.entidades;
 
 import br.com.hospital.exceptions.FuncionarioException;
+import br.com.hospital.exceptions.PacienteException;
+import br.com.hospital.interfaces.Validavel;
 import br.com.hospital.utilitarios.Utilitarios;
 
 public class Funcionario extends Pessoa {
@@ -8,44 +10,51 @@ public class Funcionario extends Pessoa {
     private String setor;
     private String nivelAcesso; // Ver se é necessário o uso de nivel Acesso aqui e em Pessoa :D
 
-    public Funcionario(int id, String nome, String cpf, String telefone, String email, String endereco,String senha, String nivelAcesso, String cargo, String setor) {
-        super(id, nome, cpf, telefone, email, endereco, senha, nivelAcesso);
+    public Funcionario(int id, String nome, String cpf, String telefone, String email, String endereco,String senha, String nivelAcesso, String cargo, String setor)
+        throws FuncionarioException {
 
         //Exceções:
-        try {
-            if (cargo == null || cargo.isBlank()) {
-                throw new FuncionarioException("Cargo não pode ser vazio.");
-            }
-            if (setor == null || setor.isBlank()) {
-                throw new FuncionarioException("Setor não pode ser vazio.");
-            }
-            if (getNome() == null || getNome().isBlank()) {
-                throw new FuncionarioException("Nome inválido.");
-            }
-            if (!Utilitarios.cpfValido(getCpf())) {
-                throw new FuncionarioException("CPF inválido.");
-            }
-            if (!Utilitarios.telefoneValido(getTelefone())) {
-                throw new FuncionarioException("Telefone inválido.");
-            }
-            if (!Utilitarios.emailValido(getEmail())) {
-                throw new FuncionarioException("Email inválido.");
-            }
+        if (!Utilitarios.textoNaoVazio(nome)) {
+            throw new FuncionarioException("Nome inválido.");
+        }
+        if (!Utilitarios.cpfValido(cpf)) {
+            throw new FuncionarioException("CPF inválido.");
+        }
+        if (!Utilitarios.telefoneValido(telefone)) {
+            throw new FuncionarioException("Telefone inválido.");
+        }
+        if (!Utilitarios.emailValido(email)) {
+            throw new FuncionarioException("E-mail inválido.");
+        }
+        if (!Utilitarios.textoNaoVazio(endereco)) {
+            throw new FuncionarioException("Endereço inválido.");
+        }
+        if (!Utilitarios.textoNaoVazio(senha) || senha.length() < 4) {
+            throw new FuncionarioException("Senha inválida. Mínimo de 4 caracteres.");
+        }
+        if (!Utilitarios.textoNaoVazio(nivelAcesso)) {
+            throw new FuncionarioException("Nível de acesso inválido.");
+        }
 
-            // ----- Nível de Acesso -----
-            if (nivelAcesso == null || nivelAcesso.isBlank()) {
-                throw new FuncionarioException("Nível de acesso inválido.");
-            }
-            if (!nivelAcesso.matches("ADMIN|MEDICO|RECEPCIONISTA|FUNCIONARIO")) {
-                throw new FuncionarioException("Nível de acesso não permitido.");
-            }
+        // -------- Validações específicas do funcionario --------
+        if (!Utilitarios.textoNaoVazio(cargo)) {
+            throw new FuncionarioException("Cargo inválido.");
+        }
+        if (cargo.length() < 2) {
+            throw new FuncionarioException("Cargo deve ter pelo menos 2 caracteres.");
+        }
+        if (!Utilitarios.textoNaoVazio(setor)) {
+            throw new FuncionarioException("Setor inválido.");
+        }
+        if (setor.length() < 2) {
+            throw new FuncionarioException("Setor deve ter pelo menos 2 caracteres.");
+        }
+
+        super(id, nome, cpf, telefone, email, endereco, senha, nivelAcesso);
 
         this.cargo = cargo;
         this.setor = setor;
 
-        } catch (FuncionarioException e) {
-            System.out.println("Erro ao criar funcionário: " + e.getMessage());
-        }
     }
 
     //getters e setters
