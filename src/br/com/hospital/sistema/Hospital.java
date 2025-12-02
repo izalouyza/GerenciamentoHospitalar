@@ -10,7 +10,7 @@ import java.util.List;
 public class Hospital implements Gerenciavel<Pessoa> {
     final private List<Pessoa> pessoasRegistradas;
 
-    public Hospital (){
+    public Hospital() {
         this.pessoasRegistradas = new ArrayList<>();
     }
 
@@ -29,7 +29,7 @@ public class Hospital implements Gerenciavel<Pessoa> {
             System.out.println("Nenhuma pessoa registrada, não é possível listar.");
             return;
         }
-        for (Pessoa pessoaListar: pessoasRegistradas){
+        for (Pessoa pessoaListar : pessoasRegistradas) {
             pessoaListar.exibirInformacoes();
         }
     }
@@ -37,12 +37,22 @@ public class Hospital implements Gerenciavel<Pessoa> {
     @Override
     public Pessoa buscar(String identificador) {
         for (Pessoa pessoaBuscar : pessoasRegistradas) {
-            if (pessoaBuscar.getCpf().equals(identificador)) {
+
+            // CPF pode ser null
+            if (pessoaBuscar.getCpf() != null &&
+                    pessoaBuscar.getCpf().equals(identificador)) {
+
                 pessoaBuscar.exibirInformacoes();
                 return pessoaBuscar;
             }
-            if (pessoaBuscar instanceof Medico){
-                if (((Medico) pessoaBuscar).getCrm().equals(identificador)){
+
+            // CRM também pode ser null
+            if (pessoaBuscar instanceof Medico) {
+                Medico medico = (Medico) pessoaBuscar;
+
+                if (medico.getCrm() != null &&
+                        medico.getCrm().equals(identificador)) {
+
                     pessoaBuscar.exibirInformacoes();
                     return pessoaBuscar;
                 }
@@ -54,9 +64,25 @@ public class Hospital implements Gerenciavel<Pessoa> {
     @Override
     public boolean editar(String identificador, Pessoa novoElemento) {
         for (int i = 0; i < pessoasRegistradas.size(); i++) {
-            if (pessoasRegistradas.get(i).getCpf().equals(identificador)) {
+
+            Pessoa atual = pessoasRegistradas.get(i);
+
+            if (atual.getCpf() != null &&
+                    atual.getCpf().equals(identificador)) {
+
                 pessoasRegistradas.set(i, novoElemento);
                 return true;
+            }
+
+            if (atual instanceof Medico) {
+                Medico medico = (Medico) atual;
+
+                if (medico.getCrm() != null &&
+                        medico.getCrm().equals(identificador)) {
+
+                    pessoasRegistradas.set(i, novoElemento);
+                    return true;
+                }
             }
         }
         return false;
@@ -64,6 +90,22 @@ public class Hospital implements Gerenciavel<Pessoa> {
 
     @Override
     public boolean remover(String identificador) {
-        return pessoasRegistradas.removeIf(pessoaRemovivel -> pessoaRemovivel.getCpf().equals(identificador));
+        return pessoasRegistradas.removeIf(pessoaRemovivel -> {
+
+            if (pessoaRemovivel.getCpf() != null &&
+                    pessoaRemovivel.getCpf().equals(identificador)) {
+
+                return true;
+            }
+
+            if (pessoaRemovivel instanceof Medico) {
+                Medico medico = (Medico) pessoaRemovivel;
+
+                return medico.getCrm() != null &&
+                        medico.getCrm().equals(identificador);
+            }
+
+            return false;
+        });
     }
 }
