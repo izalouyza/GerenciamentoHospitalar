@@ -1,15 +1,17 @@
 package br.com.hospital.entidades;
 
+import br.com.hospital.exceptions.PessoaException;
 import br.com.hospital.interfaces.Validavel;
 import br.com.hospital.exceptions.MedicoException;
 import br.com.hospital.utilitarios.Utilitarios;
+import br.com.hospital.exceptions.PessoaException;
 
 public class Medico extends Pessoa implements Validavel {
     private String crm;
     private String especialidade;
 
     public Medico(int id, String nome, String cpf, String telefone, String email, String endereco,String senha, String nivelAcesso, String crm, String especialidade)
-        throws MedicoException {
+        throws MedicoException, PessoaException {
 
         //Exceções:
         if (!Utilitarios.textoNaoVazio(nome)) {

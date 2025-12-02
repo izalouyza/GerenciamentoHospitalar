@@ -3,13 +3,14 @@ package br.com.hospital.entidades;
 import br.com.hospital.interfaces.Validavel;
 import br.com.hospital.exceptions.PacienteException;
 import br.com.hospital.utilitarios.Utilitarios;
+import br.com.hospital.exceptions.PessoaException;
 
 public class Paciente extends Pessoa implements Validavel {
     private int idade;
     private String historicoClinico;
 
     public Paciente(int id, String nome, String cpf, String telefone, String email, String endereco,String senha, String nivelAcesso, int idade, String historicoClinico)
-        throws PacienteException {
+        throws PacienteException, PessoaException {
 
         //Exceções:
         if (!Utilitarios.textoNaoVazio(nome)) {

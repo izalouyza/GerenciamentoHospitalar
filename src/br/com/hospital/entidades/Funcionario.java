@@ -2,6 +2,7 @@ package br.com.hospital.entidades;
 
 import br.com.hospital.exceptions.FuncionarioException;
 import br.com.hospital.exceptions.PacienteException;
+import br.com.hospital.exceptions.PessoaException;
 import br.com.hospital.interfaces.Validavel;
 import br.com.hospital.utilitarios.Utilitarios;
 
@@ -11,7 +12,7 @@ public class Funcionario extends Pessoa {
     private String nivelAcesso; // Ver se é necessário o uso de nivel Acesso aqui e em Pessoa :D
 
     public Funcionario(int id, String nome, String cpf, String telefone, String email, String endereco,String senha, String nivelAcesso, String cargo, String setor)
-        throws FuncionarioException {
+        throws FuncionarioException, PessoaException {
 
         //Exceções:
         if (!Utilitarios.textoNaoVazio(nome)) {

@@ -11,6 +11,7 @@ import br.com.hospital.sistema.Login;
 import br.com.hospital.utilitarios.Utilitarios;
 import br.com.hospital.exceptions.ConsultaException;
 import br.com.hospital.exceptions.PacienteException;
+import br.com.hospital.exceptions.PessoaException;
 
 import java.util.Scanner;
 
@@ -155,8 +156,10 @@ public class Main {
             hospital.adicionar(paciente);
             System.out.println("Paciente cadastrado com sucesso!");
 
+        } catch (PessoaException e) {
+            System.out.println("Erro ao criar paciente (pessoa inválida): " + e.getMessage());
         } catch (PacienteException e) {
-        System.out.println("Erro ao criar paciente: " + e.getMessage());
+            System.out.println("Erro ao criar paciente: " + e.getMessage());
         } catch (NumberFormatException e) {
             System.out.println("Idade inválida. Cadastro cancelado.");
         } catch (IllegalArgumentException e) {
