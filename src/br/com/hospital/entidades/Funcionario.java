@@ -1,20 +1,20 @@
 package br.com.hospital.entidades;
 
 import br.com.hospital.exceptions.FuncionarioException;
-import br.com.hospital.exceptions.PacienteException;
 import br.com.hospital.exceptions.PessoaException;
-import br.com.hospital.interfaces.Validavel;
 import br.com.hospital.utilitarios.Utilitarios;
 
 public class Funcionario extends Pessoa {
+
     private String cargo;
     private String setor;
-    private String nivelAcesso; // Ver se é necessário o uso de nivel Acesso aqui e em Pessoa :D
 
-    public Funcionario(int id, String nome, String cpf, String telefone, String email, String endereco,String senha, String nivelAcesso, String cargo, String setor)
-        throws FuncionarioException, PessoaException {
+    public Funcionario(int id, String nome, String cpf, String telefone, String email,
+                       String endereco, String senha, String nivelAcesso,
+                       String cargo, String setor)
+            throws FuncionarioException, PessoaException {
 
-        //Exceções:
+        // -------- Validações herdadas --------
         if (!Utilitarios.textoNaoVazio(nome)) {
             throw new FuncionarioException("Nome inválido.");
         }
@@ -37,7 +37,7 @@ public class Funcionario extends Pessoa {
             throw new FuncionarioException("Nível de acesso inválido.");
         }
 
-        // -------- Validações específicas do funcionario --------
+        // -------- Validações específicas de funcionário --------
         if (!Utilitarios.textoNaoVazio(cargo)) {
             throw new FuncionarioException("Cargo inválido.");
         }
@@ -51,41 +51,33 @@ public class Funcionario extends Pessoa {
             throw new FuncionarioException("Setor deve ter pelo menos 2 caracteres.");
         }
 
+        // Chama Pessoa
         super(id, nome, cpf, telefone, email, endereco, senha, nivelAcesso);
 
         this.cargo = cargo;
         this.setor = setor;
-
     }
 
-    //getters e setters
-    public String getCargo(){
+    // -------- Getters e Setters --------
+    public String getCargo() {
         return cargo;
     }
 
-    public void setCargo(String cargo){
+    public void setCargo(String cargo) {
         this.cargo = cargo;
     }
 
-    public String getSetor(){
+    public String getSetor() {
         return setor;
     }
 
-    public void setSetor(String setor){
+    public void setSetor(String setor) {
         this.setor = setor;
     }
 
-    public String getNivelAcesso(){
-        return nivelAcesso;
-    }
-
-    public void setNivelAcesso(String nivelAcesso){
-        this.nivelAcesso = nivelAcesso;
-    }
-
-    //métodos
+    // -------- Métodos --------
     @Override
-    public void exibirInformacoes(){
+    public void exibirInformacoes() {
         super.exibirInformacoes();
         System.out.printf("""
                 Cargo: %s
