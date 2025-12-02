@@ -7,7 +7,7 @@ import br.com.hospital.utilitarios.Utilitarios;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GerenciadorConsulta implements Gerenciavel<Consulta> {
+public class GerenciamentoSistema implements Gerenciavel<Consulta> {
 
     private final List<Consulta> consultas = new ArrayList<>();
 
