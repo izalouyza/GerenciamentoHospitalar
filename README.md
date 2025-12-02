@@ -77,7 +77,7 @@ GerenciamentoHospitalar/
 │               │   ├── PessoaException.java
 │               │   └── UtilitariosException.java
 │               ├── gerenciadores/
-│               │   └── GerenciadorConsulta.java
+│               │   └── GerenciamentoSistema.java
 │               ├── interfaces/
 │               │   ├── Acessavel.java
 │               │   ├── Agendavel.java
