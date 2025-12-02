@@ -1,14 +1,8 @@
 package br.com.hospital.utilitarios;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class Utilitarios {
-
-    private static final DateTimeFormatter FORMATADOR =
-            DateTimeFormatter.ofPattern("dd/MM/uuuu HH:mm")
-                    .withResolverStyle(java.time.format.ResolverStyle.STRICT);
 
     // Gera ID's
     private static int contadorId = 1;
@@ -115,28 +109,124 @@ public class Utilitarios {
             return false;
         }
     }
-    
-    // Verifica se a data e a hora são válidas
-    public static boolean dataHoraValida(String dataHora) {
-
-        if (dataHora == null || dataHora.isBlank()) return false;
-
-        if (dataHora.length() != 16) return false;
-
-        if (dataHora.charAt(2) != '/' || dataHora.charAt(5) != '/' ||
-                dataHora.charAt(10) != ' ' || dataHora.charAt(13) != ':') {
+    //Determina tamanho mínimo para Strings
+    public static boolean tamanhoMinimo(String txt, int min){
+        if(txt == null) {
             return false;
         }
+        return txt.trim().length() >= min;
+    }
+    //valida a especialidade
+    public static boolean especialidadeValida(String esp){
+        if(esp == null){
+            return false;
+        }
+        esp = esp.trim();
+        if(esp.length() < 3 ){
+            return false;
+        }
+        boolean temLetra = esp.matches(".*[a-zA-Z].*");
+        if(temLetra){
+            return false;
+        }
+        return true;
+    }
+    public static boolean dataHoraValida(String dataHora) {
+    if (dataHora == null) return false;
+    if (dataHora.length() != 16) return false;
 
-        LocalDateTime dt = LocalDateTime.parse(dataHora, FORMATADOR);
-
-        return dt != null;
+    // partes fixas da data
+    if (dataHora.charAt(2) != '/' ||
+        dataHora.charAt(5) != '/' ||
+        dataHora.charAt(10) != ' ' ||
+        dataHora.charAt(13) != ':') {
+        return false;
     }
 
-    // Formata data e hora
-    public static String formatarDataHora(LocalDateTime dt) {
-        if (dt == null) return null;
-        return dt.format(FORMATADOR);
-    }
+    try {
+        int dia = Integer.parseInt(dataHora.substring(0, 2));
+        int mes = Integer.parseInt(dataHora.substring(3, 5));
+        int ano = Integer.parseInt(dataHora.substring(6, 10));
+        int hora = Integer.parseInt(dataHora.substring(11, 13));
+        int minuto = Integer.parseInt(dataHora.substring(14, 16));
 
+        // valida os intervalos de mes, dia, hora e minuto
+        if (mes < 1 || mes > 12) return false;
+        if (dia < 1 || dia > 31) return false;
+        if (hora < 0 || hora > 23) return false;
+        if (minuto < 0 || minuto > 59) return false;
+
+        // valida se a data EXISTE de verdade
+        java.time.LocalDateTime.of(ano, mes, dia, hora, minuto);
+
+        return true;
+    } catch (Exception e) {
+        return false;
+    }
 }
+
+    public static boolean dataNoFuturo(String dataHora){
+        if(!dataHoraValida(dataHora)){
+            return false;
+        }
+        try{
+        int dia = Integer.parseInt(dataHora.substring(0, 2));
+        int mes = Integer.parseInt(dataHora.substring(3, 5));
+        int ano = Integer.parseInt(dataHora.substring(6, 10));
+        int hora = Integer.parseInt(dataHora.substring(11, 13));
+        int minuto = Integer.parseInt(dataHora.substring(14, 16));
+
+        java.time.LocalDateTime dataConsulta =
+                java.time.LocalDateTime.of(ano, mes, dia, hora, minuto);
+
+        return dataConsulta.isAfter(java.time.LocalDateTime.now());
+
+    } catch (Exception e) {
+        return false;
+    }
+        }
+    public static String normalizarTexto(String texto) {
+    if (texto == null) return null;
+
+    // Remover acentuação (NFD = decompor acentos)
+    String semAcento = java.text.Normalizer
+            .normalize(texto, java.text.Normalizer.Form.NFD)
+            .replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+
+    // Deixa apenas letras, números e espaço
+    semAcento = semAcento.replaceAll("[^a-zA-Z0-9 ]", "");
+
+    // Remove espaços duplicados
+    semAcento = semAcento.replaceAll("\\s+", " ").trim();
+
+    return semAcento;
+    }
+    public static String capitalizarNome(String nome) {
+    if (nome == null) return null;
+
+    nome = nome.trim().toLowerCase();
+
+    String[] partes = nome.split("\\s+");
+    StringBuilder sb = new StringBuilder();
+
+    for (String p : partes) {
+        if (p.length() > 0) {
+            sb.append(Character.toUpperCase(p.charAt(0)))
+              .append(p.substring(1))
+              .append(" ");
+        }
+    }
+
+    return sb.toString().trim();
+    }
+        // imprime sem quebra de linha
+    public static void print(String texto) {
+        System.out.print(texto);
+    }
+
+    // imprime com quebra de linha
+    public static void println(String texto) {
+        System.out.println(texto);
+    }
+    }
+
