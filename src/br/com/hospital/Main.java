@@ -249,26 +249,25 @@ public class Main {
         String descricao = sc.nextLine();
 
         Pessoa pessoaPaciente = hospital.buscar(cpfPaciente);
-        if (!(pessoaPaciente instanceof Paciente paciente)) {
+        if (!(pessoaPaciente instanceof Paciente)) {
             System.out.println("Paciente não encontrado ou identificador inválido.");
             return;
         }
+        Paciente paciente = (Paciente) pessoaPaciente;
 
         Pessoa pessoaMedico = hospital.buscar(idMedico);
-        if (!(pessoaMedico instanceof Medico medico)) {
+        if (!(pessoaMedico instanceof Medico)) {
             System.out.println("Médico não encontrado ou identificador inválido.");
             return;
         }
-        try {
-            Consulta consulta = new Consulta(idConsulta, paciente, medico, dataHora, descricao);
+        Medico medico = (Medico) pessoaMedico;
 
-            gerenciadorConsulta.adicionar(consulta);
-            System.out.println("Consulta agendada com sucesso!");
-
-        } catch (ConsultaException e) {
-            System.out.println("Erro ao criar consulta: " + e.getMessage());
-        }
+        // Cria a consulta normalmente, sem try/catch
+        Consulta consulta = new Consulta(idConsulta, paciente, medico, dataHora, descricao);
+        gerenciadorConsulta.adicionar(consulta);
+        System.out.println("Consulta agendada com sucesso!");
     }
+
 
     private static void editarConsulta(Scanner sc, GerenciadorConsulta gerenciadorConsulta) {
         System.out.print("Informe o ID da consulta a ser editada: ");
@@ -293,8 +292,7 @@ public class Main {
             novaDesc = antiga.getDescricao();
         }
 
-        // Mantém o mesmo paciente e médico
-        try{
+        // Cria um objeto Consulta com os novos dados
         Consulta novosDados = new Consulta(
                 antiga.getIdentificador(),
                 antiga.getPaciente(),
@@ -303,10 +301,10 @@ public class Main {
                 novaDesc
         );
 
-        gerenciadorConsulta.editar(id, novosDados);
-
-        } catch (ConsultaException e) {
-            System.out.println("Erro: " + e.getMessage());
+        // Tenta editar a consulta
+        boolean sucesso = gerenciadorConsulta.editar(id, novosDados);
+        if (!sucesso) {
+            System.out.println("Edição não realizada. A consulta permanece inalterada.");
         }
     }
 
