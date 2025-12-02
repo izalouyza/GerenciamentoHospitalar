@@ -6,7 +6,8 @@ import br.com.hospital.exceptions.PessoaException;
 import br.com.hospital.utilitarios.Utilitarios;
 
 public abstract class Pessoa implements Identificavel, Acessavel {
-    private int id;
+
+    private final int id;
     private String nome;
     private String cpf;
     private String telefone;
@@ -15,10 +16,11 @@ public abstract class Pessoa implements Identificavel, Acessavel {
     private String senha;
     private String nivelAcesso;
 
-    public Pessoa(int id, String nome, String cpf, String telefone, String email, String endereco, String senha, String nivelAcesso)
-        throws PessoaException {
+    public Pessoa(int id, String nome, String cpf, String telefone, String email,
+                  String endereco, String senha, String nivelAcesso)
+            throws PessoaException {
 
-        //Exceções:
+        // -------- Validações básicas --------
         if (id <= 0) {
             throw new PessoaException("ID inválido.");
         }
@@ -51,7 +53,7 @@ public abstract class Pessoa implements Identificavel, Acessavel {
         this.email = email;
         this.endereco = endereco;
         this.senha = senha;
-        this.nivelAcesso = nivelAcesso;
+        this.nivelAcesso = nivelAcesso.toUpperCase(); // padronização
     }
 
     @Override
@@ -64,16 +66,29 @@ public abstract class Pessoa implements Identificavel, Acessavel {
         return nivelAcesso;
     }
 
+    public void setNivelAcesso(String nivelAcesso) {
+        if (Utilitarios.textoNaoVazio(nivelAcesso)) {
+            this.nivelAcesso = nivelAcesso.toUpperCase();
+        }
+    }
+
     @Override
     public boolean temPermissao(String acao) {
-        if ("MEDICO".equals(nivelAcesso)) {
-            return acao.equals("Ver Pacientes") || acao.equals("Criar Consulta");
-        }
+        // Todas as comparações agora são coerentes
+        switch (nivelAcesso) {
+            case "MEDICO":
+                return acao.equals("VER PACIENTES") ||
+                        acao.equals("CRIAR CONSULTA");
 
-        if ("Recepcionista".equals(nivelAcesso)) {
-            return acao.equals("Criar Consulta");
+            case "RECEPCIONISTA":
+                return acao.equals("CRIAR CONSULTA");
+
+            case "ADMIN":
+                return true; // se existir admin no seu sistema
+
+            default:
+                return false;
         }
-        return false;
     }
 
     public String getSenha() {
@@ -88,9 +103,7 @@ public abstract class Pessoa implements Identificavel, Acessavel {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    // Removido setId() propositalmente (ID deve ser imutável)
 
     public String getNome() {
         return nome;
