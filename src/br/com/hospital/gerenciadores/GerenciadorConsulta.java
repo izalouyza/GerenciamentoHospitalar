@@ -84,37 +84,39 @@ public class GerenciadorConsulta implements Gerenciavel<Consulta> {
     }
 
     // Editar
-    @Override
-    public boolean editar(String identificador, Consulta novosDados) {
-        Consulta antiga = buscar(identificador);
+    public boolean editar(String id, Consulta novosDados) {
+        Consulta antiga = buscar(id);
 
         if (antiga == null) {
             System.out.println("Consulta não encontrada.");
             return false;
         }
 
-        if (novosDados == null || !novosDados.validar()) {
-
-            String mensagem;
-
-            if (novosDados == null) {
-                mensagem = "Consulta nula";
-            } else {
-                mensagem = novosDados.getMensagemValidacao();
-            }
-
-            System.out.println("Dados inválidos: " + mensagem);
+        if (novosDados == null) {
+            System.out.println("Novos dados inválidos.");
             return false;
         }
 
-        antiga.setPaciente(novosDados.getPaciente());
-        antiga.setMedico(novosDados.getMedico());
-        antiga.setDataHora(novosDados.getDataHora());
-        antiga.setDescricao(novosDados.getDescricao());
+        try {
+            // Valida os novos dados antes de alterar a consulta
+            if (!novosDados.validar()) {
+                System.out.println("Falha na validação dos novos dados: " + novosDados.getMensagemValidacao());
+                return false; // mantém a antiga
+            }
 
-        System.out.println("Consulta atualizada com sucesso!");
-        return true;
+            // Atualiza apenas os campos editáveis
+            antiga.setDataHora(novosDados.getDataHora());
+            antiga.setDescricao(novosDados.getDescricao());
+
+            System.out.println("Consulta editada com sucesso!");
+            return true;
+
+        } catch (Exception e) {
+            System.out.println("Erro ao editar a consulta: " + e.getMessage());
+            return false; // mantém a antiga
+        }
     }
+
 
     // Remover
     @Override
