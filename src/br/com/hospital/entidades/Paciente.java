@@ -1,18 +1,21 @@
 package br.com.hospital.entidades;
 
-import br.com.hospital.interfaces.Validavel;
 import br.com.hospital.exceptions.PacienteException;
-import br.com.hospital.utilitarios.Utilitarios;
 import br.com.hospital.exceptions.PessoaException;
+import br.com.hospital.interfaces.Validavel;
+import br.com.hospital.utilitarios.Utilitarios;
 
 public class Paciente extends Pessoa implements Validavel {
+
     private int idade;
     private String historicoClinico;
 
-    public Paciente(int id, String nome, String cpf, String telefone, String email, String endereco,String senha, String nivelAcesso, int idade, String historicoClinico)
-        throws PacienteException, PessoaException {
+    public Paciente(int id, String nome, String cpf, String telefone, String email,
+                    String endereco, String senha, String nivelAcesso,
+                    int idade, String historicoClinico)
+            throws PacienteException, PessoaException {
 
-        //Exceções:
+        // ------------------- Validações herdadas -------------------
         if (!Utilitarios.textoNaoVazio(nome)) {
             throw new PacienteException("Nome inválido.");
         }
@@ -41,6 +44,7 @@ public class Paciente extends Pessoa implements Validavel {
             throw new PacienteException("Nível de acesso inválido.");
         }
 
+        // ------------------- Validações específicas -------------------
         if (idade <= 0 || idade > 120) {
             throw new PacienteException("Idade inválida.");
         }
@@ -49,25 +53,24 @@ public class Paciente extends Pessoa implements Validavel {
             throw new PacienteException("Histórico clínico inválido.");
         }
 
-        super(id, nome, cpf, telefone, email, endereco,senha,nivelAcesso);
-
+        super(id, nome, cpf, telefone, email, endereco, senha, nivelAcesso);
 
         this.idade = idade;
         this.historicoClinico = historicoClinico;
-
     }
 
     @Override
-    public void exibirInformacoes(){
+    public void exibirInformacoes() {
         super.exibirInformacoes();
         System.out.printf("""
                 
                 Dados Clínicos:
                 Idade: %d
                 Histórico Clínico: %s
-                """, getIdade(), getHistoricoClinico());
+                """, idade, historicoClinico);
     }
 
+    // ------------------- Getters & Setters -------------------
     public int getIdade() {
         return idade;
     }
@@ -84,28 +87,24 @@ public class Paciente extends Pessoa implements Validavel {
         this.historicoClinico = historicoClinico;
     }
 
+    // ------------------- Validação -------------------
     @Override
     public boolean validar() {
-        if(getNome() == null || getNome().isBlank()){
-            return false;
-        }
-        
-        if(getCpf() == null || getCpf().length() != 11){
-            return false;
-        }
 
-        if(idade <= 0 || idade > 120){
-            return false;
-        }
+        if (getNome() == null || getNome().isBlank()) return false;
 
-        if(historicoClinico == null || historicoClinico.isBlank()){
-            return false;
-        }
+        if (getCpf() == null || getCpf().length() != 11) return false;
+
+        if (idade <= 0 || idade > 120) return false;
+
+        if (historicoClinico == null || historicoClinico.isBlank()) return false;
+
         return true;
     }
 
     @Override
     public String getMensagemValidacao() {
+
         if (getNome() == null || getNome().isBlank()) {
             return "Nome não pode ser vazio.";
         }
