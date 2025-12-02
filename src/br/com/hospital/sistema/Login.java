@@ -15,6 +15,10 @@ public class Login {
     }
 
     public boolean autenticar(String cpf, String senha) throws LoginException {
+        if (cpf == null || senha == null) {
+            throw new LoginException("CPF ou senha não podem ser nulos.");
+        }
+
         for (Pessoa p : usuarios) {
             if (p.getCpf().equals(cpf) && p.getSenha().equals(senha)) {
                 usuarioLogado = p;
@@ -32,17 +36,17 @@ public class Login {
     public String getNivelAcesso() {
         if (usuarioLogado != null) {
             return usuarioLogado.getNivelAcesso();
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     public boolean temPermissao(String acao) {
         if (usuarioLogado != null) {
             return usuarioLogado.temPermissao(acao);
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     public void logout() {
