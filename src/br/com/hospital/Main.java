@@ -9,6 +9,8 @@ import br.com.hospital.gerenciadores.GerenciadorConsulta;
 import br.com.hospital.sistema.Hospital;
 import br.com.hospital.sistema.Login;
 import br.com.hospital.utilitarios.Utilitarios;
+import br.com.hospital.exceptions.ConsultaException;
+import br.com.hospital.exceptions.PacienteException;
 
 import java.util.Scanner;
 
@@ -99,17 +101,22 @@ public class Main {
 
     //Login
 
-    private static void fazerLogin(Scanner sc, Login login) throws LoginException {
-        System.out.print("CPF: ");
-        String cpf = sc.nextLine();
-        System.out.print("Senha: ");
-        String senha = sc.nextLine();
+    private static void fazerLogin(Scanner sc, Login login){
+        try {
+            System.out.print("CPF: ");
+            String cpf = sc.nextLine();
+            System.out.print("Senha: ");
+            String senha = sc.nextLine();
 
-        if (login.autenticar(cpf, senha)) {
-            System.out.println("Login realizado com sucesso!");
-        } else {
-            System.out.println("CPF ou senha inválidos.");
-        }
+            if (login.autenticar(cpf, senha)) {
+                System.out.println("Login realizado com sucesso!");
+            } else {
+                System.out.println("CPF ou senha inválidos.");
+            }
+        } catch (LoginException e) {
+        System.out.println("Erro no login: " + e.getMessage());
+    }
+
     }
 
     //Cadastro de Paciente
@@ -148,6 +155,8 @@ public class Main {
             hospital.adicionar(paciente);
             System.out.println("Paciente cadastrado com sucesso!");
 
+        } catch (PacienteException e) {
+        System.out.println("Erro ao criar paciente: " + e.getMessage());
         } catch (NumberFormatException e) {
             System.out.println("Idade inválida. Cadastro cancelado.");
         } catch (IllegalArgumentException e) {
@@ -158,38 +167,43 @@ public class Main {
     //Cadastro de Médico
 
     private static void cadastrarMedico(Scanner sc, Hospital hospital) {
-        int id = Utilitarios.gerarIdIncremental();
+        try {
+            int id = Utilitarios.gerarIdIncremental();
 
-        System.out.println("=== Cadastro de Médico ===");
-        System.out.print("Nome: ");
-        String nome = sc.nextLine();
-        System.out.print("CPF (somente números): ");
-        String cpf = sc.nextLine();
-        System.out.print("Telefone: ");
-        String telefone = sc.nextLine();
-        System.out.print("Email: ");
-        String email = sc.nextLine();
-        System.out.print("Endereço: ");
-        String endereco = sc.nextLine();
-        System.out.print("Senha de acesso: ");
-        String senha = sc.nextLine();
-        System.out.print("CRM: ");
-        String crm = sc.nextLine();
-        System.out.print("Especialidade: ");
-        String especialidade = sc.nextLine();
+            System.out.println("=== Cadastro de Médico ===");
+            System.out.print("Nome: ");
+            String nome = sc.nextLine();
+            System.out.print("CPF (somente números): ");
+            String cpf = sc.nextLine();
+            System.out.print("Telefone: ");
+            String telefone = sc.nextLine();
+            System.out.print("Email: ");
+            String email = sc.nextLine();
+            System.out.print("Endereço: ");
+            String endereco = sc.nextLine();
+            System.out.print("Senha de acesso: ");
+            String senha = sc.nextLine();
+            System.out.print("CRM: ");
+            String crm = sc.nextLine();
+            System.out.print("Especialidade: ");
+            String especialidade = sc.nextLine();
 
-        // Nível de acesso fixo para médico
-        Medico medico = new Medico(
-                id, nome, cpf, telefone, email, endereco, senha, "MEDICO", crm, especialidade
-        );
+            // Nível de acesso fixo para médico
+            Medico medico = new Medico(
+                    id, nome, cpf, telefone, email, endereco, senha, "MEDICO", crm, especialidade
+            );
 
-        if (!medico.validar()) {
-            System.out.println("Erro ao cadastrar médico: " + medico.getMensagemValidacao());
-            return;
+            if (!medico.validar()) {
+                System.out.println("Erro ao cadastrar médico: " + medico.getMensagemValidacao());
+                return;
+            }
+
+            hospital.adicionar(medico);
+            System.out.println("Médico cadastrado com sucesso!");
+
+        }catch (Exception e) {
+            System.out.println("Erro ao cadastrar médico: " + e.getMessage());
         }
-
-        hospital.adicionar(medico);
-        System.out.println("Médico cadastrado com sucesso!");
     }
 
     // ------------------ Pessoas ------------------
@@ -242,10 +256,15 @@ public class Main {
             System.out.println("Médico não encontrado ou identificador inválido.");
             return;
         }
+        try {
+            Consulta consulta = new Consulta(idConsulta, paciente, medico, dataHora, descricao);
 
-        Consulta consulta = new Consulta(idConsulta, paciente, medico, dataHora, descricao);
+            gerenciadorConsulta.adicionar(consulta);
+            System.out.println("Consulta agendada com sucesso!");
 
-        gerenciadorConsulta.adicionar(consulta);
+        } catch (ConsultaException e) {
+            System.out.println("Erro ao criar consulta: " + e.getMessage());
+        }
     }
 
     private static void editarConsulta(Scanner sc, GerenciadorConsulta gerenciadorConsulta) {
@@ -272,6 +291,7 @@ public class Main {
         }
 
         // Mantém o mesmo paciente e médico
+        try{
         Consulta novosDados = new Consulta(
                 antiga.getIdentificador(),
                 antiga.getPaciente(),
@@ -281,6 +301,10 @@ public class Main {
         );
 
         gerenciadorConsulta.editar(id, novosDados);
+
+        } catch (ConsultaException e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
     }
 
     private static void removerConsulta(Scanner sc, GerenciadorConsulta gerenciadorConsulta) {
