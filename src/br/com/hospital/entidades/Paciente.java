@@ -1,5 +1,7 @@
 package br.com.hospital.entidades;
 
+import br.com.hospital.utilitarios.Utilitarios;
+
 public class Paciente extends Pessoa {
     private int idade;
     private String historicoClinico;
@@ -27,7 +29,7 @@ public class Paciente extends Pessoa {
     @Override
     public void exibirInformacoes() {
         super.exibirInformacoes();
-        System.out.println("Idade: " + idade);
-        System.out.println("Histórico Clínico: " + historicoClinico);
+        Utilitarios.println("Idade: " + idade);
+        Utilitarios.println("Histórico Clínico: " + historicoClinico);
     }
 }

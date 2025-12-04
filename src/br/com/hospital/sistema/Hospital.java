@@ -18,7 +18,7 @@ public class Hospital {
 
     public void listarPessoas() {
         if (Utilitarios.listaVazia(pessoas)) {
-            System.out.println("Nenhuma pessoa cadastrada.");
+            Utilitarios.println("Nenhuma pessoa cadastrada.");
             return;
         }
         for (Pessoa p : pessoas) p.exibirInformacoes();
@@ -82,7 +82,7 @@ public class Hospital {
 
     public void listarConsultas() {
         if (Utilitarios.listaVazia(consultas)) {
-            System.out.println("Nenhuma consulta marcada.");
+            Utilitarios.println("Nenhuma consulta marcada.");
             return;
         }
         for (Consulta c : consultas) c.exibirResumo();

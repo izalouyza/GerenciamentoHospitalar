@@ -291,4 +291,7 @@ public class Utilitarios {
     public static void println(String texto) {
         System.out.println(texto);
     }
+        public static void printf(String texto) {
+        System.out.printf(texto);
+    }
 }

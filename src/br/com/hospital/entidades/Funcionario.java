@@ -1,5 +1,7 @@
 package br.com.hospital.entidades;
 
+import br.com.hospital.utilitarios.Utilitarios;
+
 public class Funcionario extends Pessoa {
     private String cargo;
     private String setor;
@@ -28,7 +30,8 @@ public class Funcionario extends Pessoa {
     @Override
     public void exibirInformacoes() {
         super.exibirInformacoes();
-        System.out.println("Cargo: " + cargo);
-        System.out.println("Setor: " + setor);
+        Utilitarios.println("Cargo: " + cargo);
+        Utilitarios.println("Setor: " + setor);
+        
     }
 }

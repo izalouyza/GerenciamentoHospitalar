@@ -1,5 +1,7 @@
 package br.com.hospital.entidades;
 
+import br.com.hospital.utilitarios.Utilitarios;
+
 public class Medico extends Pessoa {
     private final String crm;
     private String especialidade;
@@ -24,7 +26,7 @@ public class Medico extends Pessoa {
     @Override
     public void exibirInformacoes() {
         super.exibirInformacoes();
-        System.out.println("CRM: " + crm);
-        System.out.println("Especialidade: " + especialidade);
+        Utilitarios.println("CRM: " + crm);
+        Utilitarios.println("Especialidade: " + especialidade);
     }
 }

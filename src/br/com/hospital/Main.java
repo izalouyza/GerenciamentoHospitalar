@@ -6,6 +6,7 @@ import br.com.hospital.exceptions.LoginException;
 import br.com.hospital.gerenciadores.GerenciamentoSistema;
 import br.com.hospital.sistema.Hospital;
 import br.com.hospital.sistema.Login;
+import br.com.hospital.utilitarios.Utilitarios;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ public class Main {
 
         Login login = new Login(usuarios);
 
-        System.out.println("SISTEMA HOSPITALAR\n");
+        Utilitarios.println("SISTEMA HOSPITALAR\n");
 
         while (true) {   // permite login → logout → login novamente
 
@@ -38,8 +39,8 @@ public class Main {
 
             // -------- LOGIN --------
             while (!autenticado) {
-                System.out.println("Login\n");
-                System.out.print("CPF: ");
+                Utilitarios.println("Login\n");
+                Utilitarios.print("CPF: ");
                 String cpf = sc.nextLine();
 
                 System.out.print("Senha: ");
@@ -48,10 +49,10 @@ public class Main {
                 try {
                     if (login.autenticar(cpf, senha)) {
                         autenticado = true;
-                        System.out.println("Login realizado.\n");
+                        Utilitarios.println("Login realizado.\n");
                     }
                 } catch (LoginException e) {
-                    System.out.println(e.getMessage() + "\n");
+                    Utilitarios.println(e.getMessage() + "\n");
                 }
             }
 
@@ -59,20 +60,20 @@ public class Main {
             int opcao = -1;
             while (opcao != 0 && opcao != 7) {
 
-                System.out.println("1. Cadastrar Médico");
-                System.out.println("2. Listar Médicos");
-                System.out.println("3. Cadastrar Paciente");
-                System.out.println("4. Listar Pacientes");
-                System.out.println("5. Agendar Consulta");
-                System.out.println("6. Listar Consultas");
-                System.out.println("7. Logout");
-                System.out.println("0. Sair");
-                System.out.print("Escolha uma opção: ");
+                Utilitarios.println("1. Cadastrar Médico");
+                Utilitarios.println("2. Listar Médicos");
+                Utilitarios.println("3. Cadastrar Paciente");
+                Utilitarios.println("4. Listar Pacientes");
+                Utilitarios.println("5. Agendar Consulta");
+                Utilitarios.println("6. Listar Consultas");
+                Utilitarios.println("7. Logout");
+                Utilitarios.println("0. Sair");
+                Utilitarios.print("Escolha uma opção: ");
 
                 try {
                     opcao = Integer.parseInt(sc.nextLine());
                 } catch (Exception e) {
-                    System.out.println("Opção inválida.\n");
+                    Utilitarios.println("Opção inválida.\n");
                     continue;
                 }
 
@@ -103,16 +104,16 @@ public class Main {
                         break;
 
                     case 7:
-                        System.out.println("\nVocê saiu da conta.\n");
+                        Utilitarios.println("\nVocê saiu da conta.\n");
                         break;
 
                     case 0:
-                        System.out.println("Encerrando...");
+                        Utilitarios.println("Encerrando...");
                         sc.close();
                         return;
 
                     default:
-                        System.out.println("Opção inválida.\n");
+                        Utilitarios.println("Opção inválida.\n");
                 }
             }
 
