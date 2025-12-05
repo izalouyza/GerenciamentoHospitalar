@@ -181,7 +181,7 @@ public class GerenciamentoSistema implements Gerenciavel<Pessoa> {
 
         Utilitarios.print("Novo endereço (enter = manter): ");
         String end = sc.nextLine().trim();
-        if (!end.isBlank()) p.setEndereco(end);
+        if (!end.isBlank()) p.setEndereco(Utilitarios.normalizarTexto(end));
 
         boolean ok = hospital.editarPessoa(cpf, p);
         Utilitarios.println(ok ? "Atualizada." : "Erro ao atualizar.");
@@ -221,7 +221,8 @@ public class GerenciamentoSistema implements Gerenciavel<Pessoa> {
             }
 
             Utilitarios.print("Descrição: ");
-            String desc = sc.nextLine().trim();
+            String desc = Utilitarios.normalizarTexto(sc.nextLine());
+
 
             String id = Utilitarios.gerarIdUnico();
             Consulta c = new Consulta(id, (Paciente) p, (Medico) m, dh, desc);
@@ -256,7 +257,7 @@ public class GerenciamentoSistema implements Gerenciavel<Pessoa> {
 
         Utilitarios.print("Nova descrição: ");
         String desc = sc.nextLine().trim();
-        if (!desc.isBlank()) c.setDescricao(desc);
+        if (!desc.isBlank()) c.setDescricao(Utilitarios.normalizarTexto(desc));
 
         boolean ok = hospital.editarConsulta(id, c);
         Utilitarios.println(ok ? "Atualizada." : "Falha.");

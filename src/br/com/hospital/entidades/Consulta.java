@@ -1,5 +1,7 @@
 package br.com.hospital.entidades;
 
+import br.com.hospital.utilitarios.Utilitarios;
+
 public class Consulta {
     private final String id;
     private Paciente paciente;
@@ -12,7 +14,7 @@ public class Consulta {
         this.paciente = paciente;
         this.medico = medico;
         this.dataHora = dataHora;
-        this.descricao = descricao;
+        this.descricao = Utilitarios.normalizarTexto(descricao);
     }
 
     public String getId() {
@@ -41,7 +43,7 @@ public class Consulta {
         this.dataHora = dataHora;
     }
     public void setDescricao(String descricao) {
-        this.descricao = descricao;
+        this.descricao = Utilitarios.normalizarTexto(descricao);
     }
 
     public void exibirResumo() {

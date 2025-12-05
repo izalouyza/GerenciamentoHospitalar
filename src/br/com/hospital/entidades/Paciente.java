@@ -10,7 +10,7 @@ public class Paciente extends Pessoa {
                     String endereco, String senha, int idade, String historicoClinico) {
         super(id, nome, cpf, telefone, email, endereco, senha, "PACIENTE");
         this.idade = idade;
-        this.historicoClinico = historicoClinico;
+        this.historicoClinico = Utilitarios.normalizarTexto(historicoClinico);
     }
 
     public int getIdade() {
@@ -23,7 +23,7 @@ public class Paciente extends Pessoa {
         return historicoClinico;
     }
     public void setHistoricoClinico(String historicoClinico) {
-        this.historicoClinico = historicoClinico;
+        this.historicoClinico = Utilitarios.normalizarTexto(historicoClinico);
     }
 
     @Override

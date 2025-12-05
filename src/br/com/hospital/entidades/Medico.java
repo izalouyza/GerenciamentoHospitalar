@@ -10,7 +10,7 @@ public class Medico extends Pessoa {
                   String endereco, String senha, String crm, String especialidade) {
         super(id, nome, cpf, telefone, email, endereco, senha, "MEDICO");
         this.crm = crm;
-        this.especialidade = especialidade;
+        this.especialidade = Utilitarios.normalizarTexto(especialidade);
     }
 
     public String getCrm() {
@@ -20,7 +20,7 @@ public class Medico extends Pessoa {
         return especialidade;
     }
     public void setEspecialidade(String especialidade) {
-        this.especialidade = especialidade;
+        this.especialidade = Utilitarios.normalizarTexto(especialidade);
     }
 
     @Override

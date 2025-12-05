@@ -1,5 +1,7 @@
 package br.com.hospital.entidades;
 
+import br.com.hospital.utilitarios.Utilitarios;
+
 public abstract class Pessoa {
     private final String id;
     private String nome;
@@ -14,7 +16,7 @@ public abstract class Pessoa {
     public Pessoa(String id, String nome, String cpf, String telefone, String email,
                   String endereco, String senha, String nivelAcesso) {
         this.id = id;
-        this.nome = nome;
+        this.nome = Utilitarios.capitalizarNome(nome);
         this.cpf = cpf;
         this.telefone = telefone;
         this.email = email;
@@ -31,7 +33,7 @@ public abstract class Pessoa {
         return nome;
     }
     public void setNome(String nome) {
-        this.nome = nome;
+        this.nome = Utilitarios.capitalizarNome(nome);
     }
     public String getCpf() {
         return cpf;
