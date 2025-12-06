@@ -19,6 +19,8 @@ public class Funcionario extends Pessoa {
     }
 
     // ------------------- GETTERS E SETTERS ---------------------
+    /* métodos não utilizados:
+
 
     //getters
     public String getCargo() {
@@ -47,6 +49,7 @@ public class Funcionario extends Pessoa {
         this.setor = setor;
         return true;
     }
+    */
 
     @Override
     public void exibirInformacoes() {
