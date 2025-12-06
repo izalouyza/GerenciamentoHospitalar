@@ -5,13 +5,11 @@ import br.com.hospital.interfaces.Gerenciavel;
 import br.com.hospital.sistema.Hospital;
 import br.com.hospital.utilitarios.Utilitarios;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class GerenciadorPaciente implements Gerenciavel<Paciente> {
 
-    private final List<Paciente> pacientes = new ArrayList<>();
     private final Hospital hospital;
     private final Scanner sc;
 
@@ -20,6 +18,7 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
         this.sc = sc;
     }
 
+    // Adicionar
     @Override
     public void adicionar(Paciente paciente) {
         hospital.adicionarPessoa(paciente);
@@ -27,55 +26,95 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
     }
 
     public void cadastrarPaciente() {
-        Utilitarios.println("\n---CADASTRO DE PACIENTE---");
+        Utilitarios.println("\n--- CADASTRO DE PACIENTE ---");
 
-        Utilitarios.print("Nome: ");
-        String nome = sc.nextLine();
-        if (!Utilitarios.textoNaoVazio(nome)) {
-        Utilitarios.println("Nome não pode ficar vazio.\n");
-        return;
+        // Nome
+        String nome = "";
+        while (!Utilitarios.textoNaoVazio(nome)) {
+            Utilitarios.print("Nome: ");
+            nome = sc.nextLine();
+            if (!Utilitarios.textoNaoVazio(nome)) {
+                Utilitarios.println("Nome não pode ficar vazio.\n");
+            }
         }
 
-        Utilitarios.print("Idade: ");
-        int idade = Integer.parseInt(sc.nextLine());
-
-        Utilitarios.print("Principal Queixa: ");
-        String principalQueixa = sc.nextLine();
-        if (!Utilitarios.textoNaoVazio(principalQueixa)) {
-        Utilitarios.println("Principal queixa não pode ficar vazia.\n");
-        return;
+        // Idade
+        int idade = -1;
+        while (idade <= 0) {
+            Utilitarios.print("Idade: ");
+            try {
+                idade = Integer.parseInt(sc.nextLine());
+            } catch (Exception e) {
+                idade = -1;
+            }
+            if (idade <= 0) {
+                Utilitarios.println("Idade inválida.\n");
+            }
         }
 
-        Utilitarios.print("CPF: ");
-        String cpf = sc.nextLine();
-        if (!Utilitarios.cpfValido(cpf)) {
-            Utilitarios.println("CPF inválido!\n");
-            return;
+        // Principal queixa
+        String principalQueixa = "";
+        while (!Utilitarios.textoNaoVazio(principalQueixa)) {
+            Utilitarios.print("Principal Queixa: ");
+            principalQueixa = sc.nextLine();
+            if (!Utilitarios.textoNaoVazio(principalQueixa)) {
+                Utilitarios.println("Principal queixa não pode ficar vazia.\n");
+            }
         }
 
-        Utilitarios.print("Telefone: ");
-        String telefone = sc.nextLine();
-        if (!Utilitarios.telefoneValido(telefone)) {
-        Utilitarios.println("Telefone inválido!\n");
-        return;
-        }   
+        // CPF
+        String cpf = "";
+        while (true) {
+            Utilitarios.print("CPF: ");
+            cpf = sc.nextLine();
 
-        Utilitarios.print("Email: ");
-        String email = sc.nextLine();
-        if (!Utilitarios.emailValido(email)) {
-        Utilitarios.println("Email inválido!\n");
-        return;
+            if (!Utilitarios.cpfValido(cpf)) {
+                Utilitarios.println("CPF inválido!\n");
+            } else if (hospital.buscarPessoa(cpf) != null) {
+                Utilitarios.println("CPF já cadastrado!\n");
+            } else {
+                break;
+            }
+        }
+
+        // Telefone
+        String telefone = "";
+        while (true) {
+            Utilitarios.print("Telefone: ");
+            telefone = sc.nextLine();
+
+            if (!Utilitarios.telefoneValido(telefone)) {
+                Utilitarios.println("Telefone inválido!\n");
+            } else {
+                break;
+            }
+        }
+
+        // Email
+        String email = "";
+        while (true) {
+            Utilitarios.print("Email: ");
+            email = sc.nextLine();
+
+            if (!Utilitarios.emailValido(email)) {
+                Utilitarios.println("Email inválido!\n");
+            } else {
+                break;
+            }
         }
 
         Utilitarios.print("Endereço: ");
         String endereco = sc.nextLine();
 
-        Utilitarios.print("Senha: ");
-        String senha = sc.nextLine();
-        if (!Utilitarios.textoNaoVazio(senha) || senha.length() < 4) {
-        Utilitarios.println("Senha inválida (mínimo 4 caracteres).\n");
-        return;
-    }
+        // Senha
+        String senha = "";
+        while (!Utilitarios.textoNaoVazio(senha) || senha.length() < 4) {
+            Utilitarios.print("Senha: ");
+            senha = sc.nextLine();
+            if (!Utilitarios.textoNaoVazio(senha) || senha.length() < 4) {
+                Utilitarios.println("Senha inválida (mínimo 4 caracteres).\n");
+            }
+        }
 
         Paciente p = new Paciente(
                 Utilitarios.gerarIdUnico(),
@@ -92,6 +131,7 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
         adicionar(p);
     }
 
+    // Listar
     @Override
     public void listar() {
         List<Paciente> pacientes = hospital.getPessoas().stream()
@@ -104,7 +144,7 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
             return;
         }
 
-        Utilitarios.println("\n---LISTA DE PACIENTES---");
+        Utilitarios.println("\n--- LISTA DE PACIENTES ---");
         for (Paciente p : pacientes) {
             p.exibirInformacoes();
             Utilitarios.println("---------------------------");
@@ -112,14 +152,17 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
     }
 
     public void listarPacientes() {
-        Utilitarios.println("\n--- LISTA DE PACIENTES ---");
         listar();
     }
 
+    // Buscar
     @Override
     public Paciente buscar(String cpf) {
         var pessoa = hospital.buscarPessoa(cpf);
-        return (pessoa instanceof Paciente p) ? p : null;
+        if (pessoa instanceof Paciente) {
+            return (Paciente) pessoa;
+        }
+        return null;
     }
 
     public void buscarPaciente() {
@@ -133,16 +176,19 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
             return;
         }
 
-        Utilitarios.println("\n---DADOS DO PACIENTE---");
+        Utilitarios.println("\n--- DADOS DO PACIENTE ---");
         p.exibirInformacoes();
         Utilitarios.println("---------------------------\n");
     }
 
+    // Editar
     @Override
     public boolean editar(String cpf, Paciente novo) {
         var antigo = buscar(cpf);
 
-        if (antigo == null) return false;
+        if (antigo == null) {
+            return false;
+        }
 
         hospital.getPessoas().remove(antigo);
         hospital.adicionarPessoa(novo);
@@ -159,45 +205,70 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
             return;
         }
 
-        Utilitarios.println("\n---EDITAR PACIENTE---");
+        Utilitarios.println("\n--- EDITAR PACIENTE ---");
 
+        // Nome
         Utilitarios.print("Novo nome (atual: " + antigo.getNome() + "): ");
         String nome = sc.nextLine();
         if (!Utilitarios.textoNaoVazio(nome)) {
             nome = antigo.getNome();
-    }
+        }
 
+        // Idade
+        int idade = antigo.getIdade();
         Utilitarios.print("Nova idade (atual: " + antigo.getIdade() + "): ");
-        int idade = sc.nextInt();
+        String idadeStr = sc.nextLine();
+        if (Utilitarios.textoNaoVazio(idadeStr)) {
+            try {
+                int novaIdade = Integer.parseInt(idadeStr);
+                if (novaIdade > 0) {
+                    idade = novaIdade;
+                }
+            } catch (Exception ignored) {}
+        }
 
-        Utilitarios.print("Nova principalQueixa (atual: " + antigo.getprincipalQueixa() + "): ");
+        // Principal Queixa
+        Utilitarios.print("Nova principal queixa (atual: " + antigo.getPrincipalQueixa() + "): ");
         String principalQueixa = sc.nextLine();
+        if (!Utilitarios.textoNaoVazio(principalQueixa)) {
+            principalQueixa = antigo.getPrincipalQueixa();
+        }
 
+        // Telefone
         Utilitarios.print("Novo telefone (atual: " + antigo.getTelefone() + "): ");
         String telefone = sc.nextLine();
         if (!Utilitarios.textoNaoVazio(telefone)) {
             telefone = antigo.getTelefone();
-        } else if (!Utilitarios.telefoneValido(telefone)) {
-        Utilitarios.println("Telefone inválido.\n");
-            return;
+        } else {
+            if (!Utilitarios.telefoneValido(telefone)) {
+                Utilitarios.println("Telefone inválido.\n");
+                return;
+            }
         }
 
+        // Email
         Utilitarios.print("Novo email (atual: " + antigo.getEmail() + "): ");
         String email = sc.nextLine();
         if (!Utilitarios.textoNaoVazio(email)) {
             email = antigo.getEmail();
-        } else if (!Utilitarios.emailValido(email)) {
-            Utilitarios.println("Email inválido.\n");
-        return;
+        } else {
+            if (!Utilitarios.emailValido(email)) {
+                Utilitarios.println("Email inválido.\n");
+                return;
+            }
         }
+
+        // Endereço
         Utilitarios.print("Novo endereço (atual: " + antigo.getEndereco() + "): ");
         String endereco = sc.nextLine();
         if (!Utilitarios.textoNaoVazio(endereco)) {
             endereco = antigo.getEndereco();
         }
+
+        // Criação do novo paciente atualizado
         Paciente novo = new Paciente(
                 antigo.getId(),
-                nome,
+                Utilitarios.capitalizarNome(nome),
                 antigo.getCpf(),
                 telefone,
                 email,
@@ -214,6 +285,7 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
         }
     }
 
+    // Remover
     @Override
     public boolean remover(String cpf) {
         var p = buscar(cpf);
@@ -235,7 +307,4 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
         }
     }
 
-    public List<Paciente> getListaPacientes() {
-        return pacientes; // ou como você chamou a lista interna
-    }
 }
