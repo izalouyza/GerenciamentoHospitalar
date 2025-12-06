@@ -16,9 +16,11 @@ public class Medico extends Pessoa {
     public String getCrm() {
         return crm;
     }
+
     public String getEspecialidade() {
         return especialidade;
     }
+
     public void setEspecialidade(String especialidade) {
         this.especialidade = Utilitarios.normalizarTexto(especialidade);
     }
