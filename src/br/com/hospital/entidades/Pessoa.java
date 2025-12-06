@@ -47,6 +47,7 @@ public abstract class Pessoa implements Validavel {
         return nome;
     }
 
+    /* método não utilizada
     public boolean setNome(String nome) {
         if (!textoNaoVazio(nome)) {
             mensagemValidacao = "Nome não pode ser vazio."; // valida se o nome não está vazio
@@ -56,10 +57,13 @@ public abstract class Pessoa implements Validavel {
         return true;
     }
 
+     */
+
     public String getCpf() {
         return cpf;
     }
 
+    /* método não utilizado
     public boolean setCpf(String cpf) {
         if (cpf == null) {
             mensagemValidacao = "CPF não pode ser nulo.";
@@ -72,11 +76,13 @@ public abstract class Pessoa implements Validavel {
         this.cpf = cpf;
         return true;
     }
+     */
 
     public String getTelefone() {
         return telefone;
     }
 
+    /* método não utilizado
     public boolean setTelefone(String telefone) {
         if (telefone == null || !telefoneValido(telefone)) {
             mensagemValidacao = "Telefone inválido."; // valida telefone
@@ -85,10 +91,13 @@ public abstract class Pessoa implements Validavel {
         this.telefone = telefone;
         return true;
     }
+     */
 
     public String getEmail() {
         return email;
     }
+
+   /* método não utilizado
 
     public boolean setEmail(String email) {
         if (email == null || !emailValido(email)) {
@@ -99,25 +108,41 @@ public abstract class Pessoa implements Validavel {
         return true;
     }
 
+    */
+
     public String getEndereco() {
         return endereco;
     }
+
+    /* método não utilizado
 
     public void setEndereco(String endereco) {
         this.endereco = endereco; // sem validação, apenas define
     }
 
+     */
+
     public String getSenha() {
         return senha;
     }
+
+   /* método não utilizado
 
     public void setSenha(String senha) {
         this.senha = senha; // define senha
     }
 
+    */
+
+    /* método não utilizado
+
     public String getNivelAcesso() {
         return nivelAcesso;
     }
+
+     */
+
+    /* método não utilizado
 
     public boolean setNivelAcesso(String nivelAcesso) {
         if (!textoNaoVazio(nivelAcesso)) {
@@ -127,6 +152,8 @@ public abstract class Pessoa implements Validavel {
         this.nivelAcesso = nivelAcesso;
         return true;
     }
+
+     */
 
     // Implementação da interface Validavel
     @Override
@@ -156,10 +183,14 @@ public abstract class Pessoa implements Validavel {
         return mensagemValidacao;
     }
 
+    /* método não utilizado
+
     // Retorna um resumo da pessoa
     public String resumo() {
         return String.format("Código: %s | Nome: %s | CPF: %s", id, nome, cpf);
     }
+
+     */
 
     // Exibe informações completas
     public void exibirInformacoes() {

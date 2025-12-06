@@ -91,7 +91,10 @@ public class Consulta implements Validavel {
         return mensagemValidacao; // retorna a última mensagem de validação
     }
 
+    // esse método não está sendo usado
+    /*
     public void exibirResumo() {
+
         // exibe informações resumidas da consulta
         Printf("""
                              Dados da consulta:
@@ -101,5 +104,6 @@ public class Consulta implements Validavel {
                              Data: %s
                              Queixa do paciente: %s""",
                 id, paciente.getNome(), medico.getNome(), dataHora, paciente.getPrincipalQueixa());
-    }
+    } */
 }
+

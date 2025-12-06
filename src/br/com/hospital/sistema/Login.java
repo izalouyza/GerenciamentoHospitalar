@@ -49,11 +49,19 @@ public class Login {
         throw new LoginException("CPF não encontrado ou usuário não é funcionário.");
     }
 
+    /* método não utilizado
+
     public Pessoa getUsuarioLogado() {
         return usuarioLogado; // retorna usuário logado
     }
 
+     */
+
+    /* método não utilizado
+
     public void logout() {
         usuarioLogado = null; // efetua logout
     }
+
+     */
 }

@@ -5,3 +5,4 @@ public interface Acessavel {
 
     boolean temPermissao(String acao);
 }
+//a interface não está sendo usada

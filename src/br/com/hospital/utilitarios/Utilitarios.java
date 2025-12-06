@@ -28,10 +28,14 @@ public class Utilitarios {
         return txt != null && !txt.isBlank();
     }
 
+    /* método não utilizado
+
     // Verifica se lista é nula ou vazia
     public static boolean listaVazia(List<?> lista) {
         return lista == null || lista.isEmpty();
     }
+
+     */
 
     // Validação simples de email
     public static boolean emailValido(String email) {
@@ -83,10 +87,16 @@ public class Utilitarios {
         }
     }
 
+    /* método não utilizado
+
     // Verifica tamanho mínimo
     public static boolean tamanhoMinimo(String txt, int min) {
         return txt != null && txt.trim().length() >= min;
     }
+
+    */
+
+    /* método não utilizado
 
     // Especialidade médica válida (mínimo 3 caracteres e pelo menos uma letra)
     public static boolean especialidadeValida(String esp) {
@@ -94,6 +104,8 @@ public class Utilitarios {
         String trat = esp.trim();
         return trat.length() >= 3 && trat.matches(".*[A-Za-z].*");
     }
+
+     */
 
     // Verifica formato de data/hora dd/MM/yyyy HH:mm
     public static boolean dataHoraValida(String dataHora) {

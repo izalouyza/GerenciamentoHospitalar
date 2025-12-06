@@ -48,6 +48,8 @@ public class Hospital {
         return false;
     }
 
+    /* método não utilizado
+
     public boolean crmExiste(String crm) {
         if (crm == null) return false;
 
@@ -62,6 +64,8 @@ public class Hospital {
 
         return false;
     }
+
+     */
 
     // Buscar pessoa
     public Pessoa buscarPessoa(String identificador) {
