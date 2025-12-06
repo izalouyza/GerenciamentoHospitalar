@@ -1,10 +1,8 @@
 package br.com.hospital;
 
 import br.com.hospital.entidades.Funcionario;
-import br.com.hospital.entidades.Medico;
-import br.com.hospital.entidades.Paciente;
+
 import br.com.hospital.entidades.Pessoa;
-import br.com.hospital.entidades.Consulta;
 import br.com.hospital.exceptions.LoginException;
 import br.com.hospital.gerenciadores.GerenciadorConsulta;
 import br.com.hospital.gerenciadores.GerenciadorMedico;
