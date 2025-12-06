@@ -94,6 +94,6 @@ public class Consulta implements Validavel {
                              Data: %s
                              Dara: %s
                              Queixa do paciente: %s""",
-                id, paciente.getNome(), medico.getNome(), dataHora, paciente.getprincipalQueixa());
+                id, paciente.getNome(), medico.getNome(), dataHora, paciente.getPrincipalQueixa());
     }
 }
