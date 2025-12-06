@@ -51,8 +51,10 @@ public class GerenciadorConsulta implements Agendavel {
             for (int i = 0; i < pacientes.size(); i++) {
                 System.out.printf("%d - %s | CPF: %s\n", i + 1, pacientes.get(i).getNome(), pacientes.get(i).getCpf());
             }
+
             Utilitarios.print("Escolha o paciente pelo número da lista: ");
             String input = sc.nextLine();
+
             try {
                 int idx = Integer.parseInt(input) - 1;
                 if (idx >= 0 && idx < pacientes.size()) {
@@ -77,10 +79,16 @@ public class GerenciadorConsulta implements Agendavel {
             Utilitarios.println("\n--- MÉDICOS DISPONÍVEIS ---");
             for (int i = 0; i < medicos.size(); i++) {
                 System.out.printf("%d - %s | CRM: %s | Especialidade: %s\n",
-                        i + 1, medicos.get(i).getNome(), medicos.get(i).getCrm(), medicos.get(i).getEspecialidade());
+                        i + 1,
+                        medicos.get(i).getNome(),
+                        medicos.get(i).getCrm(),
+                        medicos.get(i).getEspecialidade()
+                );
             }
+
             Utilitarios.print("Escolha o médico pelo número da lista: ");
             String input = sc.nextLine();
+
             try {
                 int idx = Integer.parseInt(input) - 1;
                 if (idx >= 0 && idx < medicos.size()) {
@@ -93,15 +101,35 @@ public class GerenciadorConsulta implements Agendavel {
             }
         }
 
-        // Escolher data/hora
+        // Escolher data/hora + verificar conflito de horário
         String dataHoraValida = null;
+
         while (dataHoraValida == null) {
             Utilitarios.print("Informe a data e hora da consulta (dd/MM/yyyy HH:mm): ");
             String dh = sc.nextLine();
-            if (Utilitarios.dataHoraValida(dh) && Utilitarios.dataNoFuturo(dh)) {
-                dataHoraValida = dh;
-            } else {
+
+            boolean dataValida = Utilitarios.dataHoraValida(dh);
+            boolean dataFutura = Utilitarios.dataNoFuturo(dh);
+
+            if (!dataValida || !dataFutura) {
                 Utilitarios.println("Data inválida ou passada. Tente novamente.");
+                continue;
+            }
+
+            // Verificar se médico já tem consulta nesse horário
+            boolean horarioOcupado = false;
+            for (Consulta c : hospital.getConsultas()) {
+                if (c.getMedico().getId().equals(medicoSelecionado.getId())) {
+                    if (c.getDataHora().equals(dh)) {
+                        horarioOcupado = true;
+                    }
+                }
+            }
+
+            if (horarioOcupado) {
+                Utilitarios.println("Este médico já possui uma consulta marcada neste horário.\nTente outro horário.");
+            } else {
+                dataHoraValida = dh; // horário está livre
             }
         }
 
@@ -142,11 +170,13 @@ public class GerenciadorConsulta implements Agendavel {
 
         Utilitarios.println("\n--- CONSULTAS AGENDADAS ---");
         for (Consulta c : consultas) {
-            System.out.printf("ID: %s | Paciente: %s | Médico: %s | Data: %s\n",
+            System.out.printf(
+                    "ID: %s | Paciente: %s | Médico: %s | Data: %s\n",
                     c.getId(),
                     c.getPaciente().getNome(),
                     c.getMedico().getNome(),
-                    c.getDataHora());
+                    c.getDataHora()
+            );
         }
         System.out.println();
     }
@@ -157,13 +187,16 @@ public class GerenciadorConsulta implements Agendavel {
         String nomeBusca = sc.nextLine().toLowerCase();
 
         boolean achou = false;
+
         for (Consulta c : hospital.getConsultas()) {
             if (c.getPaciente().getNome().toLowerCase().contains(nomeBusca)) {
-                System.out.printf("ID: %s | Paciente: %s | Médico: %s | Data: %s\n",
+                System.out.printf(
+                        "ID: %s | Paciente: %s | Médico: %s | Data: %s\n",
                         c.getId(),
                         c.getPaciente().getNome(),
                         c.getMedico().getNome(),
-                        c.getDataHora());
+                        c.getDataHora()
+                );
                 achou = true;
             }
         }
