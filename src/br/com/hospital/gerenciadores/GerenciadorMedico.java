@@ -5,7 +5,6 @@ import br.com.hospital.interfaces.Gerenciavel;
 import br.com.hospital.sistema.Hospital;
 import br.com.hospital.utilitarios.Utilitarios;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -30,14 +29,28 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
     public void cadastrarMedico() {
         Utilitarios.println("\n---CADASTRO DE MÉDICO---");
 
-        Utilitarios.print("Nome: ");
-        String nome = sc.nextLine();
+        String nome = "";
+        while (true) {
+            Utilitarios.print("Nome: ");
+            nome = sc.nextLine();
 
-        Utilitarios.print("CPF: ");
-        String cpf = sc.nextLine();
-        if (!Utilitarios.cpfValido(cpf)) {
-            Utilitarios.println("CPF inválido!\n");
-            return;
+            if (!nome.isBlank()) break;
+
+            Utilitarios.println("O nome não pode ser vazio!");
+        }
+
+        String cpf = "";
+        while (true) {
+            Utilitarios.print("CPF: ");
+            cpf = sc.nextLine();
+
+            if (!Utilitarios.cpfValido(cpf)) {
+                Utilitarios.println("CPF inválido!");
+            } else if (hospital.cpfExiste(cpf)) {
+                Utilitarios.println("Já existe uma pessoa com esse CPF!");
+            } else {
+                break;
+            }
         }
 
         Utilitarios.print("Telefone: ");
@@ -49,19 +62,39 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
         Utilitarios.print("Endereço: ");
         String endereco = sc.nextLine();
 
-        Utilitarios.print("Senha: ");
-        String senha = sc.nextLine();
+        String senha = "";
+        while (true) {
+            Utilitarios.print("Senha: ");
+            senha = sc.nextLine();
 
-        Utilitarios.print("CRM: ");
-        String crm = sc.nextLine();
+            if (!senha.isBlank()) break;
 
-        if (!Utilitarios.crmValido(crm)){
-            Utilitarios.println("CRM inválido!\n");
-            return;
+            Utilitarios.println("A senha não pode ser vazia!");
         }
 
-        Utilitarios.print("Especialidade: ");
-        String esp = sc.nextLine();
+        String crm = "";
+        while (true) {
+            Utilitarios.print("CRM: ");
+            crm = sc.nextLine();
+
+            if (!Utilitarios.crmValido(crm)) {
+                Utilitarios.println("CRM inválido!");
+            } else if (crmExiste(crm)) {
+                Utilitarios.println("Já existe um médico com esse CRM!");
+            } else {
+                break;
+            }
+        }
+
+        String especialidade = "";
+        while (true) {
+            Utilitarios.print("Especialidade: ");
+            especialidade = sc.nextLine();
+
+            if (!especialidade.isBlank()) break;
+
+            Utilitarios.println("A especialidade não pode ser vazia!");
+        }
 
         Medico m = new Medico(
                 Utilitarios.gerarIdUnico(),
@@ -72,8 +105,13 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
                 endereco,
                 senha,
                 crm,
-                esp
+                especialidade
         );
+
+        if (!m.validar()) {
+            Utilitarios.println("ERRO: " + m.getMensagemValidacao());
+            return;
+        }
 
         adicionar(m);
     }
@@ -97,16 +135,27 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
         }
     }
 
-    public void listarMeicos() {
-        Utilitarios.println("\n--- LISTA DE MEDICOS ---");
-        listar();
-    }
-
-
     @Override
     public Medico buscar(String crm) {
         var pessoa = hospital.buscarPessoa(crm);
-        return (pessoa instanceof Medico m) ? m : null;
+
+        if (pessoa instanceof Medico) {
+            return (Medico) pessoa;
+        }
+
+        return null;
+    }
+
+    public boolean crmExiste(String crm) {
+        for (var p : hospital.getPessoas()) {
+            if (p instanceof Medico) {
+                Medico m = (Medico) p;
+                if (Utilitarios.compararIdentificadores(m.getCrm(), crm)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public void buscarMedico() {
@@ -133,6 +182,7 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
 
         hospital.getPessoas().remove(antigo);
         hospital.adicionarPessoa(novo);
+
         return true;
     }
 
@@ -175,6 +225,11 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
                 especialidade
         );
 
+        if (!novo.validar()) {
+            Utilitarios.println("ERRO: " + novo.getMensagemValidacao());
+            return;
+        }
+
         if (editar(crm, novo)) {
             Utilitarios.println("Médico atualizado com sucesso!\n");
         } else {
@@ -182,7 +237,6 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
         }
     }
 
-    // ----------------- REMOVER -----------------
     @Override
     public boolean remover(String crm) {
         var m = buscar(crm);
@@ -203,9 +257,8 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
             Utilitarios.println("Médico não encontrado.\n");
         }
     }
+
     public List<Medico> getListaMedicos() {
         return medicos;
     }
-
-
 }
