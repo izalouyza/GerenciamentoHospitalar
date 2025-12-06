@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 public class GerenciadorConsulta implements Agendavel {
 
-    private final Hospital hospital; // referência ao hospital, para acessar pacientes, médicos e consultas
+    private final Hospital hospital;
     private final Scanner sc;
 
     public GerenciadorConsulta(Scanner sc, Hospital hospital) {
@@ -21,24 +21,22 @@ public class GerenciadorConsulta implements Agendavel {
         this.hospital = hospital;
     }
 
-    // Métodos auxiliares para obter listas atualizadas de pacientes e médicos
     private List<Paciente> getPacientes() {
         return hospital.getPessoas().stream()
-                .filter(p -> p instanceof Paciente) // filtra apenas Pacientes
-                .map(p -> (Paciente) p) // faz cast para Paciente
+                .filter(p -> p instanceof Paciente)
+                .map(p -> (Paciente) p)
                 .toList();
     }
 
     private List<Medico> getMedicos() {
         return hospital.getPessoas().stream()
-                .filter(p -> p instanceof Medico) // filtra apenas Médicos
+                .filter(p -> p instanceof Medico)
                 .map(p -> (Medico) p)
                 .toList();
     }
 
     @Override
     public void agendar() {
-        // Selecionar paciente
         List<Paciente> pacientes = getPacientes();
         if (pacientes.isEmpty()) {
             Println("Nenhum paciente cadastrado. Cadastre pacientes antes de agendar.");
@@ -58,7 +56,7 @@ public class GerenciadorConsulta implements Agendavel {
             try {
                 int idx = Integer.parseInt(input) - 1;
                 if (idx >= 0 && idx < pacientes.size()) {
-                    pacienteSelecionado = pacientes.get(idx); // paciente escolhido corretamente
+                    pacienteSelecionado = pacientes.get(idx);
                 } else {
                     Println("Opção inválida.");
                 }
@@ -67,7 +65,6 @@ public class GerenciadorConsulta implements Agendavel {
             }
         }
 
-        // Selecionar médico
         List<Medico> medicos = getMedicos();
         if (medicos.isEmpty()) {
             Println("Nenhum médico cadastrado. Cadastre médicos antes de agendar.");
@@ -92,7 +89,7 @@ public class GerenciadorConsulta implements Agendavel {
             try {
                 int idx = Integer.parseInt(input) - 1;
                 if (idx >= 0 && idx < medicos.size()) {
-                    medicoSelecionado = medicos.get(idx); // médico escolhido corretamente
+                    medicoSelecionado = medicos.get(idx);
                 } else {
                     Println("Opção inválida.");
                 }
@@ -101,22 +98,19 @@ public class GerenciadorConsulta implements Agendavel {
             }
         }
 
-        // Escolher data/hora + verificar conflito de horário
         String dataHoraValida = null;
-
         while (dataHoraValida == null) {
             Print("Informe a data e hora da consulta (dd/MM/yyyy HH:mm): ");
             String dh = sc.nextLine();
 
-            boolean dataValida = dataHoraValida(dh); // verifica formato da data
-            boolean dataFutura = dataNoFuturo(dh); // garante que a data seja futura
+            boolean dataValida = dataHoraValida(dh);
+            boolean dataFutura = dataNoFuturo(dh);
 
             if (!dataValida || !dataFutura) {
                 Println("Data inválida ou passada. Tente novamente.");
                 continue;
             }
 
-            // Verificar se médico já tem consulta nesse horário
             boolean horarioOcupado = false;
             for (Consulta c : hospital.getConsultas()) {
                 if (c.getMedico().getId().equals(medicoSelecionado.getId()) &&
@@ -128,22 +122,20 @@ public class GerenciadorConsulta implements Agendavel {
             if (horarioOcupado) {
                 Println("Este médico já possui uma consulta marcada neste horário.\nTente outro horário.");
             } else {
-                dataHoraValida = dh; // horário está livre
+                dataHoraValida = dh;
             }
         }
 
-        // Gerar ID e criar consulta
         String id = gerarIdUnico();
         Consulta consulta = new Consulta(id, pacienteSelecionado, medicoSelecionado, dataHoraValida);
 
-        // Adicionar consulta no Hospital
         hospital.adicionarConsulta(consulta);
         Println("Consulta agendada com sucesso!\n");
     }
 
     @Override
     public void cancelarAgendamento() {
-        listarConsultas(); // mostra todas as consultas antes de cancelar
+        listarConsultas();
         Print("Informe o ID da consulta que deseja cancelar: ");
         String id = sc.nextLine();
 
@@ -165,17 +157,11 @@ public class GerenciadorConsulta implements Agendavel {
             return;
         }
 
-        consultas.sort(Comparator.comparing(Consulta::getDataHora)); // ordena por data/hora
+        consultas.sort(Comparator.comparing(Consulta::getDataHora));
 
         Println("\n--- CONSULTAS AGENDADAS ---");
         for (Consulta c : consultas) {
-            System.out.printf(
-                    "ID: %s | Paciente: %s | Médico: %s | Data: %s\n",
-                    c.getId(),
-                    c.getPaciente().getNome(),
-                    c.getMedico().getNome(),
-                    c.getDataHora()
-            );
+            c.exibirResumo();
         }
         System.out.println();
     }
@@ -189,13 +175,7 @@ public class GerenciadorConsulta implements Agendavel {
 
         for (Consulta c : hospital.getConsultas()) {
             if (c.getPaciente().getNome().toLowerCase().contains(nomeBusca)) {
-                System.out.printf(
-                        "ID: %s | Paciente: %s | Médico: %s | Data: %s\n",
-                        c.getId(),
-                        c.getPaciente().getNome(),
-                        c.getMedico().getNome(),
-                        c.getDataHora()
-                );
+                c.exibirResumo(); // <<--- USANDO EXIBIR RESUMO
                 achou = true;
             }
         }
@@ -207,7 +187,7 @@ public class GerenciadorConsulta implements Agendavel {
         }
     }
 
-    private Consulta buscarPorId(String id) { // busca consulta pelo ID
+    private Consulta buscarPorId(String id) {
         for (Consulta c : hospital.getConsultas()) {
             if (compararIdentificadores(c.getId(), id)) {
                 return c;
