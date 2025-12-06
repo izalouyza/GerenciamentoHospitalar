@@ -136,7 +136,7 @@ public class GerenciadorConsulta implements Agendavel {
     @Override
     public void cancelarAgendamento() {
         listarConsultas();
-        Print("Informe o ID da consulta que deseja cancelar: ");
+        Print("Informe o número do protocolo da consulta que deseja cancelar: ");
         String id = sc.nextLine();
 
         Consulta c = buscarPorId(id);
