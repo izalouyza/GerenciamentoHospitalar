@@ -22,7 +22,7 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
     @Override
     public void adicionar(Paciente paciente) {
         hospital.adicionarPessoa(paciente); // adiciona paciente ao hospital
-        Println("Paciente cadastrado com sucesso!\n");
+        Println("Paciente cadastrado com sucesso!");
     }
 
     public void cadastrarPaciente() {
@@ -34,7 +34,7 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
             Print("Nome: ");
             nome = sc.nextLine();
             if (!textoNaoVazio(nome)) {
-                Println("Nome não pode ficar vazio.\n");
+                Println("Nome não pode ficar vazio.");
             }
         }
 
@@ -48,7 +48,7 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
                 idade = -1; // entrada inválida
             }
             if (idade <= 0) {
-                Println("Idade inválida.\n");
+                Println("Idade inválida.");
             }
         }
 
@@ -58,7 +58,7 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
             Print("Principal Queixa: ");
             principalQueixa = sc.nextLine();
             if (!textoNaoVazio(principalQueixa)) {
-                Println("Principal queixa não pode ficar vazia.\n");
+                Println("Principal queixa não pode ficar vazia.");
             }
         }
 
@@ -69,9 +69,9 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
             cpf = sc.nextLine();
 
             if (!cpfValido(cpf)) {
-                Println("CPF inválido!\n");
+                Println("CPF inválido!");
             } else if (hospital.buscarPessoa(cpf) != null) {
-                Println("CPF já cadastrado!\n");
+                Println("CPF já cadastrado!");
             } else {
                 break;
             }
@@ -84,7 +84,7 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
             telefone = sc.nextLine();
 
             if (!telefoneValido(telefone)) {
-                Println("Telefone inválido!\n");
+                Println("Telefone inválido!");
             } else {
                 break;
             }
@@ -97,7 +97,7 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
             email = sc.nextLine();
 
             if (!emailValido(email)) {
-                Println("Email inválido!\n");
+                Println("Email inválido!");
             } else {
                 break;
             }
