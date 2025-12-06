@@ -11,8 +11,8 @@ import java.util.Scanner;
 
 public class GerenciadorMedico implements Gerenciavel<Medico> {
 
-    private List<Medico> medicos = new ArrayList<>();
-    private final Hospital hospital;
+    private List<Medico> medicos = new ArrayList<>(); // lista local, opcional, geralmente pegamos do Hospital
+    private final Hospital hospital; // referência ao hospital para manipular pessoas
     private final Scanner sc;
 
     public GerenciadorMedico(Hospital hospital, Scanner sc) {
@@ -22,23 +22,24 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
 
     @Override
     public void adicionar(Medico medico) {
-        hospital.adicionarPessoa(medico);
+        hospital.adicionarPessoa(medico); // adiciona ao hospital
         Utilitarios.println("Médico cadastrado com sucesso!\n");
     }
 
     public void cadastrarMedico() {
         Utilitarios.println("\n---CADASTRO DE MÉDICO---");
 
+        // captura do nome do médico
         String nome = "";
         while (true) {
             Utilitarios.print("Nome: ");
             nome = sc.nextLine();
 
             if (!nome.isBlank()) break;
-
             Utilitarios.println("O nome não pode ser vazio!");
         }
 
+        // captura do CPF e validação
         String cpf = "";
         while (true) {
             Utilitarios.print("CPF: ");
@@ -53,6 +54,7 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
             }
         }
 
+        // coleta de telefone, email e endereço
         Utilitarios.print("Telefone: ");
         String telefone = sc.nextLine();
 
@@ -62,16 +64,17 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
         Utilitarios.print("Endereço: ");
         String endereco = sc.nextLine();
 
+        // coleta de senha
         String senha = "";
         while (true) {
             Utilitarios.print("Senha: ");
             senha = sc.nextLine();
 
             if (!senha.isBlank()) break;
-
             Utilitarios.println("A senha não pode ser vazia!");
         }
 
+        // coleta e validação do CRM
         String crm = "";
         while (true) {
             Utilitarios.print("CRM: ");
@@ -86,16 +89,17 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
             }
         }
 
+        // coleta da especialidade
         String especialidade = "";
         while (true) {
             Utilitarios.print("Especialidade: ");
             especialidade = sc.nextLine();
 
             if (!especialidade.isBlank()) break;
-
             Utilitarios.println("A especialidade não pode ser vazia!");
         }
 
+        // cria o objeto médico
         Medico m = new Medico(
                 Utilitarios.gerarIdUnico(),
                 nome,
@@ -113,11 +117,12 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
             return;
         }
 
-        adicionar(m);
+        adicionar(m); // adiciona ao hospital
     }
 
     @Override
     public void listar() {
+        // filtra apenas os médicos cadastrados no hospital
         List<Medico> medicos = hospital.getPessoas().stream()
                 .filter(p -> p instanceof Medico)
                 .map(p -> (Medico) p)
@@ -128,6 +133,7 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
             return;
         }
 
+        // exibe cada médico
         Utilitarios.println("\n--- LISTA DE MÉDICOS ---");
         for (Medico m : medicos) {
             m.exibirInformacoes();
@@ -136,7 +142,7 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
     }
 
     public void listarMedicos() {
-        listar(); // chama o método listar() que já está implementado
+        listar(); // método de apoio para o main
     }
 
     @Override
@@ -151,6 +157,7 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
     }
 
     public boolean crmExiste(String crm) {
+        // verifica se o CRM informado já existe no hospital
         for (var p : hospital.getPessoas()) {
             if (p instanceof Medico) {
                 Medico m = (Medico) p;
@@ -184,8 +191,8 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
 
         if (antigo == null) return false;
 
-        hospital.getPessoas().remove(antigo);
-        hospital.adicionarPessoa(novo);
+        hospital.getPessoas().remove(antigo); // remove antigo
+        hospital.adicionarPessoa(novo); // adiciona novo
 
         return true;
     }
@@ -263,6 +270,6 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
     }
 
     public List<Medico> getListaMedicos() {
-        return medicos;
+        return medicos; // retorna a lista local (não necessariamente usada no main)
     }
 }
