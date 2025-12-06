@@ -1,7 +1,5 @@
 package br.com.hospital.entidades;
 
-import br.com.hospital.utilitarios.Utilitarios;
-
 public class Consulta {
     private final String id;
     private Paciente paciente;
