@@ -95,13 +95,20 @@ public class Consulta implements Validavel {
 
         // exibe informações resumidas da consulta
         Printf("""
+                             ========================
                              Dados da consulta:
+                             ------------------------
                              Protocolo: %s
+                             Data e Hora: %s
+                             ------------------------
                              Paciente: %s
+                             Idade: %n
+                             Queixa do paciente: %s
+                             ------------------------
                              Médico: %s
-                             Data: %s
-                             Queixa do paciente: %s""",
-                id, paciente.getNome(), medico.getNome(), dataHora, paciente.getPrincipalQueixa());
+                             Especialidade: %s
+                             ========================
+                             """, id, dataHora, paciente.getNome(), paciente.getIdade(), paciente.getPrincipalQueixa(), medico.getNome(), medico.getEspecialidade());
     }
 }
 
