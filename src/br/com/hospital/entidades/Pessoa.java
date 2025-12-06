@@ -14,7 +14,7 @@ public abstract class Pessoa {
 
     public Pessoa(String id, String nome, String cpf, String telefone, String email,
                   String endereco, String senha, String nivelAcesso) {
-        this.id = id;
+        this.id = (id == null || id.isBlank()) ? Utilitarios.gerarIdUnico() : id;
         this.nome = Utilitarios.capitalizarNome(nome);
         this.cpf = cpf;
         this.telefone = telefone;
@@ -33,6 +33,9 @@ public abstract class Pessoa {
     }
 
     public void setNome(String nome) {
+        if (!Utilitarios.textoNaoVazio(nome)) {
+            throw new IllegalArgumentException("Nome não pode ser vazio.");
+        }
         this.nome = Utilitarios.capitalizarNome(nome);
     }
 
@@ -41,6 +44,9 @@ public abstract class Pessoa {
     }
 
     public void setCpf(String cpf) {
+         if (cpf == null || !Utilitarios.cpfValido(cpf)) {
+            throw new IllegalArgumentException("CPF inválido.");
+        }
         this.cpf = cpf;
     }
 
@@ -49,6 +55,9 @@ public abstract class Pessoa {
     }
 
     public void setTelefone(String telefone) {
+        if (telefone == null || !Utilitarios.telefoneValido(telefone)) {
+            throw new IllegalArgumentException("Telefone inválido.");
+        }
         this.telefone = telefone;
     }
 
@@ -57,6 +66,9 @@ public abstract class Pessoa {
     }
 
     public void setEmail(String email) {
+        if (email == null || !Utilitarios.emailValido(email)) {
+            throw new IllegalArgumentException("Email inválido.");
+        }
         this.email = email;
     }
 
@@ -81,6 +93,9 @@ public abstract class Pessoa {
     }
 
     public void setNivelAcesso(String nivelAcesso) {
+        if (!Utilitarios.textoNaoVazio(nivelAcesso)) {
+            throw new IllegalArgumentException("Nível de acesso inválido.");
+        }
         this.nivelAcesso = nivelAcesso;
     }
 
@@ -89,14 +104,14 @@ public abstract class Pessoa {
     }
 
     public void exibirInformacoes() {
-        System.out.println("--------------------------------------------------");
-        System.out.println("ID: " + id);
-        System.out.println("Nome: " + nome);
-        System.out.println("CPF: " + cpf);
-        System.out.println("Telefone: " + telefone);
-        System.out.println("Email: " + email);
-        System.out.println("Endereço: " + endereco);
-        System.out.println("Nível Acesso: " + nivelAcesso);
-        System.out.println("--------------------------------------------------");
+        Utilitarios.println("--------------------------------------------------");
+        Utilitarios.println("ID: " + id);
+        Utilitarios.println("Nome: " + nome);
+        Utilitarios.println("CPF: " + cpf);
+        Utilitarios.println("Telefone: " + telefone);
+        Utilitarios.println("Email: " + email);
+        Utilitarios.println("Endereço: " + endereco);
+        Utilitarios.println("Nível Acesso: " + nivelAcesso);
+        Utilitarios.println("--------------------------------------------------");
     }
 }

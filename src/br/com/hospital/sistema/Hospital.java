@@ -3,6 +3,7 @@ package br.com.hospital.sistema;
 import br.com.hospital.entidades.Consulta;
 import br.com.hospital.entidades.Medico;
 import br.com.hospital.entidades.Pessoa;
+import br.com.hospital.utilitarios.Utilitarios;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,7 @@ public class Hospital {
 
             // --- CRM (apenas se for médico) ---
             if (p instanceof Medico medico) {
-                if (medico.getCrm().equalsIgnoreCase(identificador)) {
+                if (Utilitarios.compararIdentificadores(medico.getCrm(), identificador)) {
                     return medico;
                 }
             }
@@ -60,7 +61,7 @@ public class Hospital {
         if (id == null) return null;
 
         for (Consulta c : consultas) {
-            if (c.getId().equalsIgnoreCase(id)) {
+            if (Utilitarios.compararIdentificadores(c.getId(), id)) {
                 return c;
             }
         }
