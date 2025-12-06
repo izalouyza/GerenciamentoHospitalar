@@ -135,6 +135,10 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
         }
     }
 
+    public void listarMedicos() {
+        listar(); // chama o método listar() que já está implementado
+    }
+
     @Override
     public Medico buscar(String crm) {
         var pessoa = hospital.buscarPessoa(crm);
