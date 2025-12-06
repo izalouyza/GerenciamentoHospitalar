@@ -54,12 +54,31 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
             }
         }
 
-        // coleta de telefone, email e endereço
-        Print("Telefone: ");
-        String telefone = sc.nextLine();
+        // captura do telefone e validação
+        String telefone = "";
+        while (true) {
+            Print("Telefone: ");
+            telefone = sc.nextLine();
 
-        Print("Email: ");
-        String email = sc.nextLine();
+            if (!telefoneValido(telefone)) {
+                Println("Telefone inválido!");
+            } else {
+                break;
+            }
+        }
+
+        // captura do email e validação
+        String email = "";
+        while (true) {
+            Print("Email: ");
+            email = sc.nextLine();
+
+            if (!emailValido(email)) {
+                Println("Email inválido!");
+            } else {
+                break;
+            }
+        }
 
         Print("Endereço: ");
         String endereco = sc.nextLine();
