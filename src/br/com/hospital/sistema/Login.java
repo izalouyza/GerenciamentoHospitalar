@@ -8,50 +8,52 @@ import java.util.List;
 
 public class Login {
 
-    private final List<Pessoa> usuarios;
-    private Pessoa usuarioLogado;
+    private final List<Pessoa> usuarios; // lista de todos os usuários do sistema
+    private Pessoa usuarioLogado; // armazena o usuário que está logado no momento
 
     public Login(List<Pessoa> usuarios) {
         this.usuarios = usuarios;
     }
 
-    // Login permitido SOMENTE para funcionários (inclui médicos)
+    // Autenticação
+    // Login permitido somente para funcionários (inclui médicos)
     public boolean autenticar(String cpf, String senha) throws LoginException {
 
-        if (cpf == null || senha == null) {
+        if (cpf == null || senha == null) { // valida entrada
             throw new LoginException("CPF e senha não podem ser vazios.");
         }
 
         // remove letras, espaços, pontos e traços do CPF digitado
         String cpfDigitado = cpf.replaceAll("\\D", "");
-        String senhaDigitada = senha.trim();
+        String senhaDigitada = senha.trim(); // remove espaços extras
 
         for (Pessoa p : usuarios) {
 
-            if (p instanceof Funcionario) {
+            if (p instanceof Funcionario) { // apenas funcionários podem logar
 
                 String cpfPessoa = p.getCpf().replaceAll("\\D", "");
 
-                if (cpfPessoa.equals(cpfDigitado)) {
+                if (cpfPessoa.equals(cpfDigitado)) { // verifica CPF
 
-                    if (p.getSenha().equals(senhaDigitada)) {
-                        usuarioLogado = p;
+                    if (p.getSenha().equals(senhaDigitada)) { // verifica senha
+                        usuarioLogado = p; // login bem-sucedido
                         return true;
                     } else {
-                        throw new LoginException("Senha incorreta.");
+                        throw new LoginException("Senha incorreta."); // senha inválida
                     }
                 }
             }
         }
 
+        // CPF não encontrado ou usuário não é funcionário
         throw new LoginException("CPF não encontrado ou usuário não é funcionário.");
     }
 
     public Pessoa getUsuarioLogado() {
-        return usuarioLogado;
+        return usuarioLogado; // retorna usuário logado
     }
 
     public void logout() {
-        usuarioLogado = null;
+        usuarioLogado = null; // efetua logout
     }
 }
