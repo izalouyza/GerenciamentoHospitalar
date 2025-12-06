@@ -27,8 +27,8 @@ public class Main {
         // Usuário padrão para login inicial
         Funcionario funcionarioPadrao = new Funcionario(
                 "FUNC-1", "Recepcionista Admin", "11122233344",
-                "(85)99999-0000", "recep@hosp.com", "Av X",
-                "admin", "RECEP", "Recepção", "Recepção"
+                "(85)99999-0000", "admin@hosp.com", "Av X",
+                "admin", "Geral", "Administrador", "Geral"
         );
 
         List<Pessoa> usuarios = new ArrayList<>();
@@ -67,7 +67,7 @@ public class Main {
                 Println("2. Paciente");
                 Println("3. Consulta");
                 Println("7. Logout");
-                Println("0. Sair");
+                Println("0. Fechar");
                 Print("Escolha uma opção: ");
 
                 try {
