@@ -10,17 +10,17 @@ import java.util.List;
 
 public class Hospital {
 
-    private final List<Pessoa> pessoas = new ArrayList<>();
-    private final List<Consulta> consultas = new ArrayList<>();
+    private final List<Pessoa> pessoas = new ArrayList<>(); // lista de todas as pessoas (pacientes e médicos)
+    private final List<Consulta> consultas = new ArrayList<>(); // lista de consultas
 
-    //Adicionar pessoa
+    // Adicionar pessoa
     public void adicionarPessoa(Pessoa p) {
         if (p == null) {
             Utilitarios.println("Pessoa inválida! Não é possível adicionar.");
             return;
         }
 
-        if (!p.validar()) {
+        if (!p.validar()) { // valida os dados da pessoa antes de adicionar
             Utilitarios.println("Pessoa contém dados inválidos. Cadastro não realizado.");
             return;
         }
@@ -29,14 +29,14 @@ public class Hospital {
     }
 
     public List<Pessoa> getPessoas() {
-        return pessoas;
+        return pessoas; // retorna a lista de pessoas
     }
 
-    //Verificar se o CPF existe
+    // Verificar existência
     public boolean cpfExiste(String cpf) {
         if (cpf == null) return false;
 
-        String cpfNumerico = cpf.replaceAll("\\D", "");
+        String cpfNumerico = cpf.replaceAll("\\D", ""); // remove caracteres não numéricos
 
         for (Pessoa p : pessoas) {
             String cpfPessoa = p.getCpf().replaceAll("\\D", "");
@@ -48,12 +48,11 @@ public class Hospital {
         return false;
     }
 
-    //Verificar se o CRM existe
     public boolean crmExiste(String crm) {
         if (crm == null) return false;
 
         for (Pessoa p : pessoas) {
-            if (p instanceof Medico) {
+            if (p instanceof Medico) { // só médicos possuem CRM
                 Medico m = (Medico) p;
                 if (Utilitarios.compararIdentificadores(m.getCrm(), crm)) {
                     return true;
@@ -64,21 +63,20 @@ public class Hospital {
         return false;
     }
 
-    //Buscar pessoa (CPF ou CRM)
+    // Buscar pessoa
     public Pessoa buscarPessoa(String identificador) {
         if (identificador == null) return null;
 
         String idNumerico = identificador.replaceAll("\\D", "");
 
         for (Pessoa p : pessoas) {
-
-            // Comparar CPF
+            // comparar CPF
             String cpfPessoa = p.getCpf().replaceAll("\\D", "");
             if (cpfPessoa.equals(idNumerico)) {
                 return p;
             }
 
-            // Comparar CRM (se for médico)
+            // comparar CRM se for médico
             if (p instanceof Medico) {
                 Medico m = (Medico) p;
                 if (Utilitarios.compararIdentificadores(m.getCrm(), identificador)) {
@@ -90,14 +88,14 @@ public class Hospital {
         return null;
     }
 
-    //Adicionar consulta
+    // Adicionar consulta
     public void adicionarConsulta(Consulta c) {
         if (c == null) {
             Utilitarios.println("Consulta inválida! Não foi adicionada.");
             return;
         }
 
-        if (!c.validar()) {
+        if (!c.validar()) { // valida dados da consulta
             Utilitarios.println("Consulta com dados inválidos! Não foi adicionada.");
             return;
         }
@@ -106,10 +104,10 @@ public class Hospital {
     }
 
     public List<Consulta> getConsultas() {
-        return consultas;
+        return consultas; // retorna lista de consultas
     }
 
-    //Buscar consulta por ID
+    // Buscar consulta
     public Consulta buscarConsulta(String id) {
         if (id == null) return null;
 
