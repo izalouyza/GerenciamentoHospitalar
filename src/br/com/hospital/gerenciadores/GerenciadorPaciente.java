@@ -31,12 +31,20 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
 
         Utilitarios.print("Nome: ");
         String nome = sc.nextLine();
+        if (!Utilitarios.textoNaoVazio(nome)) {
+        Utilitarios.println("Nome não pode ficar vazio.\n");
+        return;
+        }
 
         Utilitarios.print("Idade: ");
         int idade = Integer.parseInt(sc.nextLine());
 
         Utilitarios.print("Principal Queixa: ");
         String principalQueixa = sc.nextLine();
+        if (!Utilitarios.textoNaoVazio(principalQueixa)) {
+        Utilitarios.println("Principal queixa não pode ficar vazia.\n");
+        return;
+        }
 
         Utilitarios.print("CPF: ");
         String cpf = sc.nextLine();
@@ -47,19 +55,31 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
 
         Utilitarios.print("Telefone: ");
         String telefone = sc.nextLine();
+        if (!Utilitarios.telefoneValido(telefone)) {
+        Utilitarios.println("Telefone inválido!\n");
+        return;
+        }   
 
         Utilitarios.print("Email: ");
         String email = sc.nextLine();
+        if (!Utilitarios.emailValido(email)) {
+        Utilitarios.println("Email inválido!\n");
+        return;
+        }
 
         Utilitarios.print("Endereço: ");
         String endereco = sc.nextLine();
 
         Utilitarios.print("Senha: ");
         String senha = sc.nextLine();
+        if (!Utilitarios.textoNaoVazio(senha) || senha.length() < 4) {
+        Utilitarios.println("Senha inválida (mínimo 4 caracteres).\n");
+        return;
+    }
 
         Paciente p = new Paciente(
                 Utilitarios.gerarIdUnico(),
-                nome,
+                Utilitarios.capitalizarNome(nome),
                 cpf,
                 telefone,
                 email,
@@ -143,6 +163,9 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
 
         Utilitarios.print("Novo nome (atual: " + antigo.getNome() + "): ");
         String nome = sc.nextLine();
+        if (!Utilitarios.textoNaoVazio(nome)) {
+            nome = antigo.getNome();
+    }
 
         Utilitarios.print("Nova idade (atual: " + antigo.getIdade() + "): ");
         int idade = sc.nextInt();
@@ -152,13 +175,26 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
 
         Utilitarios.print("Novo telefone (atual: " + antigo.getTelefone() + "): ");
         String telefone = sc.nextLine();
+        if (!Utilitarios.textoNaoVazio(telefone)) {
+            telefone = antigo.getTelefone();
+        } else if (!Utilitarios.telefoneValido(telefone)) {
+        Utilitarios.println("Telefone inválido.\n");
+            return;
+        }
 
         Utilitarios.print("Novo email (atual: " + antigo.getEmail() + "): ");
         String email = sc.nextLine();
-
+        if (!Utilitarios.textoNaoVazio(email)) {
+            email = antigo.getEmail();
+        } else if (!Utilitarios.emailValido(email)) {
+            Utilitarios.println("Email inválido.\n");
+        return;
+        }
         Utilitarios.print("Novo endereço (atual: " + antigo.getEndereco() + "): ");
         String endereco = sc.nextLine();
-
+        if (!Utilitarios.textoNaoVazio(endereco)) {
+            endereco = antigo.getEndereco();
+        }
         Paciente novo = new Paciente(
                 antigo.getId(),
                 nome,
