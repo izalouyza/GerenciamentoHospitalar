@@ -8,192 +8,98 @@ public class Utilitarios {
     private static int contadorId = 1;
 
     public static int gerarIdIncremental() {
-        int idAtual = contadorId;
-        contadorId = contadorId + 1;
+        int idAtual = contadorId; // guarda o valor atual
+        contadorId = contadorId + 1; // incrementa para próximo ID
         return idAtual;
     }
 
     public static String gerarIdUnico() {
-        return "ID-" + gerarIdIncremental();
+        return "ID-" + gerarIdIncremental(); // prefixo ID- + número incremental
     }
 
-    // Comparar IDs
+    // Comparar IDs ignorando maiúsculas/minúsculas
     public static boolean compararIdentificadores(String id1, String id2) {
-        if (id1 == null) {
-            return false;
-        }
-        if (id2 == null) {
-            return false;
-        }
+        if (id1 == null || id2 == null) return false;
         return id1.equalsIgnoreCase(id2);
     }
 
-    // texto não vazio
+    // Verifica se texto não é nulo ou vazio
     public static boolean textoNaoVazio(String txt) {
-        if (txt == null) {
-            return false;
-        }
-        return !txt.isBlank();
+        return txt != null && !txt.isBlank();
     }
 
-    // lista vazia
+    // Verifica se lista é nula ou vazia
     public static boolean listaVazia(List<?> lista) {
-        if (lista == null) {
-            return true;
-        }
-        return lista.isEmpty();
+        return lista == null || lista.isEmpty();
     }
 
-    // email válido (simples)
+    // Validação simples de email
     public static boolean emailValido(String email) {
-        if (email == null) {
-            return false;
-        }
-
+        if (email == null) return false;
         String tratado = email.trim();
-
-        if (!tratado.contains("@")) {
-            return false;
-        }
-        if (!tratado.contains(".")) {
-            return false;
-        }
-
-        return true;
+        return tratado.contains("@") && tratado.contains(".");
     }
 
-    // CRM válido
+    // Validação de CRM
     public static boolean crmValido(String crm) {
-        if (crm == null) {
-            return false;
-        }
-
+        if (crm == null) return false;
         String tratado = crm.trim();
-        int tamanho = tratado.length();
+        if (tratado.length() > 13) return false;
 
-        if (tamanho > 13) {
-            return false;
-        }
         String regex = "^[1-9]\\d*-(AC|AL|AP|AM|BA|CE|DF|ES|GO|MA|MT|MS|MG|PA|PB|PR|PE|PI|RJ|RN|RS|RO|RR|SC|SP|SE|TO)$"
                 + "|^[1-9]\\d*$";
-        if (!tratado.matches(regex)) {
-            return false;
-        }
-
-        return true;
+        return tratado.matches(regex);
     }
 
-    // telefone válido
+    // Telefone válido (8 a 13 dígitos)
     public static boolean telefoneValido(String telefone) {
-        if (telefone == null) {
-            return false;
-        }
-
+        if (telefone == null) return false;
         String digitos = telefone.replaceAll("\\D", "");
-
         return digitos.matches("\\d{8,13}");
     }
 
-    // CPF válido (completo)
+    // CPF válido
     public static boolean cpfValido(String cpf) {
-        if (cpf == null) {
-            return false;
-        }
-
+        if (cpf == null) return false;
         String num = cpf.replaceAll("\\D", "");
-
-        if (num.length() != 11) {
-            return false;
-        }
-
-        if (num.chars().distinct().count() == 1) {
-            return false;
-        }
+        if (num.length() != 11) return false;
+        if (num.chars().distinct().count() == 1) return false; // todos iguais
 
         try {
             int soma = 0;
-
-            for (int i = 0; i < 9; i++) {
-                soma += Character.getNumericValue(num.charAt(i)) * (10 - i);
-            }
-
+            for (int i = 0; i < 9; i++) soma += Character.getNumericValue(num.charAt(i)) * (10 - i);
             int dig1 = 11 - (soma % 11);
-
-            if (dig1 >= 10) {
-                dig1 = 0;
-            }
-
-            if (dig1 != Character.getNumericValue(num.charAt(9))) {
-                return false;
-            }
+            if (dig1 >= 10) dig1 = 0;
+            if (dig1 != Character.getNumericValue(num.charAt(9))) return false;
 
             soma = 0;
-
-            for (int i = 0; i < 10; i++) {
-                soma += Character.getNumericValue(num.charAt(i)) * (11 - i);
-            }
-
+            for (int i = 0; i < 10; i++) soma += Character.getNumericValue(num.charAt(i)) * (11 - i);
             int dig2 = 11 - (soma % 11);
-
-            if (dig2 >= 10) {
-                dig2 = 0;
-            }
+            if (dig2 >= 10) dig2 = 0;
 
             return dig2 == Character.getNumericValue(num.charAt(10));
-
         } catch (Exception e) {
             return false;
         }
     }
 
-    // tamanho mínimo
+    // Verifica tamanho mínimo
     public static boolean tamanhoMinimo(String txt, int min) {
-        if (txt == null) {
-            return false;
-        }
-
-        String trat = txt.trim();
-
-        return trat.length() >= min;
+        return txt != null && txt.trim().length() >= min;
     }
 
-    // especialidade médica válida
+    // Especialidade médica válida (mínimo 3 caracteres e pelo menos uma letra)
     public static boolean especialidadeValida(String esp) {
-        if (esp == null) {
-            return false;
-        }
-
+        if (esp == null) return false;
         String trat = esp.trim();
-
-        if (trat.length() < 3) {
-            return false;
-        }
-
-        boolean contemLetra = trat.matches(".*[A-Za-z].*");
-
-        if (!contemLetra) {
-            return false;
-        }
-
-        return true;
+        return trat.length() >= 3 && trat.matches(".*[A-Za-z].*");
     }
 
+    // Verifica formato de data/hora dd/MM/yyyy HH:mm
     public static boolean dataHoraValida(String dataHora) {
-        if (dataHora == null) {
-            return false;
-        }
-
-        if (dataHora.length() != 16) {
-            return false;
-        }
-
-        if (dataHora.charAt(2) != '/' ||
-                dataHora.charAt(5) != '/' ||
-                dataHora.charAt(10) != ' ' ||
-                dataHora.charAt(13) != ':') {
-
-            return false;
-        }
+        if (dataHora == null || dataHora.length() != 16) return false;
+        if (dataHora.charAt(2) != '/' || dataHora.charAt(5) != '/' || dataHora.charAt(10) != ' '
+                || dataHora.charAt(13) != ':') return false;
 
         try {
             int dia = Integer.parseInt(dataHora.substring(0, 2));
@@ -202,31 +108,16 @@ public class Utilitarios {
             int hora = Integer.parseInt(dataHora.substring(11, 13));
             int minuto = Integer.parseInt(dataHora.substring(14, 16));
 
-            if (mes < 1 || mes > 12) {
-                return false;
-            }
-            if (dia < 1 || dia > 31) {
-                return false;
-            }
-            if (hora < 0 || hora > 23) {
-                return false;
-            }
-            if (minuto < 0 || minuto > 59) {
-                return false;
-            }
-
             java.time.LocalDateTime.of(ano, mes, dia, hora, minuto);
-
             return true;
         } catch (Exception e) {
             return false;
         }
     }
 
+    // Verifica se a data/hora está no futuro
     public static boolean dataNoFuturo(String dataHora) {
-        if (!dataHoraValida(dataHora)) {
-            return false;
-        }
+        if (!dataHoraValida(dataHora)) return false;
 
         try {
             int dia = Integer.parseInt(dataHora.substring(0, 2));
@@ -235,57 +126,37 @@ public class Utilitarios {
             int hora = Integer.parseInt(dataHora.substring(11, 13));
             int minuto = Integer.parseInt(dataHora.substring(14, 16));
 
-            java.time.LocalDateTime dataConsulta =
-                    java.time.LocalDateTime.of(ano, mes, dia, hora, minuto);
-
-            java.time.LocalDateTime agora = java.time.LocalDateTime.now();
-
-            return dataConsulta.isAfter(agora);
-
+            java.time.LocalDateTime dataConsulta = java.time.LocalDateTime.of(ano, mes, dia, hora, minuto);
+            return dataConsulta.isAfter(java.time.LocalDateTime.now());
         } catch (Exception e) {
             return false;
         }
     }
 
+    // Normaliza texto removendo acentos e caracteres especiais
     public static String normalizarTexto(String texto) {
-        if (texto == null) {
-            return null;
-        }
-
+        if (texto == null) return null;
         String semAcento = java.text.Normalizer
                 .normalize(texto, java.text.Normalizer.Form.NFD)
                 .replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
-
-        semAcento = semAcento.replaceAll("[^a-zA-Z0-9 ]", "");
-        semAcento = semAcento.replaceAll("\\s+", " ").trim();
-
+        semAcento = semAcento.replaceAll("[^a-zA-Z0-9 ]", "").replaceAll("\\s+", " ").trim();
         return semAcento;
     }
 
+    // Capitaliza nomes (primeira letra maiúscula)
     public static String capitalizarNome(String nome) {
-        if (nome == null) {
-            return null;
-        }
-
-        String tratado = nome.trim().toLowerCase();
-        String[] partes = tratado.split("\\s+");
-
+        if (nome == null) return null;
+        String[] partes = nome.trim().toLowerCase().split("\\s+");
         StringBuilder sb = new StringBuilder();
-
         for (String p : partes) {
             if (p.length() > 0) {
-                char primeira = Character.toUpperCase(p.charAt(0));
-                String resto = p.substring(1);
-
-                sb.append(primeira);
-                sb.append(resto);
-                sb.append(" ");
+                sb.append(Character.toUpperCase(p.charAt(0))).append(p.substring(1)).append(" ");
             }
         }
-
         return sb.toString().trim();
     }
 
+    // Métodos de print simplificados
     public static void print(String texto) {
         System.out.print(texto);
     }
@@ -293,7 +164,8 @@ public class Utilitarios {
     public static void println(String texto) {
         System.out.println(texto);
     }
-        public static void printf(String texto) {
+
+    public static void printf(String texto) {
         System.out.printf(texto);
     }
 }
