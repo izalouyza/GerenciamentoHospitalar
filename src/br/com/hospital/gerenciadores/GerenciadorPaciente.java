@@ -5,6 +5,7 @@ import br.com.hospital.interfaces.Gerenciavel;
 import br.com.hospital.sistema.Hospital;
 import static br.com.hospital.utilitarios.Utilitarios.*;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -139,6 +140,7 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
         List<Paciente> pacientes = hospital.getPessoas().stream()
                 .filter(p -> p instanceof Paciente)
                 .map(p -> (Paciente) p)
+                .sorted(Comparator.comparing(Paciente::getNome)) // ordena pelo nome
                 .toList();
 
         if (pacientes.isEmpty()) {
