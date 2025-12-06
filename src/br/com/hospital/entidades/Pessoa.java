@@ -19,6 +19,7 @@ public abstract class Pessoa implements Validavel {
     public Pessoa(String id, String nome, String cpf, String telefone, String email,
                   String endereco, String senha, String nivelAcesso) {
 
+        // Se o id não for informado, gera um único automaticamente
         if (id == null || id.isBlank()) {
             this.id = Utilitarios.gerarIdUnico();
         } else {
@@ -33,7 +34,7 @@ public abstract class Pessoa implements Validavel {
         this.senha = senha;
         this.nivelAcesso = nivelAcesso;
 
-        this.mensagemValidacao = "";
+        this.mensagemValidacao = ""; // inicia mensagem de validação vazia
     }
 
     // ------------ GETTERS E SETTERS COM VALIDAÇÃO PRÓPRIA --------------
@@ -48,10 +49,10 @@ public abstract class Pessoa implements Validavel {
 
     public boolean setNome(String nome) {
         if (!Utilitarios.textoNaoVazio(nome)) {
-            mensagemValidacao = "Nome não pode ser vazio.";
+            mensagemValidacao = "Nome não pode ser vazio."; // valida se o nome não está vazio
             return false;
         }
-        this.nome = Utilitarios.capitalizarNome(nome);
+        this.nome = Utilitarios.capitalizarNome(nome); // normaliza e capitaliza o nome
         return true;
     }
 
@@ -65,7 +66,7 @@ public abstract class Pessoa implements Validavel {
             return false;
         }
         if (!Utilitarios.cpfValido(cpf)) {
-            mensagemValidacao = "CPF inválido.";
+            mensagemValidacao = "CPF inválido."; // valida CPF com método utilitário
             return false;
         }
         this.cpf = cpf;
@@ -78,7 +79,7 @@ public abstract class Pessoa implements Validavel {
 
     public boolean setTelefone(String telefone) {
         if (telefone == null || !Utilitarios.telefoneValido(telefone)) {
-            mensagemValidacao = "Telefone inválido.";
+            mensagemValidacao = "Telefone inválido."; // valida telefone
             return false;
         }
         this.telefone = telefone;
@@ -91,7 +92,7 @@ public abstract class Pessoa implements Validavel {
 
     public boolean setEmail(String email) {
         if (email == null || !Utilitarios.emailValido(email)) {
-            mensagemValidacao = "Email inválido.";
+            mensagemValidacao = "Email inválido."; // valida email
             return false;
         }
         this.email = email;
@@ -103,7 +104,7 @@ public abstract class Pessoa implements Validavel {
     }
 
     public void setEndereco(String endereco) {
-        this.endereco = endereco;
+        this.endereco = endereco; // sem validação, apenas define
     }
 
     public String getSenha() {
@@ -111,7 +112,7 @@ public abstract class Pessoa implements Validavel {
     }
 
     public void setSenha(String senha) {
-        this.senha = senha;
+        this.senha = senha; // define senha
     }
 
     public String getNivelAcesso() {
@@ -120,15 +121,14 @@ public abstract class Pessoa implements Validavel {
 
     public boolean setNivelAcesso(String nivelAcesso) {
         if (!Utilitarios.textoNaoVazio(nivelAcesso)) {
-            mensagemValidacao = "Nível de acesso inválido.";
+            mensagemValidacao = "Nível de acesso inválido."; // valida nível de acesso
             return false;
         }
         this.nivelAcesso = nivelAcesso;
         return true;
     }
 
-    // ------------------ VALIDAVEL ---------------------
-
+    // Implementação da interface Validavel
     @Override
     public boolean validar() {
         if (!Utilitarios.textoNaoVazio(nome)) {
@@ -147,7 +147,7 @@ public abstract class Pessoa implements Validavel {
             mensagemValidacao = "Email inválido.";
             return false;
         }
-        mensagemValidacao = "";
+        mensagemValidacao = ""; // tudo ok
         return true;
     }
 
@@ -156,12 +156,12 @@ public abstract class Pessoa implements Validavel {
         return mensagemValidacao;
     }
 
-    // ------------------ PRINT ---------------------
-
+    // Retorna um resumo da pessoa
     public String resumo() {
         return String.format("Código: %s | Nome: %s | CPF: %s", id, nome, cpf);
     }
 
+    // Exibe informações completas
     public void exibirInformacoes() {
         Utilitarios.println("--------------------------------------------------");
         Utilitarios.println("ID: " + id);
