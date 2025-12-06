@@ -4,10 +4,10 @@ import br.com.hospital.utilitarios.Utilitarios;
 
 public class Funcionario extends Pessoa {
 
-    private String cargo;
-    private String setor;
+    private String cargo; // cargo do funcionário
+    private String setor; // setor do funcionário
 
-    private String mensagemValidacao = "";
+    private String mensagemValidacao = ""; // mensagem para validação
 
     public Funcionario(String id, String nome, String cpf, String telefone, String email,
                        String endereco, String senha, String nivelAcesso,
@@ -20,12 +20,13 @@ public class Funcionario extends Pessoa {
 
     // ------------------- GETTERS E SETTERS ---------------------
 
+    //getters
     public String getCargo() {
         return cargo;
     }
 
     public boolean setCargo(String cargo) {
-        if (cargo == null || cargo.isBlank()) {
+        if (cargo == null || cargo.isBlank()) { // valida se cargo é nulo ou vazio
             mensagemValidacao = "O cargo não pode ser vazio.";
             return false;
         }
@@ -37,8 +38,9 @@ public class Funcionario extends Pessoa {
         return setor;
     }
 
+    //setters
     public boolean setSetor(String setor) {
-        if (setor == null || setor.isBlank()) {
+        if (setor == null || setor.isBlank()) { // valida se setor é nulo ou vazio
             mensagemValidacao = "O setor não pode ser vazio.";
             return false;
         }
@@ -46,42 +48,38 @@ public class Funcionario extends Pessoa {
         return true;
     }
 
-    // ------------------ PRINT ---------------------
-
     @Override
     public void exibirInformacoes() {
-        super.exibirInformacoes();
+        super.exibirInformacoes(); // chama exibição da classe Pessoa
         Utilitarios.println("Cargo: " + cargo);
         Utilitarios.println("Setor: " + setor);
     }
 
-    // -----------------------------------------------------
-    //               MÉTODOS DE VALIDAÇÃO
-    // -----------------------------------------------------
+    // Métodos de validação
     @Override
     public boolean validar() {
 
-        if (!super.validar()) {
-            mensagemValidacao = super.getMensagemValidacao();
+        if (!super.validar()) { // valida atributos da classe pai
+            mensagemValidacao = super.getMensagemValidacao(); // mantém mensagem de erro da classe pai
             return false;
         }
 
-        if (cargo == null || cargo.isBlank()) {
+        if (cargo == null || cargo.isBlank()) { // valida cargo
             mensagemValidacao = "O cargo não pode ser vazio.";
             return false;
         }
 
-        if (setor == null || setor.isBlank()) {
+        if (setor == null || setor.isBlank()) { // valida setor
             mensagemValidacao = "O setor não pode ser vazio.";
             return false;
         }
 
-        mensagemValidacao = "";
+        mensagemValidacao = ""; // tudo válido
         return true;
     }
 
     @Override
     public String getMensagemValidacao() {
-        return mensagemValidacao;
+        return mensagemValidacao; // retorna mensagem de validação atual
     }
 }
