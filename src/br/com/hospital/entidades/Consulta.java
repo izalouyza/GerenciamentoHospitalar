@@ -17,7 +17,8 @@ public class Consulta implements Validavel {
         this.dataHora = dataHora;
     }
 
-    // getters
+    // ------------------- GETTERS E SETTERS ---------------------
+    //getters
     public String getId() {
         return id;
     }
