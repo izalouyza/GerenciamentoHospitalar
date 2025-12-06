@@ -8,15 +8,17 @@ public class Paciente extends Pessoa implements Validavel {
     private int idade;
     private String principalQueixa;
 
-    private String mensagemValidacao = "";
+    private String mensagemValidacao = ""; // Armazena mensagem de erro na validação
 
     public Paciente(String id, String nome, String cpf, String telefone, String email,
                     String endereco, String senha, int idade, String principalQueixa) {
 
-        super(id, nome, cpf, telefone, email, endereco, senha, "PACIENTE");
+        super(id, nome, cpf, telefone, email, endereco, senha, "PACIENTE"); // Define nível de acesso como PACIENTE
         this.idade = idade;
-        this.principalQueixa = Utilitarios.normalizarTexto(principalQueixa);
+        this.principalQueixa = Utilitarios.normalizarTexto(principalQueixa); // Remove acentos e caracteres indesejados
     }
+
+    // ------------------- GETTERS E SETTERS ---------------------
 
     public int getIdade() {
         return idade;
@@ -31,36 +33,36 @@ public class Paciente extends Pessoa implements Validavel {
     }
 
     public void setPrincipalQueixa(String principalQueixa) {
-        this.principalQueixa = Utilitarios.normalizarTexto(principalQueixa);
+        this.principalQueixa = Utilitarios.normalizarTexto(principalQueixa); // Sempre normaliza o texto
     }
 
     @Override
     public void exibirInformacoes() {
-        super.exibirInformacoes();
+        super.exibirInformacoes(); // Exibe informações comuns de Pessoa
         Utilitarios.println("Idade: " + idade);
         Utilitarios.println("Principal queixa: " + principalQueixa);
     }
 
-    // Implementação do Validavel
+    // Implementação da interface Validavel
     @Override
     public boolean validar() {
 
-        if (!super.validar()) {
+        if (!super.validar()) { // Valida atributos da classe Pessoa
             mensagemValidacao = super.getMensagemValidacao();
             return false;
         }
 
-        if (idade <= 0) {
+        if (idade <= 0) { // Idade deve ser positiva
             mensagemValidacao = "A idade deve ser maior que zero.";
             return false;
         }
 
-        if (principalQueixa == null || principalQueixa.isBlank()) {
+        if (principalQueixa == null || principalQueixa.isBlank()) { // Queixa não pode estar vazia
             mensagemValidacao = "A principal queixa não pode ser vazia.";
             return false;
         }
 
-        mensagemValidacao = "";
+        mensagemValidacao = ""; // Tudo ok
         return true;
     }
 
