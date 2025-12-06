@@ -20,12 +20,11 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         Hospital hospital = new Hospital();
 
-        // Gerenciadores
         GerenciadorMedico gerMedico = new GerenciadorMedico(hospital, sc);
         GerenciadorPaciente gerPaciente = new GerenciadorPaciente(hospital, sc);
         GerenciadorConsulta gerConsulta = new GerenciadorConsulta(sc, hospital);
 
-        // Usuário padrão
+        // Usuário padrão para login inicial
         Funcionario funcionarioPadrao = new Funcionario(
                 "FUNC-1", "Recepcionista Admin", "11122233344",
                 "(85)99999-0000", "recep@hosp.com", "Av X",
@@ -35,14 +34,14 @@ public class Main {
         List<Pessoa> usuarios = new ArrayList<>();
         usuarios.add(funcionarioPadrao);
 
-        Login login = new Login(usuarios);
+        Login login = new Login(usuarios); // Sistema de login
 
         Utilitarios.println("---SISTEMA DE GERENCIAMENTO HOSPITALAR---\n");
 
-        while (true) {
+        while (true) { // Loop principal do sistema
             boolean autenticado = false;
 
-            // LOGIN
+            // LOOP LOGIN
             while (!autenticado) {
                 Utilitarios.println("---LOGIN---\n");
                 Utilitarios.print("CPF: ");
@@ -51,18 +50,18 @@ public class Main {
                 String senha = sc.nextLine();
 
                 try {
-                    if (login.autenticar(cpf, senha)) {
+                    if (login.autenticar(cpf, senha)) { // Tenta autenticar
                         autenticado = true;
                         Utilitarios.println("Login realizado.\n");
                     }
                 } catch (LoginException e) {
-                    Utilitarios.println(e.getMessage() + "\n");
+                    Utilitarios.println(e.getMessage() + "\n"); // Erros de login
                 }
             }
 
             // MENU PRINCIPAL
             int opcaoPrincipal = -1;
-            while (opcaoPrincipal != 0 && opcaoPrincipal != 7) {
+            while (opcaoPrincipal != 0 && opcaoPrincipal != 7) { // 0 = sair, 7 = logout
                 Utilitarios.println("---- MENU PRINCIPAL ----");
                 Utilitarios.println("1. Médico");
                 Utilitarios.println("2. Paciente");
@@ -72,14 +71,14 @@ public class Main {
                 Utilitarios.print("Escolha uma opção: ");
 
                 try {
-                    opcaoPrincipal = Integer.parseInt(sc.nextLine());
+                    opcaoPrincipal = Integer.parseInt(sc.nextLine()); // Lê opção
                 } catch (Exception e) {
                     Utilitarios.println("Opção inválida.\n");
                     continue;
                 }
 
                 switch (opcaoPrincipal) {
-                    case 1 -> { // MÉDICO
+                    case 1 -> { // MENU MÉDICO
                         int opcao = -1;
                         while (opcao != 0) {
                             Utilitarios.println("\n--- MENU MÉDICO ---");
@@ -93,18 +92,18 @@ public class Main {
                             try { opcao = Integer.parseInt(sc.nextLine()); } catch (Exception e) { continue; }
 
                             switch (opcao) {
-                                case 1 -> gerMedico.cadastrarMedico();
-                                case 2 -> gerMedico.editarMedico();
-                                case 3 -> gerMedico.listarMedicos();
-                                case 4 -> gerMedico.removerMedico();
-                                case 5 -> gerMedico.buscarMedico();
+                                case 1 -> gerMedico.cadastrarMedico(); // chama método de cadastro
+                                case 2 -> gerMedico.editarMedico(); // chama método de edição
+                                case 3 -> gerMedico.listarMedicos(); // lista médicos
+                                case 4 -> gerMedico.removerMedico(); // remove médico
+                                case 5 -> gerMedico.buscarMedico(); // busca médico
                                 case 0 -> Utilitarios.println("Voltando ao menu principal...\n");
                                 default -> Utilitarios.println("Opção inválida.\n");
                             }
                         }
                     }
 
-                    case 2 -> { // PACIENTE
+                    case 2 -> { // MENU PACIENTE
                         int opcao = -1;
                         while (opcao != 0) {
                             Utilitarios.println("\n--- MENU PACIENTE ---");
@@ -129,7 +128,7 @@ public class Main {
                         }
                     }
 
-                    case 3 -> { // CONSULTA
+                    case 3 -> { // MENU CONSULTA
                         int opcao = -1;
                         while (opcao != 0) {
                             Utilitarios.println("\n--- MENU CONSULTA ---");
@@ -158,9 +157,9 @@ public class Main {
                         }
                     }
 
-                    case 7 -> Utilitarios.println("\nVocê saiu da conta.\n");
+                    case 7 -> Utilitarios.println("\nVocê saiu da conta.\n"); // Logout
 
-                    case 0 -> {
+                    case 0 -> { // Sair do sistema
                         Utilitarios.println("Encerrando...");
                         sc.close();
                         return;
