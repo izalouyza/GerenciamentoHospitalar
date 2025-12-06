@@ -1,6 +1,5 @@
 package br.com.hospital.gerenciadores;
 
-import br.com.hospital.entidades.Medico;
 import br.com.hospital.entidades.Paciente;
 import br.com.hospital.interfaces.Gerenciavel;
 import br.com.hospital.sistema.Hospital;
