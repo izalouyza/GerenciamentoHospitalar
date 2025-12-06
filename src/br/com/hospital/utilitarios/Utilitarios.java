@@ -14,7 +14,7 @@ public class Utilitarios {
     }
 
     public static String gerarIdUnico() {
-        return "ID-" + gerarIdIncremental(); // prefixo ID- + número incremental
+        return String.valueOf(gerarIdIncremental()); //  número incremental
     }
 
     // Comparar IDs ignorando maiúsculas/minúsculas
@@ -179,5 +179,101 @@ public class Utilitarios {
 
     public static void Printf(String string, Object... args) {
         System.out.printf(string, args);
+    }
+    public static void exibirMenuPrincipalAdmin() {
+        System.out.printf("""
+                        
+                        ---- MENU PRINCIPAL ----
+                     
+                        1. Médico
+                        2. Paciente
+                        3. Consulta
+                        7. Logout
+                        0. Fechar
+                        
+                        Escolha uma opção: """);
+    }
+
+    public static void exibirMenuPrincipalFuncionario() {
+        System.out.printf("""
+                        
+                        ---- MENU PRINCIPAL ----
+                  
+                        1. Paciente
+                        2. Consulta
+                        3. Logout
+                        0. Fechar
+                        
+                        Escolha uma opção: """);
+    }
+
+    public static void exibirMenuPrincipalPaciente() {
+        System.out.printf("""
+                        
+                        ---- MENU PRINCIPAL ----
+                  
+                        1. Ver data da consulta
+                        2. Cancelar Consulta
+                        3. Logout
+                        0. Fechar
+                        
+                        Escolha uma opção: """);
+    }
+
+    public static void exibirMenuPrincipalMedico() {
+        System.out.printf("""
+                        
+                        ---- MENU PRINCIPAL ----
+                  
+                        1. Ver minhas consultas
+                        2. Solicitar retorno
+                        3. Logout
+                        0. Fechar
+                        
+                        Escolha uma opção: """);
+    }
+
+    public static void exibirMenuMedico() {
+        System.out.printf("""
+                        
+                        --- MENU MÉDICO ---
+                        
+                        1. Cadastrar Médico
+                        2. Editar Médico
+                        3. Listar Médicos
+                        4. Remover Médico
+                        5. Buscar Médico
+                        0. Voltar
+                        
+                        Escolha uma opção: """);
+    }
+
+    public static void exibirMenuPaciente() {
+        System.out.printf("""
+                        
+                        --- MENU PACIENTE ---
+                        
+                        1. Cadastrar Paciente
+                        2. Editar Paciente
+                        3. Listar Pacientes
+                        4. Remover Paciente
+                        5. Buscar Paciente
+                        0. Voltar
+                        
+                        Escolha uma opção: """);
+    }
+
+    public static void exibirMenuConsulta() {
+        System.out.printf("""
+                        
+                        --- MENU CONSULTA ---
+                        
+                        1. Agendar Consulta
+                        2. Cancelar Consulta
+                        3. Listar Consultas
+                        4. Buscar Consulta por Paciente
+                        0. Voltar
+                        
+                        Escolha uma opção: """);
     }
 }
