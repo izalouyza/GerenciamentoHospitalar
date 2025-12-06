@@ -12,7 +12,6 @@ public abstract class Pessoa {
     private String senha;
     private String nivelAcesso;
 
-    // construtor principal
     public Pessoa(String id, String nome, String cpf, String telefone, String email,
                   String endereco, String senha, String nivelAcesso) {
         this.id = id;
@@ -25,59 +24,70 @@ public abstract class Pessoa {
         this.nivelAcesso = nivelAcesso;
     }
 
-    // getters / setters básicos
     public String getId() {
         return id;
     }
+
     public String getNome() {
         return nome;
     }
+
     public void setNome(String nome) {
         this.nome = Utilitarios.capitalizarNome(nome);
     }
+
     public String getCpf() {
         return cpf;
     }
+
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
+
     public String getTelefone() {
         return telefone;
     }
+
     public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
+
     public String getEmail() {
         return email;
     }
+
     public void setEmail(String email) {
         this.email = email;
     }
+
     public String getEndereco() {
         return endereco;
     }
+
     public void setEndereco(String endereco) {
         this.endereco = endereco;
     }
+
     public String getSenha() {
         return senha;
     }
+
     public void setSenha(String senha) {
         this.senha = senha;
     }
+
     public String getNivelAcesso() {
         return nivelAcesso;
     }
+
     public void setNivelAcesso(String nivelAcesso) {
         this.nivelAcesso = nivelAcesso;
     }
 
-    // exibição resumida
     public String resumo() {
-        return String.format("%s | %s | CPF: %s", id, nome, cpf);
+        return String.format("Código: %s | Nome:  %s | CPF: %s", id, nome, cpf);
     }
 
-    // para exibição completa
     public void exibirInformacoes() {
         System.out.println("--------------------------------------------------");
         System.out.println("ID: " + id);
