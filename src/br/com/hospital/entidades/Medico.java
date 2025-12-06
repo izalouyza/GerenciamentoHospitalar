@@ -27,9 +27,11 @@ public class Medico extends Pessoa implements Validavel {
         return especialidade;
     }
 
+    /* método não utilizado
     public void setEspecialidade(String especialidade) {
         this.especialidade = Utilitarios.normalizarTexto(especialidade);
     }
+     */
 
     @Override
     public void exibirInformacoes() {

@@ -24,17 +24,21 @@ public class Paciente extends Pessoa implements Validavel {
         return idade;
     }
 
+    /* método não utilizado
     public void setIdade(int idade) {
         this.idade = idade;
     }
+    */
 
     public String getPrincipalQueixa() {
         return principalQueixa;
     }
 
+    /* método não utilizado
     public void setPrincipalQueixa(String principalQueixa) {
         this.principalQueixa = Utilitarios.normalizarTexto(principalQueixa); // Sempre normaliza o texto
     }
+    */
 
     @Override
     public void exibirInformacoes() {

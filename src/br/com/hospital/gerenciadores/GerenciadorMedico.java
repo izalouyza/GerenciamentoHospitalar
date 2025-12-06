@@ -269,7 +269,11 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
         }
     }
 
+   /* método não utilizado
+
     public List<Medico> getListaMedicos() {
         return medicos; // retorna a lista local (não necessariamente usada no main)
     }
+
+    */
 }
