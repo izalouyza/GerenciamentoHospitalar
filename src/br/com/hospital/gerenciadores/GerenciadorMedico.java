@@ -6,6 +6,7 @@ import br.com.hospital.sistema.Hospital;
 import static br.com.hospital.utilitarios.Utilitarios.*;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -145,6 +146,7 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
         List<Medico> medicos = hospital.getPessoas().stream()
                 .filter(p -> p instanceof Medico)
                 .map(p -> (Medico) p)
+                .sorted(Comparator.comparing(Medico::getNome)) // ordena pelo nome
                 .toList();
 
         if (medicos.isEmpty()) {
