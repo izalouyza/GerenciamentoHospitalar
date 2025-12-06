@@ -1,7 +1,6 @@
 package br.com.hospital;
 
 import br.com.hospital.entidades.Funcionario;
-
 import br.com.hospital.entidades.Pessoa;
 import br.com.hospital.exceptions.LoginException;
 import br.com.hospital.gerenciadores.GerenciadorConsulta;
@@ -80,7 +79,6 @@ public class Main {
                 }
 
                 switch (opcaoPrincipal) {
-
                     case 1 -> { // MÉDICO
                         int opcao = -1;
                         while (opcao != 0) {
@@ -97,7 +95,7 @@ public class Main {
                             switch (opcao) {
                                 case 1 -> gerMedico.cadastrarMedico();
                                 case 2 -> gerMedico.editarMedico();
-                                case 3 -> gerMedico.listarMeicos();
+                                case 3 -> gerMedico.listarMedicos();
                                 case 4 -> gerMedico.removerMedico();
                                 case 5 -> gerMedico.buscarMedico();
                                 case 0 -> Utilitarios.println("Voltando ao menu principal...\n");
