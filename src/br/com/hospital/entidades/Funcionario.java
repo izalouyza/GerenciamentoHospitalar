@@ -1,6 +1,6 @@
 package br.com.hospital.entidades;
 
-import br.com.hospital.utilitarios.Utilitarios;
+import static br.com.hospital.utilitarios.Utilitarios.*;
 
 public class Funcionario extends Pessoa {
 
@@ -51,8 +51,8 @@ public class Funcionario extends Pessoa {
     @Override
     public void exibirInformacoes() {
         super.exibirInformacoes(); // chama exibição da classe Pessoa
-        Utilitarios.println("Cargo: " + cargo);
-        Utilitarios.println("Setor: " + setor);
+        Println("Cargo: " + cargo);
+        Println("Setor: " + setor);
     }
 
     // Métodos de validação

@@ -1,7 +1,7 @@
 package br.com.hospital.entidades;
 
 import br.com.hospital.interfaces.Validavel;
-import br.com.hospital.utilitarios.Utilitarios;
+import static br.com.hospital.utilitarios.Utilitarios.*;
 
 public class Paciente extends Pessoa implements Validavel {
 
@@ -15,7 +15,7 @@ public class Paciente extends Pessoa implements Validavel {
 
         super(id, nome, cpf, telefone, email, endereco, senha, "PACIENTE"); // Define nível de acesso como PACIENTE
         this.idade = idade;
-        this.principalQueixa = Utilitarios.normalizarTexto(principalQueixa); // Remove acentos e caracteres indesejados
+        this.principalQueixa = normalizarTexto(principalQueixa); // Remove acentos e caracteres indesejados
     }
 
     // ------------------- GETTERS E SETTERS ---------------------
@@ -33,14 +33,14 @@ public class Paciente extends Pessoa implements Validavel {
     }
 
     public void setPrincipalQueixa(String principalQueixa) {
-        this.principalQueixa = Utilitarios.normalizarTexto(principalQueixa); // Sempre normaliza o texto
+        this.principalQueixa = normalizarTexto(principalQueixa); // Sempre normaliza o texto
     }
 
     @Override
     public void exibirInformacoes() {
         super.exibirInformacoes(); // Exibe informações comuns de Pessoa
-        Utilitarios.println("Idade: " + idade);
-        Utilitarios.println("Principal queixa: " + principalQueixa);
+        Println("Idade: " + idade);
+        Println("Principal queixa: " + principalQueixa);
     }
 
     // Implementação da interface Validavel

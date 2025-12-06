@@ -1,7 +1,7 @@
 package br.com.hospital.entidades;
 
 import br.com.hospital.interfaces.Validavel;
-import br.com.hospital.utilitarios.Utilitarios;
+import static br.com.hospital.utilitarios.Utilitarios.*;
 
 public abstract class Pessoa implements Validavel {
 
@@ -21,7 +21,7 @@ public abstract class Pessoa implements Validavel {
 
         // Se o id não for informado, gera um único automaticamente
         if (id == null || id.isBlank()) {
-            this.id = Utilitarios.gerarIdUnico();
+            this.id = gerarIdUnico();
         } else {
             this.id = id;
         }
@@ -48,11 +48,11 @@ public abstract class Pessoa implements Validavel {
     }
 
     public boolean setNome(String nome) {
-        if (!Utilitarios.textoNaoVazio(nome)) {
+        if (!textoNaoVazio(nome)) {
             mensagemValidacao = "Nome não pode ser vazio."; // valida se o nome não está vazio
             return false;
         }
-        this.nome = Utilitarios.capitalizarNome(nome); // normaliza e capitaliza o nome
+        this.nome = capitalizarNome(nome); // normaliza e capitaliza o nome
         return true;
     }
 
@@ -65,7 +65,7 @@ public abstract class Pessoa implements Validavel {
             mensagemValidacao = "CPF não pode ser nulo.";
             return false;
         }
-        if (!Utilitarios.cpfValido(cpf)) {
+        if (!cpfValido(cpf)) {
             mensagemValidacao = "CPF inválido."; // valida CPF com método utilitário
             return false;
         }
@@ -78,7 +78,7 @@ public abstract class Pessoa implements Validavel {
     }
 
     public boolean setTelefone(String telefone) {
-        if (telefone == null || !Utilitarios.telefoneValido(telefone)) {
+        if (telefone == null || !telefoneValido(telefone)) {
             mensagemValidacao = "Telefone inválido."; // valida telefone
             return false;
         }
@@ -91,7 +91,7 @@ public abstract class Pessoa implements Validavel {
     }
 
     public boolean setEmail(String email) {
-        if (email == null || !Utilitarios.emailValido(email)) {
+        if (email == null || !emailValido(email)) {
             mensagemValidacao = "Email inválido."; // valida email
             return false;
         }
@@ -120,7 +120,7 @@ public abstract class Pessoa implements Validavel {
     }
 
     public boolean setNivelAcesso(String nivelAcesso) {
-        if (!Utilitarios.textoNaoVazio(nivelAcesso)) {
+        if (!textoNaoVazio(nivelAcesso)) {
             mensagemValidacao = "Nível de acesso inválido."; // valida nível de acesso
             return false;
         }
@@ -131,19 +131,19 @@ public abstract class Pessoa implements Validavel {
     // Implementação da interface Validavel
     @Override
     public boolean validar() {
-        if (!Utilitarios.textoNaoVazio(nome)) {
+        if (!textoNaoVazio(nome)) {
             mensagemValidacao = "Nome inválido.";
             return false;
         }
-        if (!Utilitarios.cpfValido(cpf)) {
+        if (!cpfValido(cpf)) {
             mensagemValidacao = "CPF inválido.";
             return false;
         }
-        if (!Utilitarios.telefoneValido(telefone)) {
+        if (!telefoneValido(telefone)) {
             mensagemValidacao = "Telefone inválido.";
             return false;
         }
-        if (!Utilitarios.emailValido(email)) {
+        if (!emailValido(email)) {
             mensagemValidacao = "Email inválido.";
             return false;
         }
@@ -163,14 +163,14 @@ public abstract class Pessoa implements Validavel {
 
     // Exibe informações completas
     public void exibirInformacoes() {
-        Utilitarios.println("--------------------------------------------------");
-        Utilitarios.println("ID: " + id);
-        Utilitarios.println("Nome: " + nome);
-        Utilitarios.println("CPF: " + cpf);
-        Utilitarios.println("Telefone: " + telefone);
-        Utilitarios.println("Email: " + email);
-        Utilitarios.println("Endereço: " + endereco);
-        Utilitarios.println("Nível Acesso: " + nivelAcesso);
-        Utilitarios.println("--------------------------------------------------");
+        Println("--------------------------------------------------");
+        Println("ID: " + id);
+        Println("Nome: " + nome);
+        Println("CPF: " + cpf);
+        Println("Telefone: " + telefone);
+        Println("Email: " + email);
+        Println("Endereço: " + endereco);
+        Println("Nível Acesso: " + nivelAcesso);
+        Println("--------------------------------------------------");
     }
 }

@@ -1,6 +1,7 @@
 package br.com.hospital.entidades;
 
 import br.com.hospital.interfaces.Validavel;
+import static br.com.hospital.utilitarios.Utilitarios.*;
 
 public class Consulta implements Validavel {
     private final String id; // ID único da consulta
@@ -92,7 +93,7 @@ public class Consulta implements Validavel {
 
     public void exibirResumo() {
         // exibe informações resumidas da consulta
-        System.out.printf("""
+        Printf("""
                              Dados da consulta:
                              Protocolo: %s
                              Paciente: %s

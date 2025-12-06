@@ -3,7 +3,7 @@ package br.com.hospital.gerenciadores;
 import br.com.hospital.entidades.Paciente;
 import br.com.hospital.interfaces.Gerenciavel;
 import br.com.hospital.sistema.Hospital;
-import br.com.hospital.utilitarios.Utilitarios;
+import static br.com.hospital.utilitarios.Utilitarios.*;
 
 import java.util.List;
 import java.util.Scanner;
@@ -22,56 +22,56 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
     @Override
     public void adicionar(Paciente paciente) {
         hospital.adicionarPessoa(paciente); // adiciona paciente ao hospital
-        Utilitarios.println("Paciente cadastrado com sucesso!\n");
+        Println("Paciente cadastrado com sucesso!\n");
     }
 
     public void cadastrarPaciente() {
-        Utilitarios.println("\n--- CADASTRO DE PACIENTE ---");
+        Println("\n--- CADASTRO DE PACIENTE ---");
 
         // nome
         String nome = "";
-        while (!Utilitarios.textoNaoVazio(nome)) {
-            Utilitarios.print("Nome: ");
+        while (!textoNaoVazio(nome)) {
+            Print("Nome: ");
             nome = sc.nextLine();
-            if (!Utilitarios.textoNaoVazio(nome)) {
-                Utilitarios.println("Nome não pode ficar vazio.\n");
+            if (!textoNaoVazio(nome)) {
+                Println("Nome não pode ficar vazio.\n");
             }
         }
 
         // idade
         int idade = -1;
         while (idade <= 0) {
-            Utilitarios.print("Idade: ");
+            Print("Idade: ");
             try {
                 idade = Integer.parseInt(sc.nextLine());
             } catch (Exception e) {
                 idade = -1; // entrada inválida
             }
             if (idade <= 0) {
-                Utilitarios.println("Idade inválida.\n");
+                Println("Idade inválida.\n");
             }
         }
 
         // principal queixa
         String principalQueixa = "";
-        while (!Utilitarios.textoNaoVazio(principalQueixa)) {
-            Utilitarios.print("Principal Queixa: ");
+        while (!textoNaoVazio(principalQueixa)) {
+            Print("Principal Queixa: ");
             principalQueixa = sc.nextLine();
-            if (!Utilitarios.textoNaoVazio(principalQueixa)) {
-                Utilitarios.println("Principal queixa não pode ficar vazia.\n");
+            if (!textoNaoVazio(principalQueixa)) {
+                Println("Principal queixa não pode ficar vazia.\n");
             }
         }
 
         // CPF e validação
         String cpf = "";
         while (true) {
-            Utilitarios.print("CPF: ");
+            Print("CPF: ");
             cpf = sc.nextLine();
 
-            if (!Utilitarios.cpfValido(cpf)) {
-                Utilitarios.println("CPF inválido!\n");
+            if (!cpfValido(cpf)) {
+                Println("CPF inválido!\n");
             } else if (hospital.buscarPessoa(cpf) != null) {
-                Utilitarios.println("CPF já cadastrado!\n");
+                Println("CPF já cadastrado!\n");
             } else {
                 break;
             }
@@ -80,11 +80,11 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
         // telefone
         String telefone = "";
         while (true) {
-            Utilitarios.print("Telefone: ");
+            Print("Telefone: ");
             telefone = sc.nextLine();
 
-            if (!Utilitarios.telefoneValido(telefone)) {
-                Utilitarios.println("Telefone inválido!\n");
+            if (!telefoneValido(telefone)) {
+                Println("Telefone inválido!\n");
             } else {
                 break;
             }
@@ -93,34 +93,34 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
         // email
         String email = "";
         while (true) {
-            Utilitarios.print("Email: ");
+            Print("Email: ");
             email = sc.nextLine();
 
-            if (!Utilitarios.emailValido(email)) {
-                Utilitarios.println("Email inválido!\n");
+            if (!emailValido(email)) {
+                Println("Email inválido!\n");
             } else {
                 break;
             }
         }
 
         // endereço
-        Utilitarios.print("Endereço: ");
+        Print("Endereço: ");
         String endereco = sc.nextLine();
 
         // senha
         String senha = "";
-        while (!Utilitarios.textoNaoVazio(senha) || senha.length() < 4) {
-            Utilitarios.print("Senha: ");
+        while (!textoNaoVazio(senha) || senha.length() < 4) {
+            Print("Senha: ");
             senha = sc.nextLine();
-            if (!Utilitarios.textoNaoVazio(senha) || senha.length() < 4) {
-                Utilitarios.println("Senha inválida (mínimo 4 caracteres).\n");
+            if (!textoNaoVazio(senha) || senha.length() < 4) {
+                Println("Senha inválida (mínimo 4 caracteres).\n");
             }
         }
 
         // criação do paciente
         Paciente p = new Paciente(
-                Utilitarios.gerarIdUnico(),
-                Utilitarios.capitalizarNome(nome),
+                gerarIdUnico(),
+                capitalizarNome(nome),
                 cpf,
                 telefone,
                 email,
@@ -142,14 +142,14 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
                 .toList();
 
         if (pacientes.isEmpty()) {
-            Utilitarios.println("Nenhum paciente encontrado.\n");
+            Println("Nenhum paciente encontrado.\n");
             return;
         }
 
-        Utilitarios.println("\n--- LISTA DE PACIENTES ---");
+        Println("\n--- LISTA DE PACIENTES ---");
         for (Paciente p : pacientes) {
             p.exibirInformacoes(); // exibe informações detalhadas
-            Utilitarios.println("---------------------------");
+            Println("---------------------------");
         }
     }
 
@@ -168,19 +168,19 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
     }
 
     public void buscarPaciente() {
-        Utilitarios.print("Informe o CPF do paciente: ");
+        Print("Informe o CPF do paciente: ");
         String cpf = sc.nextLine();
 
         Paciente p = buscar(cpf);
 
         if (p == null) {
-            Utilitarios.println("Paciente não encontrado.\n");
+            Println("Paciente não encontrado.\n");
             return;
         }
 
-        Utilitarios.println("\n--- DADOS DO PACIENTE ---");
+        Println("\n--- DADOS DO PACIENTE ---");
         p.exibirInformacoes();
-        Utilitarios.println("---------------------------\n");
+        Println("---------------------------\n");
     }
 
     // Editar
@@ -198,29 +198,29 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
     }
 
     public void editarPaciente() {
-        Utilitarios.print("Informe o CPF do paciente a editar: ");
+        Print("Informe o CPF do paciente a editar: ");
         String cpf = sc.nextLine();
 
         Paciente antigo = buscar(cpf);
         if (antigo == null) {
-            Utilitarios.println("Paciente não encontrado.\n");
+            Println("Paciente não encontrado.\n");
             return;
         }
 
-        Utilitarios.println("\n--- EDITAR PACIENTE ---");
+        Println("\n--- EDITAR PACIENTE ---");
 
         // atualiza nome
-        Utilitarios.print("Novo nome (atual: " + antigo.getNome() + "): ");
+        Print("Novo nome (atual: " + antigo.getNome() + "): ");
         String nome = sc.nextLine();
-        if (!Utilitarios.textoNaoVazio(nome)) {
+        if (!textoNaoVazio(nome)) {
             nome = antigo.getNome();
         }
 
         // atualiza idade
         int idade = antigo.getIdade();
-        Utilitarios.print("Nova idade (atual: " + antigo.getIdade() + "): ");
+        Print("Nova idade (atual: " + antigo.getIdade() + "): ");
         String idadeStr = sc.nextLine();
-        if (Utilitarios.textoNaoVazio(idadeStr)) {
+        if (textoNaoVazio(idadeStr)) {
             try {
                 int novaIdade = Integer.parseInt(idadeStr);
                 if (novaIdade > 0) idade = novaIdade;
@@ -228,43 +228,43 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
         }
 
         // atualiza principal queixa
-        Utilitarios.print("Nova principal queixa (atual: " + antigo.getPrincipalQueixa() + "): ");
+        Print("Nova principal queixa (atual: " + antigo.getPrincipalQueixa() + "): ");
         String principalQueixa = sc.nextLine();
-        if (!Utilitarios.textoNaoVazio(principalQueixa)) {
+        if (!textoNaoVazio(principalQueixa)) {
             principalQueixa = antigo.getPrincipalQueixa();
         }
 
         // atualiza telefone
-        Utilitarios.print("Novo telefone (atual: " + antigo.getTelefone() + "): ");
+        Print("Novo telefone (atual: " + antigo.getTelefone() + "): ");
         String telefone = sc.nextLine();
-        if (!Utilitarios.textoNaoVazio(telefone)) {
+        if (!textoNaoVazio(telefone)) {
             telefone = antigo.getTelefone();
-        } else if (!Utilitarios.telefoneValido(telefone)) {
-            Utilitarios.println("Telefone inválido.\n");
+        } else if (!telefoneValido(telefone)) {
+            Println("Telefone inválido.\n");
             return;
         }
 
         // atualiza email
-        Utilitarios.print("Novo email (atual: " + antigo.getEmail() + "): ");
+        Print("Novo email (atual: " + antigo.getEmail() + "): ");
         String email = sc.nextLine();
-        if (!Utilitarios.textoNaoVazio(email)) {
+        if (!textoNaoVazio(email)) {
             email = antigo.getEmail();
-        } else if (!Utilitarios.emailValido(email)) {
-            Utilitarios.println("Email inválido.\n");
+        } else if (!emailValido(email)) {
+            Println("Email inválido.\n");
             return;
         }
 
         // atualiza endereço
-        Utilitarios.print("Novo endereço (atual: " + antigo.getEndereco() + "): ");
+        Print("Novo endereço (atual: " + antigo.getEndereco() + "): ");
         String endereco = sc.nextLine();
-        if (!Utilitarios.textoNaoVazio(endereco)) {
+        if (!textoNaoVazio(endereco)) {
             endereco = antigo.getEndereco();
         }
 
         // cria paciente atualizado
         Paciente novo = new Paciente(
                 antigo.getId(),
-                Utilitarios.capitalizarNome(nome),
+                capitalizarNome(nome),
                 antigo.getCpf(),
                 telefone,
                 email,
@@ -275,9 +275,9 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
         );
 
         if (editar(cpf, novo)) {
-            Utilitarios.println("Paciente atualizado com sucesso!\n");
+            Println("Paciente atualizado com sucesso!\n");
         } else {
-            Utilitarios.println("Erro ao atualizar paciente.\n");
+            Println("Erro ao atualizar paciente.\n");
         }
     }
 
@@ -293,13 +293,13 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
     }
 
     public void removerPaciente() {
-        Utilitarios.print("CPF do paciente para remover: ");
+        Print("CPF do paciente para remover: ");
         String cpf = sc.nextLine();
 
         if (remover(cpf)) {
-            Utilitarios.println("Paciente removido com sucesso!\n");
+            Println("Paciente removido com sucesso!\n");
         } else {
-            Utilitarios.println("Paciente não encontrado.\n");
+            Println("Paciente não encontrado.\n");
         }
     }
 }

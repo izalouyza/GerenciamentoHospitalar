@@ -157,15 +157,15 @@ public class Utilitarios {
     }
 
     // Métodos de print simplificados
-    public static void print(String texto) {
-        System.out.print(texto);
+    public static void Print(String string) {
+        System.out.print(string);
     }
 
-    public static void println(String texto) {
-        System.out.println(texto);
+    public static void Println(String string) {
+        System.out.println(string);
     }
 
-    public static void printf(String texto) {
-        System.out.printf(texto);
+    public static void Printf(String string, Object... args) {
+        System.out.printf(string, args);
     }
 }

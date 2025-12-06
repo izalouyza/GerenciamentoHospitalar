@@ -3,7 +3,7 @@ package br.com.hospital.sistema;
 import br.com.hospital.entidades.Consulta;
 import br.com.hospital.entidades.Medico;
 import br.com.hospital.entidades.Pessoa;
-import br.com.hospital.utilitarios.Utilitarios;
+import static br.com.hospital.utilitarios.Utilitarios.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,12 +16,12 @@ public class Hospital {
     // Adicionar pessoa
     public void adicionarPessoa(Pessoa p) {
         if (p == null) {
-            Utilitarios.println("Pessoa inválida! Não é possível adicionar.");
+            Println("Pessoa inválida! Não é possível adicionar.");
             return;
         }
 
         if (!p.validar()) { // valida os dados da pessoa antes de adicionar
-            Utilitarios.println("Pessoa contém dados inválidos. Cadastro não realizado.");
+            Println("Pessoa contém dados inválidos. Cadastro não realizado.");
             return;
         }
 
@@ -54,7 +54,7 @@ public class Hospital {
         for (Pessoa p : pessoas) {
             if (p instanceof Medico) { // só médicos possuem CRM
                 Medico m = (Medico) p;
-                if (Utilitarios.compararIdentificadores(m.getCrm(), crm)) {
+                if (compararIdentificadores(m.getCrm(), crm)) {
                     return true;
                 }
             }
@@ -79,7 +79,7 @@ public class Hospital {
             // comparar CRM se for médico
             if (p instanceof Medico) {
                 Medico m = (Medico) p;
-                if (Utilitarios.compararIdentificadores(m.getCrm(), identificador)) {
+                if (compararIdentificadores(m.getCrm(), identificador)) {
                     return m;
                 }
             }
@@ -91,12 +91,12 @@ public class Hospital {
     // Adicionar consulta
     public void adicionarConsulta(Consulta c) {
         if (c == null) {
-            Utilitarios.println("Consulta inválida! Não foi adicionada.");
+            Println("Consulta inválida! Não foi adicionada.");
             return;
         }
 
         if (!c.validar()) { // valida dados da consulta
-            Utilitarios.println("Consulta com dados inválidos! Não foi adicionada.");
+            Println("Consulta com dados inválidos! Não foi adicionada.");
             return;
         }
 
@@ -112,7 +112,7 @@ public class Hospital {
         if (id == null) return null;
 
         for (Consulta c : consultas) {
-            if (Utilitarios.compararIdentificadores(c.getId(), id)) {
+            if (compararIdentificadores(c.getId(), id)) {
                 return c;
             }
         }

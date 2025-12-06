@@ -1,7 +1,7 @@
 package br.com.hospital.entidades;
 
 import br.com.hospital.interfaces.Validavel;
-import br.com.hospital.utilitarios.Utilitarios;
+import static br.com.hospital.utilitarios.Utilitarios.*;
 
 public class Medico extends Pessoa implements Validavel {
 
@@ -16,7 +16,7 @@ public class Medico extends Pessoa implements Validavel {
         super(id, nome, cpf, telefone, email, endereco, senha, "MEDICO");
 
         this.crm = crm;
-        this.especialidade = Utilitarios.normalizarTexto(especialidade);
+        this.especialidade = normalizarTexto(especialidade);
     }
 
     public String getCrm() {
@@ -28,14 +28,14 @@ public class Medico extends Pessoa implements Validavel {
     }
 
     public void setEspecialidade(String especialidade) {
-        this.especialidade = Utilitarios.normalizarTexto(especialidade);
+        this.especialidade = normalizarTexto(especialidade);
     }
 
     @Override
     public void exibirInformacoes() {
         super.exibirInformacoes();
-        Utilitarios.println("CRM: " + crm);
-        Utilitarios.println("Especialidade: " + especialidade);
+        Println("CRM: " + crm);
+        Println("Especialidade: " + especialidade);
     }
 
     // Implementação Validável
@@ -54,7 +54,7 @@ public class Medico extends Pessoa implements Validavel {
             return false;
         }
 
-        if (!Utilitarios.crmValido(crm)) {
+        if (!crmValido(crm)) {
             mensagemValidacao = "CRM inválido. Use apenas números com 4 a 10 dígitos.";
             return false;
         }

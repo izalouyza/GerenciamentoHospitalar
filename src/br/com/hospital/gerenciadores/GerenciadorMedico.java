@@ -3,7 +3,7 @@ package br.com.hospital.gerenciadores;
 import br.com.hospital.entidades.Medico;
 import br.com.hospital.interfaces.Gerenciavel;
 import br.com.hospital.sistema.Hospital;
-import br.com.hospital.utilitarios.Utilitarios;
+import static br.com.hospital.utilitarios.Utilitarios.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,67 +23,67 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
     @Override
     public void adicionar(Medico medico) {
         hospital.adicionarPessoa(medico); // adiciona ao hospital
-        Utilitarios.println("Médico cadastrado com sucesso!\n");
+        Println("Médico cadastrado com sucesso!\n");
     }
 
     public void cadastrarMedico() {
-        Utilitarios.println("\n---CADASTRO DE MÉDICO---");
+        Println("\n---CADASTRO DE MÉDICO---");
 
         // captura do nome do médico
         String nome = "";
         while (true) {
-            Utilitarios.print("Nome: ");
+            Print("Nome: ");
             nome = sc.nextLine();
 
             if (!nome.isBlank()) break;
-            Utilitarios.println("O nome não pode ser vazio!");
+            Println("O nome não pode ser vazio!");
         }
 
         // captura do CPF e validação
         String cpf = "";
         while (true) {
-            Utilitarios.print("CPF: ");
+            Print("CPF: ");
             cpf = sc.nextLine();
 
-            if (!Utilitarios.cpfValido(cpf)) {
-                Utilitarios.println("CPF inválido!");
+            if (!cpfValido(cpf)) {
+                Println("CPF inválido!");
             } else if (hospital.cpfExiste(cpf)) {
-                Utilitarios.println("Já existe uma pessoa com esse CPF!");
+                Println("Já existe uma pessoa com esse CPF!");
             } else {
                 break;
             }
         }
 
         // coleta de telefone, email e endereço
-        Utilitarios.print("Telefone: ");
+        Print("Telefone: ");
         String telefone = sc.nextLine();
 
-        Utilitarios.print("Email: ");
+        Print("Email: ");
         String email = sc.nextLine();
 
-        Utilitarios.print("Endereço: ");
+        Print("Endereço: ");
         String endereco = sc.nextLine();
 
         // coleta de senha
         String senha = "";
         while (true) {
-            Utilitarios.print("Senha: ");
+            Print("Senha: ");
             senha = sc.nextLine();
 
             if (!senha.isBlank()) break;
-            Utilitarios.println("A senha não pode ser vazia!");
+            Println("A senha não pode ser vazia!");
         }
 
         // coleta e validação do CRM
         String crm = "";
         while (true) {
-            Utilitarios.print("CRM: ");
+            Print("CRM: ");
             crm = sc.nextLine();
 
-            if (!Utilitarios.crmValido(crm)) {
-                Utilitarios.println("CRM inválido!");
+            if (!crmValido(crm)) {
+                Println("CRM inválido!");
             } else if (crmExiste(crm)) {
-                Utilitarios.println("Já existe um médico com esse CRM!");
+                Println("Já existe um médico com esse CRM!");
             } else {
                 break;
             }
@@ -92,16 +92,16 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
         // coleta da especialidade
         String especialidade = "";
         while (true) {
-            Utilitarios.print("Especialidade: ");
+            Print("Especialidade: ");
             especialidade = sc.nextLine();
 
             if (!especialidade.isBlank()) break;
-            Utilitarios.println("A especialidade não pode ser vazia!");
+            Println("A especialidade não pode ser vazia!");
         }
 
         // cria o objeto médico
         Medico m = new Medico(
-                Utilitarios.gerarIdUnico(),
+                gerarIdUnico(),
                 nome,
                 cpf,
                 telefone,
@@ -113,7 +113,7 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
         );
 
         if (!m.validar()) {
-            Utilitarios.println("ERRO: " + m.getMensagemValidacao());
+            Println("ERRO: " + m.getMensagemValidacao());
             return;
         }
 
@@ -129,15 +129,15 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
                 .toList();
 
         if (medicos.isEmpty()) {
-            Utilitarios.println("Nenhum médico encontrado.\n");
+            Println("Nenhum médico encontrado.\n");
             return;
         }
 
         // exibe cada médico
-        Utilitarios.println("\n--- LISTA DE MÉDICOS ---");
+        Println("\n--- LISTA DE MÉDICOS ---");
         for (Medico m : medicos) {
             m.exibirInformacoes();
-            Utilitarios.println("---------------------------");
+            Println("---------------------------");
         }
     }
 
@@ -161,7 +161,7 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
         for (var p : hospital.getPessoas()) {
             if (p instanceof Medico) {
                 Medico m = (Medico) p;
-                if (Utilitarios.compararIdentificadores(m.getCrm(), crm)) {
+                if (compararIdentificadores(m.getCrm(), crm)) {
                     return true;
                 }
             }
@@ -170,19 +170,19 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
     }
 
     public void buscarMedico() {
-        Utilitarios.print("Informe o CRM do médico: ");
+        Print("Informe o CRM do médico: ");
         String crm = sc.nextLine();
 
         Medico m = buscar(crm);
 
         if (m == null) {
-            Utilitarios.println("Médico não encontrado.\n");
+            Println("Médico não encontrado.\n");
             return;
         }
 
-        Utilitarios.println("\n--- DADOS DO MÉDICO ---");
+        Println("\n--- DADOS DO MÉDICO ---");
         m.exibirInformacoes();
-        Utilitarios.println("---------------------------\n");
+        Println("---------------------------\n");
     }
 
     @Override
@@ -198,30 +198,30 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
     }
 
     public void editarMedico() {
-        Utilitarios.print("Informe o CRM do médico a editar: ");
+        Print("Informe o CRM do médico a editar: ");
         String crm = sc.nextLine();
 
         Medico antigo = buscar(crm);
         if (antigo == null) {
-            Utilitarios.println("Médico não encontrado.\n");
+            Println("Médico não encontrado.\n");
             return;
         }
 
-        Utilitarios.println("\n--- EDITAR MÉDICO ---");
+        Println("\n--- EDITAR MÉDICO ---");
 
-        Utilitarios.print("Novo nome (atual: " + antigo.getNome() + "): ");
+        Print("Novo nome (atual: " + antigo.getNome() + "): ");
         String nome = sc.nextLine();
 
-        Utilitarios.print("Novo telefone (atual: " + antigo.getTelefone() + "): ");
+        Print("Novo telefone (atual: " + antigo.getTelefone() + "): ");
         String telefone = sc.nextLine();
 
-        Utilitarios.print("Novo email (atual: " + antigo.getEmail() + "): ");
+        Print("Novo email (atual: " + antigo.getEmail() + "): ");
         String email = sc.nextLine();
 
-        Utilitarios.print("Novo endereço (atual: " + antigo.getEndereco() + "): ");
+        Print("Novo endereço (atual: " + antigo.getEndereco() + "): ");
         String endereco = sc.nextLine();
 
-        Utilitarios.print("Nova especialidade (atual: " + antigo.getEspecialidade() + "): ");
+        Print("Nova especialidade (atual: " + antigo.getEspecialidade() + "): ");
         String especialidade = sc.nextLine();
 
         Medico novo = new Medico(
@@ -237,14 +237,14 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
         );
 
         if (!novo.validar()) {
-            Utilitarios.println("ERRO: " + novo.getMensagemValidacao());
+            Println("ERRO: " + novo.getMensagemValidacao());
             return;
         }
 
         if (editar(crm, novo)) {
-            Utilitarios.println("Médico atualizado com sucesso!\n");
+            Println("Médico atualizado com sucesso!\n");
         } else {
-            Utilitarios.println("Erro ao atualizar médico.\n");
+            Println("Erro ao atualizar médico.\n");
         }
     }
 
@@ -259,13 +259,13 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
     }
 
     public void removerMedico() {
-        Utilitarios.print("CRM do médico para remover: ");
+        Print("CRM do médico para remover: ");
         String crm = sc.nextLine();
 
         if (remover(crm)) {
-            Utilitarios.println("Médico removido com sucesso!\n");
+            Println("Médico removido com sucesso!\n");
         } else {
-            Utilitarios.println("Médico não encontrado.\n");
+            Println("Médico não encontrado.\n");
         }
     }
 
