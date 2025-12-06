@@ -8,7 +8,7 @@ import br.com.hospital.gerenciadores.GerenciadorMedico;
 import br.com.hospital.gerenciadores.GerenciadorPaciente;
 import br.com.hospital.sistema.Hospital;
 import br.com.hospital.sistema.Login;
-import br.com.hospital.utilitarios.Utilitarios;
+import static br.com.hospital.utilitarios.Utilitarios.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,44 +36,44 @@ public class Main {
 
         Login login = new Login(usuarios); // Sistema de login
 
-        Utilitarios.println("---SISTEMA DE GERENCIAMENTO HOSPITALAR---\n");
+        Println("---SISTEMA DE GERENCIAMENTO HOSPITALAR---\n");
 
         while (true) { // Loop principal do sistema
             boolean autenticado = false;
 
             // LOOP LOGIN
             while (!autenticado) {
-                Utilitarios.println("---LOGIN---\n");
-                Utilitarios.print("CPF: ");
+                Println("---LOGIN---\n");
+                Print("CPF: ");
                 String cpf = sc.nextLine();
-                Utilitarios.print("Senha: ");
+                Print("Senha: ");
                 String senha = sc.nextLine();
 
                 try {
                     if (login.autenticar(cpf, senha)) { // Tenta autenticar
                         autenticado = true;
-                        Utilitarios.println("Login realizado.\n");
+                        Println("Login realizado.\n");
                     }
                 } catch (LoginException e) {
-                    Utilitarios.println(e.getMessage() + "\n"); // Erros de login
+                    Println(e.getMessage() + "\n"); // Erros de login
                 }
             }
 
             // MENU PRINCIPAL
             int opcaoPrincipal = -1;
             while (opcaoPrincipal != 0 && opcaoPrincipal != 7) { // 0 = sair, 7 = logout
-                Utilitarios.println("---- MENU PRINCIPAL ----");
-                Utilitarios.println("1. Médico");
-                Utilitarios.println("2. Paciente");
-                Utilitarios.println("3. Consulta");
-                Utilitarios.println("7. Logout");
-                Utilitarios.println("0. Sair");
-                Utilitarios.print("Escolha uma opção: ");
+                Println("---- MENU PRINCIPAL ----");
+                Println("1. Médico");
+                Println("2. Paciente");
+                Println("3. Consulta");
+                Println("7. Logout");
+                Println("0. Sair");
+                Print("Escolha uma opção: ");
 
                 try {
                     opcaoPrincipal = Integer.parseInt(sc.nextLine()); // Lê opção
                 } catch (Exception e) {
-                    Utilitarios.println("Opção inválida.\n");
+                    Println("Opção inválida.\n");
                     continue;
                 }
 
@@ -81,14 +81,14 @@ public class Main {
                     case 1 -> { // MENU MÉDICO
                         int opcao = -1;
                         while (opcao != 0) {
-                            Utilitarios.println("\n--- MENU MÉDICO ---");
-                            Utilitarios.println("1. Cadastrar Médico");
-                            Utilitarios.println("2. Editar Médico");
-                            Utilitarios.println("3. Listar Médicos");
-                            Utilitarios.println("4. Remover Médico");
-                            Utilitarios.println("5. Buscar Médico");
-                            Utilitarios.println("0. Voltar");
-                            Utilitarios.print("Escolha uma opção: ");
+                            Println("\n--- MENU MÉDICO ---");
+                            Println("1. Cadastrar Médico");
+                            Println("2. Editar Médico");
+                            Println("3. Listar Médicos");
+                            Println("4. Remover Médico");
+                            Println("5. Buscar Médico");
+                            Println("0. Voltar");
+                            Print("Escolha uma opção: ");
                             try { opcao = Integer.parseInt(sc.nextLine()); } catch (Exception e) { continue; }
 
                             switch (opcao) {
@@ -97,8 +97,8 @@ public class Main {
                                 case 3 -> gerMedico.listarMedicos(); // lista médicos
                                 case 4 -> gerMedico.removerMedico(); // remove médico
                                 case 5 -> gerMedico.buscarMedico(); // busca médico
-                                case 0 -> Utilitarios.println("Voltando ao menu principal...\n");
-                                default -> Utilitarios.println("Opção inválida.\n");
+                                case 0 -> Println("Voltando ao menu principal...\n");
+                                default -> Println("Opção inválida.\n");
                             }
                         }
                     }
@@ -106,14 +106,14 @@ public class Main {
                     case 2 -> { // MENU PACIENTE
                         int opcao = -1;
                         while (opcao != 0) {
-                            Utilitarios.println("\n--- MENU PACIENTE ---");
-                            Utilitarios.println("1. Cadastrar Paciente");
-                            Utilitarios.println("2. Editar Paciente");
-                            Utilitarios.println("3. Listar Pacientes");
-                            Utilitarios.println("4. Remover Paciente");
-                            Utilitarios.println("5. Buscar Paciente");
-                            Utilitarios.println("0. Voltar");
-                            Utilitarios.print("Escolha uma opção: ");
+                            Println("\n--- MENU PACIENTE ---");
+                            Println("1. Cadastrar Paciente");
+                            Println("2. Editar Paciente");
+                            Println("3. Listar Pacientes");
+                            Println("4. Remover Paciente");
+                            Println("5. Buscar Paciente");
+                            Println("0. Voltar");
+                            Print("Escolha uma opção: ");
                             try { opcao = Integer.parseInt(sc.nextLine()); } catch (Exception e) { continue; }
 
                             switch (opcao) {
@@ -122,8 +122,8 @@ public class Main {
                                 case 3 -> gerPaciente.listarPacientes();
                                 case 4 -> gerPaciente.removerPaciente();
                                 case 5 -> gerPaciente.buscarPaciente();
-                                case 0 -> Utilitarios.println("Voltando ao menu principal...\n");
-                                default -> Utilitarios.println("Opção inválida.\n");
+                                case 0 -> Println("Voltando ao menu principal...\n");
+                                default -> Println("Opção inválida.\n");
                             }
                         }
                     }
@@ -131,18 +131,18 @@ public class Main {
                     case 3 -> { // MENU CONSULTA
                         int opcao = -1;
                         while (opcao != 0) {
-                            Utilitarios.println("\n--- MENU CONSULTA ---");
-                            Utilitarios.println("1. Agendar Consulta");
-                            Utilitarios.println("2. Cancelar Consulta");
-                            Utilitarios.println("3. Listar Consultas");
-                            Utilitarios.println("4. Buscar Consulta por Paciente");
-                            Utilitarios.println("0. Voltar");
-                            Utilitarios.print("Escolha uma opção: ");
+                            Println("\n--- MENU CONSULTA ---");
+                            Println("1. Agendar Consulta");
+                            Println("2. Cancelar Consulta");
+                            Println("3. Listar Consultas");
+                            Println("4. Buscar Consulta por Paciente");
+                            Println("0. Voltar");
+                            Print("Escolha uma opção: ");
 
                             try {
                                 opcao = Integer.parseInt(sc.nextLine());
                             } catch (Exception e) {
-                                Utilitarios.println("Opção inválida.\n");
+                                Println("Opção inválida.\n");
                                 continue;
                             }
 
@@ -151,21 +151,21 @@ public class Main {
                                 case 2 -> gerConsulta.cancelarAgendamento();
                                 case 3 -> gerConsulta.listarConsultas();
                                 case 4 -> gerConsulta.buscarConsulta();
-                                case 0 -> Utilitarios.println("Voltando ao menu principal...\n");
-                                default -> Utilitarios.println("Opção inválida.\n");
+                                case 0 -> Println("Voltando ao menu principal...\n");
+                                default -> Println("Opção inválida.\n");
                             }
                         }
                     }
 
-                    case 7 -> Utilitarios.println("\nVocê saiu da conta.\n"); // Logout
+                    case 7 -> Println("\nVocê saiu da conta.\n"); // Logout
 
                     case 0 -> { // Sair do sistema
-                        Utilitarios.println("Encerrando...");
+                        Println("Encerrando...");
                         sc.close();
                         return;
                     }
 
-                    default -> Utilitarios.println("Opção inválida.\n");
+                    default -> Println("Opção inválida.\n");
                 }
             }
         }
