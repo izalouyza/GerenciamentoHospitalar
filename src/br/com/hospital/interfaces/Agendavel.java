@@ -1,11 +1,15 @@
 package br.com.hospital.interfaces;
 
+import br.com.hospital.entidades.Medico;
+import br.com.hospital.entidades.Paciente;
+
 public interface Agendavel {
-    void agendar(String dataHora);
+
+    void agendar();
 
     void cancelarAgendamento();
 
-    String getDataHora();
+    void listarConsultas();
 
-    String getResumoAgendamento();
+    void buscarConsulta();
 }
