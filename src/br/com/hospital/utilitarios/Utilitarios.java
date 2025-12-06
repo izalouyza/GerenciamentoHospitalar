@@ -71,10 +71,12 @@ public class Utilitarios {
         String tratado = crm.trim();
         int tamanho = tratado.length();
 
-        if (tamanho < 4) {
+        if (tamanho > 13) {
             return false;
         }
-        if (tamanho > 10) {
+        String regex = "^[1-9]\\d*-(AC|AL|AP|AM|BA|CE|DF|ES|GO|MA|MT|MS|MG|PA|PB|PR|PE|PI|RJ|RN|RS|RO|RR|SC|SP|SE|TO)$"
+                + "|^[1-9]\\d*$";
+        if (!tratado.matches(regex)) {
             return false;
         }
 

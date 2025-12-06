@@ -55,6 +55,11 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
         Utilitarios.print("CRM: ");
         String crm = sc.nextLine();
 
+        if (!Utilitarios.crmValido(crm)){
+            Utilitarios.println("CRM inválido!\n");
+            return;
+        }
+
         Utilitarios.print("Especialidade: ");
         String esp = sc.nextLine();
 
