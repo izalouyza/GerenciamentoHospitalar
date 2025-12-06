@@ -8,6 +8,8 @@ import br.com.hospital.gerenciadores.GerenciadorMedico;
 import br.com.hospital.gerenciadores.GerenciadorPaciente;
 import br.com.hospital.sistema.Hospital;
 import br.com.hospital.sistema.Login;
+import br.com.hospital.utilitarios.Utilitarios;
+
 import static br.com.hospital.utilitarios.Utilitarios.*;
 
 import java.util.ArrayList;
@@ -61,14 +63,9 @@ public class Main {
 
             // MENU PRINCIPAL
             int opcaoPrincipal = -1;
-            while (opcaoPrincipal != 0 && opcaoPrincipal != 7) { // 0 = sair, 7 = logout
-                Println("---- MENU PRINCIPAL ----");
-                Println("1. Médico");
-                Println("2. Paciente");
-                Println("3. Consulta");
-                Println("7. Logout");
-                Println("0. Fechar");
-                Print("Escolha uma opção: ");
+            while (opcaoPrincipal != 0 && opcaoPrincipal != 7) { // 0 = Fechar, 7 = logout
+
+                Utilitarios.exibirMenuPrincipalAdmin();
 
                 try {
                     opcaoPrincipal = Integer.parseInt(sc.nextLine()); // Lê opção
@@ -81,14 +78,7 @@ public class Main {
                     case 1 -> { // MENU MÉDICO
                         int opcao = -1;
                         while (opcao != 0) {
-                            Println("\n--- MENU MÉDICO ---");
-                            Println("1. Cadastrar Médico");
-                            Println("2. Editar Médico");
-                            Println("3. Listar Médicos");
-                            Println("4. Remover Médico");
-                            Println("5. Buscar Médico");
-                            Println("0. Voltar");
-                            Print("Escolha uma opção: ");
+                            Utilitarios.exibirMenuMedico();
                             try { opcao = Integer.parseInt(sc.nextLine()); } catch (Exception e) { continue; }
 
                             switch (opcao) {
@@ -106,14 +96,7 @@ public class Main {
                     case 2 -> { // MENU PACIENTE
                         int opcao = -1;
                         while (opcao != 0) {
-                            Println("\n--- MENU PACIENTE ---");
-                            Println("1. Cadastrar Paciente");
-                            Println("2. Editar Paciente");
-                            Println("3. Listar Pacientes");
-                            Println("4. Remover Paciente");
-                            Println("5. Buscar Paciente");
-                            Println("0. Voltar");
-                            Print("Escolha uma opção: ");
+                           Utilitarios.exibirMenuPaciente();
                             try { opcao = Integer.parseInt(sc.nextLine()); } catch (Exception e) { continue; }
 
                             switch (opcao) {
@@ -131,13 +114,7 @@ public class Main {
                     case 3 -> { // MENU CONSULTA
                         int opcao = -1;
                         while (opcao != 0) {
-                            Println("\n--- MENU CONSULTA ---");
-                            Println("1. Agendar Consulta");
-                            Println("2. Cancelar Consulta");
-                            Println("3. Listar Consultas");
-                            Println("4. Buscar Consulta por Paciente");
-                            Println("0. Voltar");
-                            Print("Escolha uma opção: ");
+                            Utilitarios.exibirMenuConsulta();
 
                             try {
                                 opcao = Integer.parseInt(sc.nextLine());
