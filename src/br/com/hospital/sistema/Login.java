@@ -1,48 +1,44 @@
 package br.com.hospital.sistema;
 
-import br.com.hospital.entidades.Pessoa;
 import br.com.hospital.exceptions.LoginException;
-
 import java.util.List;
 
 public class Login {
 
-    private List<Pessoa> usuarios;
-    private Pessoa usuarioLogado;
+    private final List<UsuarioSistema> usuarios;
+    private UsuarioSistema usuarioLogado;
 
-    public Login(List<Pessoa> usuarios) {
+    public Login(List<UsuarioSistema> usuarios) {
         this.usuarios = usuarios;
     }
 
-    public boolean autenticar(String cpf, String senha) throws LoginException {
-        for (Pessoa p : usuarios) {
-            if (p.getCpf().equals(cpf) && p.getSenha().equals(senha)) {
-                usuarioLogado = p;
-                return true;
+    public UsuarioSistema autenticar(String login, String senha) throws LoginException {
+
+        if (login == null || senha == null) {
+            throw new LoginException("Usuário e senha não podem ser vazios.");
+        }
+
+        String loginDigitado = login.trim();
+        String senhaDigitada = senha.trim();
+
+        for (UsuarioSistema u : usuarios) {
+
+            if (u.getUsuario().equals(loginDigitado)) {
+
+                if (u.getSenha().equals(senhaDigitada)) {
+                    usuarioLogado = u;
+                    return u; // retorna o objeto com nível de acesso
+                } else {
+                    throw new LoginException("Senha incorreta.");
+                }
             }
         }
 
-        throw new LoginException("CPF ou senha incorretos!");
+        throw new LoginException("Usuário não encontrado.");
     }
 
-    public Pessoa getUsuarioLogado() {
+    public UsuarioSistema getUsuarioLogado() {
         return usuarioLogado;
-    }
-
-    public String getNivelAcesso() {
-        if (usuarioLogado != null) {
-            return usuarioLogado.getNivelAcesso();
-        } else {
-            return null;
-        }
-    }
-
-    public boolean temPermissao(String acao) {
-        if (usuarioLogado != null) {
-            return usuarioLogado.temPermissao(acao);
-        } else {
-            return false;
-        }
     }
 
     public void logout() {
