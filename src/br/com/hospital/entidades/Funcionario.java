@@ -1,62 +1,106 @@
 package br.com.hospital.entidades;
 
-import br.com.hospital.exceptions.FuncionarioException;
-import br.com.hospital.exceptions.PacienteException;
+import br.com.hospital.interfaces.Validavel;
+import br.com.hospital.sistema.NivelAcesso;
+import br.com.hospital.sistema.UsuarioSistema;
 
-public class Funcionario extends Pessoa {
+import static br.com.hospital.utilitarios.Utilitarios.*;
+
+public class Funcionario extends Pessoa implements Validavel {
+
     private String cargo;
     private String setor;
-    private String nivelAcesso; // Ver se é necessário o uso de nivel Acesso aqui e em Pessoa :D
 
-    public Funcionario(int id, String nome, String cpf, String telefone, String email, String endereco,String senha, String nivelAcesso, String cargo, String setor) throws FuncionarioException, PacienteException {
-        super(id, nome, cpf, telefone, email, endereco, senha, nivelAcesso);
+    private UsuarioSistema credenciais; // login do funcionário
 
-        if (cargo==null || cargo.isBlank()) {
-            throw new FuncionarioException("Cargo inválido!");
-        }
+    private String mensagemValidacao = "";
 
-        if (setor==null || setor.isBlank()) {
-            throw new FuncionarioException("Setor inválido!");
-        }
+    public Funcionario(
+            String id,
+            String nome,
+            String cpf,
+            String telefone,
+            String email,
+            String endereco,
+            String cargo,
+            String setor,
+            UsuarioSistema credenciais
+    ) {
+        super(id, nome, cpf, telefone, email, endereco);
 
         this.cargo = cargo;
         this.setor = setor;
+        this.credenciais = credenciais;
     }
 
-    //getters e setters
-    public String getCargo(){
+    // -------------------------
+    // GETTERS
+    // -------------------------
+
+    public String getCargo() {
         return cargo;
     }
 
-    public void setCargo(String cargo){
-        this.cargo = cargo;
-    }
-
-    public String getSetor(){
+    public String getSetor() {
         return setor;
     }
 
-    public void setSetor(String setor){
-        this.setor = setor;
+    public UsuarioSistema getCredenciais() {
+        return credenciais;
     }
 
-    public String getNivelAcesso(){
-        return nivelAcesso;
-    }
+    // -------------------------
+    // Exibição
+    // -------------------------
 
-    public void setNivelAcesso(String nivelAcesso){
-        this.nivelAcesso = nivelAcesso;
-    }
-
-    //métodos
     @Override
-    public void exibirInformacoes(){
+    public void exibirInformacoes() {
         super.exibirInformacoes();
-        System.out.printf("""
-                Cargo: %s
-                Setor: %s
-                Nível de Acesso: %s
-                
-                """, getCargo(), getSetor(), getNivelAcesso());
+        Println("Cargo: " + cargo);
+        Println("Setor: " + setor);
+        Println("Nível de acesso: " + credenciais.getNivel());
+    }
+
+    // -------------------------
+    // Validação
+    // -------------------------
+
+    @Override
+    public boolean validar() {
+
+        if (!super.validar()) {
+            mensagemValidacao = super.getMensagemValidacao();
+            return false;
+        }
+
+        if (cargo == null || cargo.isBlank()) {
+            mensagemValidacao = "O cargo não pode ser vazio.";
+            return false;
+        }
+
+        if (setor == null || setor.isBlank()) {
+            mensagemValidacao = "O setor não pode ser vazio.";
+            return false;
+        }
+
+        if (credenciais == null) {
+            mensagemValidacao = "Credenciais não atribuídas ao funcionário.";
+            return false;
+        }
+
+        if (credenciais.getNivel() != NivelAcesso.ADMIN &&
+                credenciais.getNivel() != NivelAcesso.SECRETARIA) {
+
+            mensagemValidacao = "Funcionário deve ter nível ADMIN ou SECRETARIA.";
+            return false;
+        }
+
+        mensagemValidacao = "";
+        return true;
+    }
+
+    @Override
+    public String getMensagemValidacao() {
+        return mensagemValidacao;
     }
 }
