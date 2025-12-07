@@ -1,13 +1,14 @@
 package br.com.hospital.interfaces;
 
 public interface Gerenciavel<T> {
-    void adicionar(T elemento) throws Exception;
 
-    void listar() throws Exception;
+    void adicionar(T elemento);
 
-    T buscar(String identificador) throws Exception;
+    void listar();
 
-    boolean editar(String identificador, T novoElemento) throws Exception;
+    T buscar(String identificador);
 
-    boolean remover(String identificador) throws Exception;
+    boolean editar(String identificador, T novoElemento);
+
+    boolean remover(String identificador);
 }
