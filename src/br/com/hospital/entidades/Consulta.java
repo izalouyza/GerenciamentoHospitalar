@@ -1,86 +1,33 @@
 package br.com.hospital.entidades;
 
-import br.com.hospital.exceptions.ConsultaException;
-import br.com.hospital.interfaces.Agendavel;
-import br.com.hospital.interfaces.Identificavel;
 import br.com.hospital.interfaces.Validavel;
+import static br.com.hospital.utilitarios.Utilitarios.*;
 
-public class Consulta implements Identificavel, Agendavel, Validavel {
+public class Consulta implements Validavel {
 
-    private String id;
-    private Paciente paciente;
-    private Medico medico;
-    private String dataHora;
-    private String descricao;
+    private final String id;       // ID único da consulta
+    private Paciente paciente;     // paciente associado
+    private Medico medico;         // médico responsável
+    private String dataHora;       // formato dd/MM/yyyy HH:mm
 
-    public Consulta(String id, Paciente paciente, Medico medico, String dataHora, String descricao) throws ConsultaException {
+    private String mensagemValidacao = "";
 
-        if (paciente == null || !paciente.validar()){
-            throw new ConsultaException("Paciente inválido");
-        }
+    public Consulta(String id, Paciente paciente, Medico medico, String dataHora) {
 
-        if (medico == null || !medico.validar()){
-            throw new ConsultaException("Médico inválido");
-        }
+        // Se ID não for informado, gerar automaticamente
+        this.id = (id == null || id.isBlank()) ? gerarIdUnico() : id;
 
-        if (dataHora == null || !dataHora.isBlank()){
-            throw new ConsultaException("Data e hora inválidas");
-        }
-
-        this.id = id;
         this.paciente = paciente;
         this.medico = medico;
         this.dataHora = dataHora;
-        this.descricao = descricao;
     }
 
-    @Override
-    public String getIdentificador() {
+    // -------------------
+    // GETTERS E SETTERS
+    // -------------------
+
+    public String getId() {
         return id;
-    }
-
-    @Override
-    public void agendar(String dataHora) {
-        this.dataHora = dataHora;
-    }
-
-    @Override
-    public void cancelarAgendamento() {
-        this.dataHora = null;
-    }
-
-    @Override
-    public String getDataHora() {
-        return dataHora;
-    }
-
-    @Override
-    public String getResumoAgendamento() {
-        return "Consulta " + id + " - " + medico.getNome() + " com " + paciente.getNome() + " em " + dataHora;
-    }
-
-    @Override
-    public boolean validar() {
-
-        if (paciente == null || !paciente.validar()) return false;
-        if (medico == null || !medico.validar()) return false;
-
-        if (dataHora == null || dataHora.isBlank()) return false;
-
-        return true;
-    }
-
-    @Override
-    public String getMensagemValidacao() {
-        if (paciente == null) return "Paciente inválido.";
-        if (!paciente.validar()) return paciente.getMensagemValidacao();
-
-        if (medico == null) return "Médico inválido.";
-        if (!medico.validar()) return medico.getMensagemValidacao();
-
-        if (dataHora == null || dataHora.isBlank()) return "Data e hora inválidas.";
-
-        return "Consulta válida.";
     }
 
     public Paciente getPaciente() {
@@ -91,8 +38,8 @@ public class Consulta implements Identificavel, Agendavel, Validavel {
         return medico;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public String getDataHora() {
+        return dataHora;
     }
 
     public void setPaciente(Paciente paciente) {
@@ -107,8 +54,75 @@ public class Consulta implements Identificavel, Agendavel, Validavel {
         this.dataHora = dataHora;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    // -------------------
+    // Validação
+    // -------------------
+
+    @Override
+    public boolean validar() {
+
+        if (paciente == null) {
+            mensagemValidacao = "Paciente não informado.";
+            return false;
+        }
+
+        if (medico == null) {
+            mensagemValidacao = "Médico não informado.";
+            return false;
+        }
+
+        if (dataHora == null || dataHora.isBlank()) {
+            mensagemValidacao = "Data/hora da consulta não informada.";
+            return false;
+        }
+
+        // Formato dd/MM/yyyy HH:mm
+        if (!dataHora.matches("\\d{2}/\\d{2}/\\d{4} \\d{2}:\\d{2}")) {
+            mensagemValidacao = "Formato inválido! Use: dd/MM/yyyy HH:mm";
+            return false;
+        }
+
+        mensagemValidacao = "";
+        return true;
     }
 
+    @Override
+    public String getMensagemValidacao() {
+        return mensagemValidacao;
+    }
+
+    // -------------------
+    // Exibição
+    // -------------------
+
+    public void exibirResumo() {
+
+        Printf("""
+                ========================
+                Dados da consulta:
+                ------------------------
+                Protocolo: %s
+                Data e Hora: %s
+                ------------------------
+                Paciente: %s
+                Idade: %d
+                Queixa: %s
+                ------------------------
+                Médico: %s
+                Especialidade: %s
+                ========================
+                """,
+                id,
+                dataHora,
+
+                // paciente
+                paciente.getNome(),
+                paciente.getIdade(),
+                paciente.getPrincipalQueixa(),
+
+                // médico
+                medico.getNome(),
+                medico.getEspecialidade()
+        );
+    }
 }
