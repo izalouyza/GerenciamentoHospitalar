@@ -1,100 +1,107 @@
 package br.com.hospital.entidades;
 
-import br.com.hospital.exceptions.MedicoException;
-import br.com.hospital.exceptions.PessoaException;
 import br.com.hospital.interfaces.Validavel;
+import br.com.hospital.sistema.UsuarioSistema;
+import br.com.hospital.sistema.NivelAcesso;
+
+import static br.com.hospital.utilitarios.Utilitarios.*;
 
 public class Medico extends Pessoa implements Validavel {
-    private String crm;
+
+    private final String crm;
     private String especialidade;
 
-    public Medico(int id, String nome, String cpf, String telefone, String email, String endereco,String senha, String nivelAcesso,
-                  String crm, String especialidade) throws MedicoException, PessoaException {
-        super(id, nome, cpf, telefone, email, endereco,senha, nivelAcesso);
+    private UsuarioSistema credenciais;  // LOGIN do médico
+    private String mensagemValidacao = "";
 
-        if (crm==null || crm.length() < 4) {
-            throw new MedicoException("CRM inválido!");
-        }
-
-        if (especialidade==null || especialidade.isBlank()) {
-            throw new MedicoException("Especialidade não pode Ser vazia!");
-        }
+    public Medico(
+            String id,
+            String nome,
+            String cpf,
+            String telefone,
+            String email,
+            String endereco,
+            String crm,
+            String especialidade,
+            UsuarioSistema credenciais
+    ) {
+        super(id, nome, cpf, telefone, email, endereco);
 
         this.crm = crm;
-        this.especialidade = especialidade;
+        this.especialidade = normalizarTexto(especialidade);
+        this.credenciais = credenciais;
     }
-    @Override
-    public void exibirInformacoes() {
-        super.exibirInformacoes();
-        System.out.printf("""
-                
-                Dados profissionais:
-                CRM: %s
-                Especialidade: %s
-                """, getCrm(), getEspecialidade());
-    }
+
+    // ----------------------------
+    // Getters próprios da classe
+    // ----------------------------
 
     public String getCrm() {
         return crm;
-    }
-
-    public void setCrm(String crm) {
-        this.crm = crm;
     }
 
     public String getEspecialidade() {
         return especialidade;
     }
 
-    public void setEspecialidade(String especialidade) {
-        this.especialidade = especialidade;
+    public UsuarioSistema getCredenciais() {
+        return credenciais;
     }
 
     @Override
+    public void exibirInformacoes() {
+        super.exibirInformacoes();
+        Println("CRM: " + crm);
+        Println("Especialidade: " + especialidade);
+    }
+
+    // ----------------------------
+    // Validação
+    // ----------------------------
+
+    @Override
     public boolean validar() {
-        if (getNome() == null || getNome().isBlank()) {
+
+        // Valida dados da classe Pessoa
+        if (!super.validar()) {
+            mensagemValidacao = super.getMensagemValidacao();
             return false;
         }
 
-        if (getCpf() == null || getCpf().length() != 11) {
-            return false;
-        }
-
+        // Validação CRM
         if (crm == null || crm.isBlank()) {
+            mensagemValidacao = "O CRM não pode ser vazio.";
             return false;
         }
 
-        if (crm.length() < 4 || crm.length() > 10) {
+        if (!crmValido(crm)) {
+            mensagemValidacao = "CRM inválido. Use apenas números com 4 a 10 dígitos.";
             return false;
         }
 
+        // Validação especialidade
         if (especialidade == null || especialidade.isBlank()) {
+            mensagemValidacao = "A especialidade não pode ser vazia.";
             return false;
         }
+
+        // Validação credenciais
+        if (credenciais == null) {
+            mensagemValidacao = "Credenciais de acesso não foram atribuídas ao médico.";
+            return false;
+        }
+
+        if (credenciais.getNivel() != NivelAcesso.MEDICO) {
+            mensagemValidacao = "Credenciais incompatíveis: o médico deve ter nível de acesso MÉDICO.";
+            return false;
+        }
+
+        mensagemValidacao = "";
         return true;
     }
 
     @Override
     public String getMensagemValidacao() {
-        if (getNome() == null || getNome().isBlank()) {
-            return "Nome inválido.";
-        }
-
-        if (getCpf() == null || getCpf().length() != 11) {
-            return "CPF inválido. Deve conter 11 dígitos.";
-        }
-
-        if (crm == null || crm.isBlank()) {
-            return "CRM não pode ser vazio.";
-        }
-
-        if (crm.length() < 4 || crm.length() > 10) {
-            return "CRM inválido. Deve ter entre 4 e 10 caracteres.";
-        }
-
-        if (especialidade == null || especialidade.isBlank()) {
-            return "Especialidade não pode ser vazia.";
-        }
-        return "Médico válido.";
+        return mensagemValidacao;
     }
 }
