@@ -1,122 +1,110 @@
 package br.com.hospital.entidades;
 
-import br.com.hospital.exceptions.PessoaException;
-import br.com.hospital.interfaces.Identificavel;
-import br.com.hospital.interfaces.Acessavel;
+import br.com.hospital.interfaces.Validavel;
+import static br.com.hospital.utilitarios.Utilitarios.*;
 
-public abstract class Pessoa implements Identificavel, Acessavel {
-    private int id;
+public abstract class Pessoa implements Validavel {
+
+    private String id;
     private String nome;
     private String cpf;
     private String telefone;
     private String email;
     private String endereco;
-    private String senha;
-    private String nivelAcesso;
 
-    public Pessoa(int id, String nome, String cpf, String telefone, String email, String endereco, String senha, String nivelAcesso) throws PessoaException {
-        if (cpf == null || cpf.length() != 11) {
-            throw new PessoaException("CPF inválido!");
-        }
+    private String mensagemValidacao;
 
-        this.id = id;
+    public Pessoa(String id, String nome, String cpf,
+                  String telefone, String email, String endereco) {
+
+        // Se não enviar ID, gera automaticamente
+        this.id = (id == null || id.isBlank()) ? gerarIdUnico() : id;
+
         this.nome = nome;
         this.cpf = cpf;
         this.telefone = telefone;
         this.email = email;
         this.endereco = endereco;
-        this.senha = senha;
-        this.nivelAcesso = nivelAcesso;
+
+        this.mensagemValidacao = "";
     }
 
-    @Override
-    public String getIdentificador() {
-        return String.valueOf(id);
-    }
+    // --------------------------
+    // GETTERS
+    // --------------------------
 
-    @Override
-    public String getNivelAcesso(){
-        return nivelAcesso;
-    }
-
-    @Override
-    public boolean temPermissao(String acao) {
-        if ("MEDICO".equals(nivelAcesso)) {
-            return acao.equals("Ver Pacientes") || acao.equals("Criar Consulta");
-        }
-
-        if ("Recepcionista".equals(nivelAcesso)) {
-            return acao.equals("Criar Consulta");
-        }
-        return false;
-    }
-
-    public String getSenha(){
-        return senha;
-    }
-
-    public void setSenha(String senha){
-        this.senha = senha;
-    }
-
-    public int getId() {
+    public String getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getNome() {
         return nome;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
     public String getCpf() {
         return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
     }
 
     public String getTelefone() {
         return telefone;
     }
 
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
     public String getEmail() {
         return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getEndereco() {
         return endereco;
     }
 
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
+    // --------------------------
+    // Validação
+    // --------------------------
+
+    @Override
+    public boolean validar() {
+
+        if (!textoNaoVazio(nome)) {
+            mensagemValidacao = "Nome inválido.";
+            return false;
+        }
+
+        if (!cpfValido(cpf)) {
+            mensagemValidacao = "CPF inválido.";
+            return false;
+        }
+
+        if (!telefoneValido(telefone)) {
+            mensagemValidacao = "Telefone inválido.";
+            return false;
+        }
+
+        if (!emailValido(email)) {
+            mensagemValidacao = "Email inválido.";
+            return false;
+        }
+
+        mensagemValidacao = "";
+        return true;
     }
 
+    @Override
+    public String getMensagemValidacao() {
+        return mensagemValidacao;
+    }
+
+    // --------------------------
+    // Exibição
+    // --------------------------
+
     public void exibirInformacoes() {
-        System.out.printf("""
-                Dados pessoais:
-                Id: %d
-                Nome: %s
-                CPF: %s
-                Telefone: %s
-                Email: %s
-                Endereco: %s
-                """,
-                id, nome, cpf, telefone, email, endereco);
+        Println("--------------------------------------------------");
+        Println("ID: " + id);
+        Println("Nome: " + nome);
+        Println("CPF: " + cpf);
+        Println("Telefone: " + telefone);
+        Println("Email: " + email);
+        Println("Endereço: " + endereco);
+        Println("--------------------------------------------------");
     }
 }
