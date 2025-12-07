@@ -1,93 +1,84 @@
 package br.com.hospital.entidades;
 
-import br.com.hospital.exceptions.PacienteException;
-import br.com.hospital.exceptions.PessoaException;
 import br.com.hospital.interfaces.Validavel;
+import static br.com.hospital.utilitarios.Utilitarios.*;
 
 public class Paciente extends Pessoa implements Validavel {
+
     private int idade;
-    private String historicoClinico;
+    private String principalQueixa;
 
-    public Paciente(int id, String nome, String cpf, String telefone, String email, String endereco,String senha, String nivelAcesso, int idade, String historicoClinico) throws PacienteException, PessoaException {
-        super(id, nome, cpf, telefone, email, endereco,senha,nivelAcesso);
+    private String mensagemValidacao = "";
 
-        if (idade <= 0 || idade >= 120) {
-            throw new PacienteException("Idade inválida!");
-        }
-
-        if (historicoClinico == null || historicoClinico.isBlank()) {
-            throw new PacienteException("Histórico Clínico não pode ser vazio!");
-        }
+    public Paciente(
+            String id,
+            String nome,
+            String cpf,
+            String telefone,
+            String email,
+            String endereco,
+            int idade,
+            String principalQueixa
+    ) {
+        // Pessoa já não recebe mais senha ou nível de acesso
+        super(id, nome, cpf, telefone, email, endereco);
 
         this.idade = idade;
-        this.historicoClinico = historicoClinico;
+        this.principalQueixa = normalizarTexto(principalQueixa);
     }
 
-    @Override
-    public void exibirInformacoes(){
-        super.exibirInformacoes();
-        System.out.printf("""
-                
-                Dados Clínicos:
-                Idade: %d
-                Histórico Clínico: %s
-                """, getIdade(), getHistoricoClinico());
-    }
+    // -------------------
+    // GETTERS
+    // -------------------
 
     public int getIdade() {
         return idade;
     }
 
-    public void setIdade(int idade) {
-        this.idade = idade;
+    public String getPrincipalQueixa() {
+        return principalQueixa;
     }
 
-    public String getHistoricoClinico() {
-        return historicoClinico;
+    // -------------------
+    // Exibição
+    // -------------------
+
+    @Override
+    public void exibirInformacoes() {
+        super.exibirInformacoes();
+        Println("Idade: " + idade);
+        Println("Principal queixa: " + principalQueixa);
     }
 
-    public void setHistoricoClinico(String historicoClinico) {
-        this.historicoClinico = historicoClinico;
-    }
+    // -------------------
+    // Validação
+    // -------------------
 
     @Override
     public boolean validar() {
-        if(getNome() == null || getNome().isBlank()){
-            return false;
-        }
-        
-        if(getCpf() == null || getCpf().length() != 11){
+
+        // Valida dados da classe Pessoa
+        if (!super.validar()) {
+            mensagemValidacao = super.getMensagemValidacao();
             return false;
         }
 
-        if(idade <= 0 || idade > 120){
+        if (idade <= 0) {
+            mensagemValidacao = "A idade deve ser maior que zero.";
             return false;
         }
 
-        if(historicoClinico == null || historicoClinico.isBlank()){
+        if (principalQueixa == null || principalQueixa.isBlank()) {
+            mensagemValidacao = "A principal queixa não pode ser vazia.";
             return false;
         }
+
+        mensagemValidacao = "";
         return true;
     }
 
     @Override
     public String getMensagemValidacao() {
-        if (getNome() == null || getNome().isBlank()) {
-            return "Nome não pode ser vazio.";
-        }
-
-        if (getCpf() == null || getCpf().length() != 11) {
-            return "CPF inválido. Deve conter 11 dígitos.";
-        }
-
-        if (idade <= 0 || idade > 120) {
-            return "Idade inválida.";
-        }
-
-        if (historicoClinico == null || historicoClinico.isBlank()) {
-            return "Histórico clínico não pode ser vazio.";
-        }
-
-        return "Paciente válido.";
+        return mensagemValidacao;
     }
 }
