@@ -1,7 +1,5 @@
 package br.com.hospital.interfaces;
 
-import br.com.hospital.exceptions.HospitalException;
-
 public interface Gerenciavel<T> {
     void adicionar(T elemento) throws Exception;
 
