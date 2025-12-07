@@ -1,4 +1,184 @@
 package br.com.hospital;
 
+import br.com.hospital.exceptions.LoginException;
+import br.com.hospital.gerenciadores.GerenciadorConsulta;
+import br.com.hospital.gerenciadores.GerenciadorMedico;
+import br.com.hospital.gerenciadores.GerenciadorPaciente;
+import br.com.hospital.sistema.Hospital;
+import br.com.hospital.sistema.Login;
+import br.com.hospital.sistema.NivelAcesso;
+import br.com.hospital.sistema.UsuarioSistema;
+import static br.com.hospital.utilitarios.Utilitarios.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+
 public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+        Hospital hospital = new Hospital();
+
+        // 1) Lista de usuários do sistema (compartilhada com Login e GerenciadorMedico)
+        List<UsuarioSistema> usuarios = new ArrayList<>();
+        usuarios.add(new UsuarioSistema("admin", "admin", NivelAcesso.ADMIN));
+        usuarios.add(new UsuarioSistema("secretaria", "1234", NivelAcesso.SECRETARIA));
+        usuarios.add(new UsuarioSistema("medico", "1234", NivelAcesso.MEDICO)); // médico padrão de teste
+
+        // 2) Login usa essa lista
+        Login login = new Login(usuarios);
+
+        // 3) Gerenciadores
+        GerenciadorMedico gerMedico = new GerenciadorMedico(hospital, sc, usuarios);
+        GerenciadorPaciente gerPaciente = new GerenciadorPaciente(hospital, sc);
+        GerenciadorConsulta gerConsulta = new GerenciadorConsulta(sc, hospital);
+
+        Println("\n--- SISTEMA HOSPITALAR ---\n");
+
+        while (true) {
+
+            UsuarioSistema usuarioLogado = null;
+
+            // -----------------------------
+            // LOGIN
+            // -----------------------------
+            while (usuarioLogado == null) {
+
+                Println("--- LOGIN ---\n");
+                Print("Usuário: ");
+                String loginDigitado = sc.nextLine();
+
+                Print("Senha: ");
+                String senhaDigitada = sc.nextLine();
+
+                try {
+                    usuarioLogado = login.autenticar(loginDigitado, senhaDigitada);
+                    Println("\nLogin realizado!\n");
+                } catch (LoginException e) {
+                    Println(e.getMessage() + "\n");
+                }
+            }
+
+            NivelAcesso nivel = usuarioLogado.getNivel();
+            int opcaoPrincipal = -1;
+
+            // -----------------------------
+            // MENU PRINCIPAL
+            // -----------------------------
+            while (opcaoPrincipal != 0) {
+
+                switch (nivel) {
+                    case ADMIN -> exibirMenuPrincipalAdmin();
+                    case SECRETARIA -> exibirMenuPrincipalFuncionario();
+                    case MEDICO -> exibirMenuPrincipalMedico();
+                }
+
+                try {
+                    opcaoPrincipal = Integer.parseInt(sc.nextLine());
+                } catch (Exception e) {
+                    Println("Opção inválida.\n");
+                    continue;
+                }
+
+                // ADMIN
+                if (nivel == NivelAcesso.ADMIN) {
+                    switch (opcaoPrincipal) {
+                        case 1 -> menuMedico(sc, gerMedico);
+                        case 2 -> menuPaciente(sc, gerPaciente);
+                        case 3 -> menuConsulta(sc, gerConsulta);
+                        case 0 -> Println("Logout realizado.\n");
+                        default -> Println("Opção inválida.\n");
+                    }
+                }
+                // SECRETARIA
+                else if (nivel == NivelAcesso.SECRETARIA) {
+                    switch (opcaoPrincipal) {
+                        case 1 -> menuPaciente(sc, gerPaciente);
+                        case 2 -> menuConsulta(sc, gerConsulta);
+                        case 0 -> Println("Logout realizado.\n");
+                        default -> Println("Opção inválida.\n");
+                    }
+                }
+                // MÉDICO
+                else if (nivel == NivelAcesso.MEDICO) {
+                    switch (opcaoPrincipal) {
+                        case 1 -> gerConsulta.listarConsultas(); // futuramente: filtrar por médico logado
+                        case 0 -> Println("Logout realizado.\n");
+                        default -> Println("Opção inválida.\n");
+                    }
+                }
+            }
+        }
+    }
+
+    // -----------------------------
+    // SUBMENUS
+    // -----------------------------
+    private static void menuMedico(Scanner sc, GerenciadorMedico gm) {
+        int opcao = -1;
+        while (opcao != 0) {
+            exibirMenuMedico();
+            try {
+                opcao = Integer.parseInt(sc.nextLine());
+            } catch (Exception e) {
+                continue;
+            }
+
+            switch (opcao) {
+                case 1 -> gm.cadastrarMedico();
+                case 2 -> gm.editarMedico();
+                case 3 -> gm.listarMedicos();
+                case 4 -> gm.removerMedico();
+                case 5 -> gm.buscarMedico();
+                case 0 -> Println("Voltando...\n");
+                default -> Println("Opção inválida.\n");
+            }
+        }
+    }
+
+    private static void menuPaciente(Scanner sc, GerenciadorPaciente gp) {
+        int opcao = -1;
+        while (opcao != 0) {
+            exibirMenuPaciente();
+            try {
+                opcao = Integer.parseInt(sc.nextLine());
+            } catch (Exception e) {
+                continue;
+            }
+
+            switch (opcao) {
+                case 1 -> gp.cadastrarPaciente();
+                case 2 -> gp.editarPaciente();
+                case 3 -> gp.listarPacientes();
+                case 4 -> gp.removerPaciente();
+                case 5 -> gp.buscarPaciente();
+                case 0 -> Println("Voltando...\n");
+                default -> Println("Opção inválida.\n");
+            }
+        }
+    }
+
+    private static void menuConsulta(Scanner sc, GerenciadorConsulta gc) {
+        int opcao = -1;
+        while (opcao != 0) {
+            exibirMenuConsulta();
+            try {
+                opcao = Integer.parseInt(sc.nextLine());
+            } catch (Exception e) {
+                continue;
+            }
+
+            switch (opcao) {
+                case 1 -> gc.agendar();
+                case 2 -> gc.cancelarAgendamento();
+                case 3 -> gc.listarConsultas();
+                case 4 -> gc.buscarConsulta();
+                case 0 -> Println("Voltando...\n");
+                default -> Println("Opção inválida.\n");
+            }
+        }
+    }
 }
