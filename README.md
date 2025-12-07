@@ -89,7 +89,7 @@ O foco principal é demonstrar a **arquitetura POO limpa, modular e extensível*
 
 - ConsultaException
 - FuncionarioException
-- GerenciadorConsultaException=
+- GerenciadorConsultaException
 - HospitalException
 - LoginException
 - MedicoException
