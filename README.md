@@ -1,23 +1,31 @@
-# Gerenciamento Hospitalar
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=6A5ACD&height=200&section=header&text=Gerenciamento%20Hospitalar&fontSize=40&fontColor=ffffff" />
+</p>
 
-Repositório contendo o projeto desenvolvido durante a 3ª unidade da disciplina **Programação Orientada a Objetos (PEX0130)**.  
+Repositório contendo o projeto desenvolvido durante a 3ª unidade da disciplina **Programação Orientada a Objetos (PEX0130)**.
 
-O objetivo é aplicar na prática os principais conceitos de POO, como classes, herança, interfaces, polimorfismo e encapsulamento, por meio da implementação de um sistema simples de gerenciamento hospitalar.
+O sistema tem como objetivo aplicar, na prática, os principais princípios de POO, como **herança**, **encapsulamento**, **polimorfismo**, **interfaces**, **exceções personalizadas** e **organização modular**, por meio da implementação de um **sistema simples de gerenciamento hospitalar**, capaz de controlar usuários, médicos, pacientes, consultas e acessos.
 
 ![Linguagem](https://img.shields.io/badge/Linguagem-Java-red)
 ![Último commit](https://img.shields.io/github/last-commit/izalouyza/GerenciamentoHospitalar)
 
 ---
 
-## Funcionalidades Principais do Projeto
+## Sumário
+- [Autores](#autores)
+- [Propósito do Projeto](#propósito-do-projeto)
+- [Funcionalidades Principais](#funcionalidades-principais)
+- [Arquitetura Orientada a Objetos](#arquitetura-orientada-a-objetos)
+- [Estrutura de Pastas](#estrutura-de-pastas)
+- [Funcionamento do Sistema](#funcionamento-do-sistema)
+- [Como Compilar e Executar](#como-compilar-e-executar)
 
----
+## Autores
 
-## 👥 Autores
+**Professor:**  
+[Bruno Borges da Silva](https://github.com/silv4bufersa)
 
-👨‍🏫 **Professor:** [Bruno Borges da Silva](https://github.com/silv4bufersa)
-
-👩‍🎓 **Discentes:**  
+**Discentes:**
 - [Alex Bruno Duarte](https://github.com/alexb7z)
 - [Harley Lucas de Souza Batista](https://github.com/harleylsb)
 - [Izadora Louyza Silva Figueiredo](https://github.com/izalouyza)
@@ -26,29 +34,78 @@ O objetivo é aplicar na prática os principais conceitos de POO, como classes, 
 - [Marcelo Caat Amaral do Nascimento](https://github.com/MarceloCaat)
 - [Maria Vitória Fernandes Rocha](https://github.com/tivitoriarocha)
 
+
+## Propósito do Projeto
+
+O projeto tem como finalidade simular um ambiente hospitalar básico, permitindo:
+
+- Gerenciar usuários (médicos, pacientes).
+- Realizar login com diferentes níveis de acesso.
+- Agendar, visualizar e gerenciar consultas.
+- Aplicar conceitos fundamentais de Programação Orientada a Objetos.
+
+O foco principal é demonstrar a **arquitetura POO limpa, modular e extensível**, estruturada em pacotes bem definidos.
+
 ---
 
-## Funcionalidades do Sistema
+## Funcionalidades Principais
 
-| Função     | Descrição                                                                                         |
-|-------------|---------------------------------------------------------------------------------------------------|
+| Funcionalidade | Descrição |
+|---------------|-----------|
+| Cadastro de Pacientes | Registro de pacientes com validações básicas. |
+| Cadastro de Médicos | Registro de médicos com CRM válido e especialização. |
+| Login | Diferentes níveis de acesso para médicos e pacientes. |
+| Agendamento de Consultas | Médicos podem criar e gerenciar consultas. |
+| Visualização de Consultas | Pacientes visualizam suas próprias consultas. |
+| Tratamento de Exceções | Exceções personalizadas garantem integridade do sistema. |
 
 ---
 
-## Funcionamento do Sistema
+## Arquitetura Orientada a Objetos
 
-O usuário interage com o sistema via menu no terminal:
+### Entidades
 
-```
-====== SISTEMA HOSPITALAR ======
-1 - Fazer login
-0 - Sair
+- Consulta
+- Funcionario
+- Medico
+- Paciente
+- Pessoa
 
-Opção: 
+### Interfaces
 
-```
-#### Menu Principal do Sistema:
+- Acessavel  
+- Agendavel  
+- Gerenciavel  
+- Identificavel  
+- Validavel  
 
+### Gerenciadores
+
+- GerenciadorConsulta
+- GerenciadorMedico
+- GerenciadorPaciente
+
+### Exceções Personalizadas
+
+- ConsultaException
+- FuncionarioException
+- GerenciadorConsultaException=
+- HospitalException
+- LoginException
+- MedicoException
+- PacienteException
+- PessoaException
+- UtilitariosException
+
+### Utilitários
+
+- Validações e funções auxiliares em `Utilitarios.java`
+
+### Sistema Principal
+
+- Hospital  
+- Login  
+- Main (ponto de entrada)  
 
 ---
 
@@ -77,7 +134,9 @@ GerenciamentoHospitalar/
 │               │   ├── PessoaException.java
 │               │   └── UtilitariosException.java
 │               ├── gerenciadores/
-│               │   └── GerenciamentoSistema.java
+│               │   ├── GerenciadorConsulta.java
+│               │   ├── GerenciadorMedico.java
+│               │   └── GerenciadorPaciente.java
 │               ├── interfaces/
 │               │   ├── Acessavel.java
 │               │   ├── Agendavel.java
@@ -93,34 +152,43 @@ GerenciamentoHospitalar/
 └── README.md
 ```
 
+## Funcionamento do Sistema
+
+O acesso ocorre via terminal:
+
+```bash
+====== SISTEMA HOSPITALAR ======
+1 - Fazer login
+0 - Sair
+Opção:
+```
+
+Após o login, médicos e pacientes visualizam menus diferentes, alinhados aos seus níveis de permissão.
+
 ---
 
 ## Como Compilar e Executar
 
-1. Certifique-se de ter o Java instalado.
+### 1. Certifique-se de ter o Java instalado  
+Recomenda-se Java 17 ou superior.
 
-2. Clone este repositório:
+### 2. Clone o repositório
 
 ```bash
 git clone https://github.com/izalouyza/GerenciamentoHospitalar
 ```
 
-3. Acesse a pasta do projeto:
-
+### 3. Acesse a pasta do projeto
 ```bash
 cd GerenciamentoHospitalar/src/br/com/hospital
 ```
 
-4. Compile os arquivos  `.java`:
-
+### 4. Compile o programa
 ```bash
-
+javac Main.java
 ```
 
-5. Execute o programa:
-
+### 5. Execute o programa
 ```bash
-
+java Main
 ```
----
-
