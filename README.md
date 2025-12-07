@@ -25,15 +25,14 @@ O sistema tem como objetivo aplicar, na prática, os principais princípios de P
 **Professor:**  
 [Bruno Borges da Silva](https://github.com/silv4bufersa)
 
-**Discentes:**
-- [Alex Bruno Duarte](https://github.com/alexb7z)
-- [Harley Lucas de Souza Batista](https://github.com/harleylsb)
-- [Izadora Louyza Silva Figueiredo](https://github.com/izalouyza)
-- [Leonardo Augusto Silva de Souza](https://github.com/LeonardAugusto)
-- [Lívian Maria Lucena Gomes Pinheiro](https://github.com/livianlucena)
-- [Marcelo Caat Amaral do Nascimento](https://github.com/MarceloCaat)
-- [Maria Vitória Fernandes Rocha](https://github.com/tivitoriarocha)
-
+<b>Discentes:</b><br>
+<a href="https://github.com/alexb7z">Alex Bruno Duarte</a><br>
+<a href="https://github.com/harleylsb">Harley Lucas de Souza Batista</a><br>
+<a href="https://github.com/izalouyza">Izadora Louyza Silva Figueiredo</a><br>
+<a href="https://github.com/LeonardAugusto">Leonardo Augusto Silva de Souza</a><br>
+<a href="https://github.com/livianlucena">Lívian Maria Lucena Gomes Pinheiro</a><br>
+<a href="https://github.com/MarceloCaat">Marcelo Caat Amaral do Nascimento</a><br>
+<a href="https://github.com/tivitoriarocha">Maria Vitória Fernandes Rocha</a>
 
 ## Propósito do Projeto
 
