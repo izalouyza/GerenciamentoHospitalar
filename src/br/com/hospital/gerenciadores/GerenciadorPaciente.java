@@ -200,10 +200,21 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
         Print("CPF do paciente para remover: ");
         String cpf = sc.nextLine();
 
-        if (remover(cpf)) {
-            Println("Paciente removido com sucesso!\n");
-        } else {
+        // Buscar antes de remover
+        Paciente p = buscar(cpf);
+
+        if (p == null) {
             Println("Paciente não encontrado.\n");
+            return;
+        }
+
+        // Remover
+        if (remover(cpf)) {
+            Println("Paciente removido com sucesso!");
+            Println("Nome: " + p.getNome());
+            Println("CPF: " + p.getCpf() + "\n");
+        } else {
+            Println("Erro ao remover paciente.\n");
         }
     }
 
