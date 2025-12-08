@@ -48,15 +48,14 @@ public class Main {
             int escolhaInicial = -1;
 
             while (escolhaInicial != 0 && escolhaInicial != 1) {
-                Println("""
+                Printf("""
                         
                         --- MENU INICIAL ---
                         
                         1. Fazer login
                         0. Encerrar sistema
                         
-                        Escolha uma opção:
-                        """);
+                        Escolha uma opção:\t""");
 
                 try {
                     escolhaInicial = Integer.parseInt(sc.nextLine());
@@ -78,7 +77,7 @@ public class Main {
             while (usuarioLogado == null) {
 
                 Println("--- LOGIN ---\n");
-                Print("Usuário (digite 0 para voltar): ");
+                Print("Usuário (digite 0 para voltar):\t");
                 String loginDigitado = sc.nextLine();
 
                 // VOLTAR PARA O MENU INICIAL
@@ -87,7 +86,7 @@ public class Main {
                     break;
                 }
 
-                Print("Senha: ");
+                Print("Senha:\t");
                 String senhaDigitada = sc.nextLine();
 
                 try {
