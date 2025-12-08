@@ -9,12 +9,14 @@ import br.com.hospital.sistema.Hospital;
 import br.com.hospital.sistema.Login;
 import br.com.hospital.sistema.NivelAcesso;
 import br.com.hospital.sistema.UsuarioSistema;
+import br.com.hospital.utilitarios.Povoamento;
+
+import static br.com.hospital.utilitarios.Utilitarios.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import static br.com.hospital.utilitarios.Utilitarios.*;
 
 public class Main {
 
@@ -25,9 +27,9 @@ public class Main {
 
         // 1) Lista de usuários do sistema (compartilhada com Login e GerenciadorMedico)
         List<UsuarioSistema> usuarios = new ArrayList<>();
-        usuarios.add(new UsuarioSistema("admin", "admin", NivelAcesso.ADMIN));
-        usuarios.add(new UsuarioSistema("secretaria", "1234", NivelAcesso.SECRETARIA));
-        usuarios.add(new UsuarioSistema("medico", "1234", NivelAcesso.MEDICO)); // médico padrão de teste
+        Povoamento.usuariosTeste(usuarios);
+        Povoamento.carregarmedicos (hospital, usuarios);
+        Povoamento.carregarpacientes(hospital);// médico padrão de teste
 
         // 2) Login usa essa lista
         Login login = new Login(usuarios);
