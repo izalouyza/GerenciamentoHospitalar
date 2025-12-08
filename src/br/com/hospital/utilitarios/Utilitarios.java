@@ -1,7 +1,5 @@
 package br.com.hospital.utilitarios;
 
-import java.util.List;
-
 public class Utilitarios {
 
     // -----------------------------
