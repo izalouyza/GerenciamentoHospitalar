@@ -195,8 +195,13 @@ public class GerenciadorConsulta implements Agendavel {
             return;
         }
 
+        // Remove
         hospital.getConsultas().remove(c);
-        Println("Consulta cancelada com sucesso.\n");
+
+        Println("\nConsulta cancelada com sucesso!");
+        Println("Paciente: " + c.getPaciente().getNome());
+        Println("Médico:   " + c.getMedico().getNome());
+        Println("Data/Hora: " + c.getDataHora() + "\n");
     }
 
     // ------------------------------------------------------------
