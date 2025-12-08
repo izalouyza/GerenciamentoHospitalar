@@ -1,4 +1,4 @@
-package br.com.hospital.sistema;
+package br.com.hospital.enums;
 
 public enum NivelAcesso {
     ADMIN,

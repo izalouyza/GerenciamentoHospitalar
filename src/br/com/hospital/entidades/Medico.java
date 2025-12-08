@@ -2,7 +2,7 @@ package br.com.hospital.entidades;
 
 import br.com.hospital.interfaces.Validavel;
 import br.com.hospital.sistema.UsuarioSistema;
-import br.com.hospital.sistema.NivelAcesso;
+import br.com.hospital.enums.NivelAcesso;
 
 import static br.com.hospital.utilitarios.Utilitarios.*;
 
@@ -50,9 +50,10 @@ public class Medico extends Pessoa implements Validavel {
 
     @Override
     public void exibirInformacoes() {
-        super.exibirInformacoes();
+        super.exibirDadosBasicos(); // Mudou aqui
         Println("CRM: " + crm);
         Println("Especialidade: " + especialidade);
+        Println("--------------------------------------------------");
     }
 
     // ----------------------------

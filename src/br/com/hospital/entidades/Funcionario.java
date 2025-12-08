@@ -1,9 +1,8 @@
 package br.com.hospital.entidades;
 
 import br.com.hospital.interfaces.Validavel;
-import br.com.hospital.sistema.NivelAcesso;
+import br.com.hospital.enums.NivelAcesso;
 import br.com.hospital.sistema.UsuarioSistema;
-
 import static br.com.hospital.utilitarios.Utilitarios.*;
 
 public class Funcionario extends Pessoa implements Validavel {
@@ -55,10 +54,11 @@ public class Funcionario extends Pessoa implements Validavel {
 
     @Override
     public void exibirInformacoes() {
-        super.exibirInformacoes();
+        super.exibirDadosBasicos(); // Mudou aqui
         Println("Cargo: " + cargo);
         Println("Setor: " + setor);
         Println("Nível de acesso: " + credenciais.getNivel());
+        Println("--------------------------------------------------");
     }
 
     // -------------------------

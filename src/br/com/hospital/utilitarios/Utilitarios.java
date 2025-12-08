@@ -1,7 +1,5 @@
 package br.com.hospital.utilitarios;
 
-import java.util.List;
-
 public class Utilitarios {
 
     // -----------------------------
@@ -189,6 +187,7 @@ public class Utilitarios {
                 1. Médico
                 2. Paciente
                 3. Consulta
+                4. Busca Geral
                 0. Logout
                 
                 Escolha uma opção: """);
