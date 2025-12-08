@@ -229,10 +229,21 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
         Print("CRM do médico para remover: ");
         String crm = sc.nextLine();
 
-        if (remover(crm)) {
-            Println("Médico removido com sucesso!\n");
-        } else {
+        // Buscar antes de remover
+        Medico m = buscar(crm);
+
+        if (m == null) {
             Println("Médico não encontrado.\n");
+            return;
+        }
+
+        // Agora remover
+        if (remover(crm)) {
+            Println("Médico removido com sucesso!");
+            Println("Nome: " + m.getNome());
+            Println("CRM: " + m.getCrm() + "\n");
+        } else {
+            Println("Erro ao remover médico.\n");
         }
     }
 
