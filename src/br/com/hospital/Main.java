@@ -8,12 +8,14 @@ import br.com.hospital.sistema.Hospital;
 import br.com.hospital.sistema.Login;
 import br.com.hospital.enums.NivelAcesso;
 import br.com.hospital.sistema.UsuarioSistema;
+import static br.com.hospital.utilitarios.Povoamento.*;
+import static br.com.hospital.utilitarios.Utilitarios.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import static br.com.hospital.utilitarios.Utilitarios.*;
+
 
 public class Main {
 
@@ -24,9 +26,9 @@ public class Main {
 
         // Lista de usuários
         List<UsuarioSistema> usuarios = new ArrayList<>();
-        usuarios.add(new UsuarioSistema("admin", "admin", NivelAcesso.ADMIN));
-        usuarios.add(new UsuarioSistema("secretaria", "1234", NivelAcesso.SECRETARIA));
-        usuarios.add(new UsuarioSistema("medico", "1234", NivelAcesso.MEDICO));
+        usuariosTeste(usuarios);
+        carregarmedicos (hospital, usuarios);
+        carregarpacientes(hospital);// médico padrão de teste
 
         Login login = new Login(usuarios);
 
