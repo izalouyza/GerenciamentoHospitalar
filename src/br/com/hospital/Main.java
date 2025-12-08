@@ -8,12 +8,12 @@ import br.com.hospital.sistema.Hospital;
 import br.com.hospital.sistema.Login;
 import br.com.hospital.sistema.NivelAcesso;
 import br.com.hospital.sistema.UsuarioSistema;
-import static br.com.hospital.utilitarios.Utilitarios.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import static br.com.hospital.utilitarios.Utilitarios.*;
 
 public class Main {
 
@@ -105,7 +105,7 @@ public class Main {
                 // MÉDICO
                 else if (nivel == NivelAcesso.MEDICO) {
                     switch (opcaoPrincipal) {
-                        case 1 -> gerConsulta.listarConsultas(); // futuramente: filtrar por médico logado
+                        case 1 -> gerConsulta.listarConsultasPorMedico(usuarioLogado);
                         case 2 -> gerConsulta.solicitarRetorno();
                         case 0 -> Println("Logout realizado.\n");
                         default -> Println("Opção inválida.\n");
