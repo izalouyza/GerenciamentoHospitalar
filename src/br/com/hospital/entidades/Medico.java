@@ -50,9 +50,10 @@ public class Medico extends Pessoa implements Validavel {
 
     @Override
     public void exibirInformacoes() {
-        super.exibirInformacoes();
+        super.exibirDadosBasicos(); // Mudou aqui
         Println("CRM: " + crm);
         Println("Especialidade: " + especialidade);
+        Println("--------------------------------------------------");
     }
 
     // ----------------------------

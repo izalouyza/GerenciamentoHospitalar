@@ -55,10 +55,11 @@ public class Funcionario extends Pessoa implements Validavel {
 
     @Override
     public void exibirInformacoes() {
-        super.exibirInformacoes();
+        super.exibirDadosBasicos(); // Mudou aqui
         Println("Cargo: " + cargo);
         Println("Setor: " + setor);
         Println("Nível de acesso: " + credenciais.getNivel());
+        Println("--------------------------------------------------");
     }
 
     // -------------------------
