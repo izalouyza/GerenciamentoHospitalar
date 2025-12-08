@@ -3,6 +3,7 @@ package br.com.hospital;
 import br.com.hospital.entidades.Pessoa;
 import br.com.hospital.exceptions.LoginException;
 import br.com.hospital.gerenciadores.GerenciadorConsulta;
+import br.com.hospital.gerenciadores.GerenciadorFuncionario;
 import br.com.hospital.gerenciadores.GerenciadorMedico;
 import br.com.hospital.gerenciadores.GerenciadorPaciente;
 import br.com.hospital.sistema.Hospital;
@@ -37,6 +38,7 @@ public class Main {
         GerenciadorMedico gerMedico = new GerenciadorMedico(hospital, sc, usuarios);
         GerenciadorPaciente gerPaciente = new GerenciadorPaciente(hospital, sc);
         GerenciadorConsulta gerConsulta = new GerenciadorConsulta(sc, hospital);
+        GerenciadorFuncionario gerFuncionario= new GerenciadorFuncionario(hospital,sc,usuarios);
 
         Println("\n--- SISTEMA HOSPITALAR ---\n");
 
@@ -92,6 +94,7 @@ public class Main {
                         case 2 -> menuPaciente(sc, gerPaciente);
                         case 3 -> menuConsulta(sc, gerConsulta);
                         case 4 -> buscaGeral(sc, hospital);
+                        case 5 -> menuFuncionario(sc,gerFuncionario);
                         case 0 -> Println("Logout realizado.\n");
                         default -> Println("Opção inválida.\n");
                     }
@@ -188,6 +191,27 @@ public class Main {
         }
     }
 
+    private static void menuFuncionario(Scanner sc, GerenciadorFuncionario gf) {
+        int opcao = -1;
+        while (opcao != 0) {
+            exibirMenuAdministraFuncionario();
+            try {
+                opcao = Integer.parseInt(sc.nextLine());
+            } catch (Exception e) {
+                continue;
+            }
+            switch (opcao) {
+                case 1 -> gf.cadastrarFuncionario();
+                case 2 -> gf.listarFuncionarios();
+                case 3 -> gf.buscarFuncionario();
+                case 4 -> gf.editarFuncionario();
+                case 5 -> gf.removerFuncionario();
+                case 0 -> Println("Voltando...\n");
+                default -> Println("Opção inválida.\n");
+            }
+        }
+
+    }
     private static void buscaGeral(Scanner sc, Hospital hospital) {
         Print("Digite o nome para buscar: ");
         String termo = sc.nextLine().toLowerCase();

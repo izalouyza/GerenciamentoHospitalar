@@ -188,6 +188,7 @@ public class Utilitarios {
                 2. Paciente
                 3. Consulta
                 4. Busca Geral
+                5. Administrar Funcionários
                 0. Logout
                 
                 Escolha uma opção: """);
@@ -263,4 +264,21 @@ public class Utilitarios {
                 
                 Escolha uma opção: """);
     }
+
+    public static void exibirMenuAdministraFuncionario() {
+        System.out.printf("""
+                
+                --- MENU ADMIN FUNCIONÁRIOS ---
+                
+                1. Cadastrar Funcionário
+                2. Listar Funcionários
+                3. Buscar Funcionário
+                4. Editar Funcionário
+                5. Remover Funcionário
+                0. Voltar ao menu anterior
+                
+                Escolha uma opção: """);
+    }
+
 }
+
