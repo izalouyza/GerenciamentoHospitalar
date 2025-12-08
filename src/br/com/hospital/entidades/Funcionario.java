@@ -1,7 +1,7 @@
 package br.com.hospital.entidades;
 
 import br.com.hospital.interfaces.Validavel;
-import br.com.hospital.sistema.NivelAcesso;
+import br.com.hospital.enums.NivelAcesso;
 import br.com.hospital.sistema.UsuarioSistema;
 
 import static br.com.hospital.utilitarios.Utilitarios.*;
