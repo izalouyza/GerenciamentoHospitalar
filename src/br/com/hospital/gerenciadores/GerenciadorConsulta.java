@@ -6,7 +6,7 @@ import br.com.hospital.entidades.Paciente;
 import br.com.hospital.interfaces.Agendavel;
 import br.com.hospital.sistema.Hospital;
 import br.com.hospital.sistema.UsuarioSistema;
-import br.com.hospital.sistema.NivelAcesso;
+import br.com.hospital.enums.NivelAcesso;
 
 import java.util.Comparator;
 import java.util.List;
