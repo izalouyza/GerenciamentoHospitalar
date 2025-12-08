@@ -1,6 +1,5 @@
 package br.com.hospital;
 
-import br.com.hospital.entidades.Pessoa;
 import br.com.hospital.exceptions.LoginException;
 import br.com.hospital.gerenciadores.GerenciadorConsulta;
 import br.com.hospital.gerenciadores.GerenciadorMedico;
@@ -9,13 +8,12 @@ import br.com.hospital.sistema.Hospital;
 import br.com.hospital.sistema.Login;
 import br.com.hospital.enums.NivelAcesso;
 import br.com.hospital.sistema.UsuarioSistema;
-import static br.com.hospital.utilitarios.Utilitarios.*;
-import static br.com.hospital.utilitarios.Povoamento.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import static br.com.hospital.utilitarios.Utilitarios.*;
 
 public class Main {
 
@@ -24,16 +22,14 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         Hospital hospital = new Hospital();
 
-        // 1) Lista de usuários do sistema (compartilhada com Login e GerenciadorMedico)
+        // Lista de usuários
         List<UsuarioSistema> usuarios = new ArrayList<>();
-        usuariosTeste(usuarios);
-        carregarmedicos (hospital, usuarios);
-        carregarpacientes(hospital);// médico padrão de teste
+        usuarios.add(new UsuarioSistema("admin", "admin", NivelAcesso.ADMIN));
+        usuarios.add(new UsuarioSistema("secretaria", "1234", NivelAcesso.SECRETARIA));
+        usuarios.add(new UsuarioSistema("medico", "1234", NivelAcesso.MEDICO));
 
-        // 2) Login usa essa lista
         Login login = new Login(usuarios);
 
-        // 3) Gerenciadores
         GerenciadorMedico gerMedico = new GerenciadorMedico(hospital, sc, usuarios);
         GerenciadorPaciente gerPaciente = new GerenciadorPaciente(hospital, sc);
         GerenciadorConsulta gerConsulta = new GerenciadorConsulta(sc, hospital);
@@ -44,14 +40,50 @@ public class Main {
 
             UsuarioSistema usuarioLogado = null;
 
-            // -----------------------------
+            // =====================================================================
+            // MENU INICIAL (LOGIN OU ENCERRAR)
+            // =====================================================================
+            int escolhaInicial = -1;
+
+            while (escolhaInicial != 0 && escolhaInicial != 1) {
+                Println("""
+                        
+                        --- MENU INICIAL ---
+                        
+                        1. Fazer login
+                        0. Encerrar sistema
+                        
+                        Escolha uma opção:
+                        """);
+
+                try {
+                    escolhaInicial = Integer.parseInt(sc.nextLine());
+                } catch (Exception e) {
+                    Println("Opção inválida.\n");
+                    continue;
+                }
+
+                if (escolhaInicial == 0) {
+                    Println("Sistema finalizado.");
+                    sc.close();
+                    return;
+                }
+            }
+
+            // =====================================================================
             // LOGIN
-            // -----------------------------
+            // =====================================================================
             while (usuarioLogado == null) {
 
                 Println("--- LOGIN ---\n");
-                Print("Usuário: ");
+                Print("Usuário (digite 0 para voltar): ");
                 String loginDigitado = sc.nextLine();
+
+                // VOLTAR PARA O MENU INICIAL
+                if (loginDigitado.equals("0")) {
+                    usuarioLogado = null;
+                    break;
+                }
 
                 Print("Senha: ");
                 String senhaDigitada = sc.nextLine();
@@ -64,12 +96,17 @@ public class Main {
                 }
             }
 
+            // Voltou ao menu inicial
+            if (usuarioLogado == null) {
+                continue;
+            }
+
+            // =====================================================================
+            // MENU PRINCIPAL (DE ACORDO COM O NÍVEL DO USUÁRIO LOGADO)
+            // =====================================================================
             NivelAcesso nivel = usuarioLogado.getNivel();
             int opcaoPrincipal = -1;
 
-            // -----------------------------
-            // MENU PRINCIPAL
-            // -----------------------------
             while (opcaoPrincipal != 0) {
 
                 switch (nivel) {
@@ -91,7 +128,6 @@ public class Main {
                         case 1 -> menuMedico(sc, gerMedico);
                         case 2 -> menuPaciente(sc, gerPaciente);
                         case 3 -> menuConsulta(sc, gerConsulta);
-                        case 4 -> buscaGeral(sc, hospital);
                         case 0 -> Println("Logout realizado.\n");
                         default -> Println("Opção inválida.\n");
                     }
@@ -106,6 +142,7 @@ public class Main {
                         default -> Println("Opção inválida.\n");
                     }
                 }
+
                 // MÉDICO
                 else if (nivel == NivelAcesso.MEDICO) {
                     switch (opcaoPrincipal) {
@@ -119,9 +156,10 @@ public class Main {
         }
     }
 
-    // -----------------------------
+    // =====================================================================
     // SUBMENUS
-    // -----------------------------
+    // =====================================================================
+
     private static void menuMedico(Scanner sc, GerenciadorMedico gm) {
         int opcao = -1;
         while (opcao != 0) {
@@ -186,31 +224,5 @@ public class Main {
                 default -> Println("Opção inválida.\n");
             }
         }
-    }
-
-    private static void buscaGeral(Scanner sc, Hospital hospital) {
-        Print("Digite o nome para buscar: ");
-        String termo = sc.nextLine().toLowerCase();
-        boolean encontrou = false;
-
-        Println("\n--- RESULTADO DA BUSCA ---");
-
-        // Uso de for-each na lista única da Superclasse
-        for (Pessoa p : hospital.getPessoas()) {
-
-            // Verificamos apenas o NOME (comum a todos).
-            // NÃO usamos if(p instanceof Medico) nem switch.
-            if (p.getNome().toLowerCase().contains(termo)) {
-
-                // O Java decide qual exibirInformacoes chamar
-                p.exibirInformacoes();
-                encontrou = true;
-            }
-        }
-
-        if (!encontrou) {
-            Println("Nenhuma pessoa encontrada.");
-        }
-        Println("--------------------------\n");
     }
 }

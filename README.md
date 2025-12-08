@@ -73,28 +73,30 @@ Para detalhes aprofundados sobre a arquitetura, classes e descrição técnica d
 ## Arquitetura Orientada a Objetos
 
 ### Entidades
-- Pessoa (classe abstrata)  
-- Paciente  
-- Medico  
-- Funcionario  
-- Consulta  
+- Pessoa (Classe Abstrata)
+- Paciente
+- Medico
+- Funcionario
+- Consulta
 
 ### Interfaces
-- Agendavel  
-- Gerenciavel  
-- Validavel  
+- Agendavel
+- Gerenciavel
+- Validavel
+
+### Enums
+- NivelAcesso
 
 ### Gerenciadores
-- GerenciadorConsulta  
-- GerenciadorMedico  
-- GerenciadorPaciente  
+- GerenciadorConsulta
+- GerenciadorMedico
+- GerenciadorPaciente
 
 ### Sistema Principal
-- Hospital  
-- Login  
-- NivelAcesso  
-- UsuarioSistema  
-- Main  
+- Hospital
+- Login
+- UsuarioSistema
+- Main
 
 ---
 
