@@ -106,6 +106,7 @@ public class Main {
                 else if (nivel == NivelAcesso.MEDICO) {
                     switch (opcaoPrincipal) {
                         case 1 -> gerConsulta.listarConsultas(); // futuramente: filtrar por médico logado
+                        case 2 -> gerConsulta.solicitarRetorno();
                         case 0 -> Println("Logout realizado.\n");
                         default -> Println("Opção inválida.\n");
                     }
@@ -176,6 +177,7 @@ public class Main {
                 case 2 -> gc.cancelarAgendamento();
                 case 3 -> gc.listarConsultas();
                 case 4 -> gc.buscarConsulta();
+                case 5 -> gc.solicitarRetorno();
                 case 0 -> Println("Voltando...\n");
                 default -> Println("Opção inválida.\n");
             }
