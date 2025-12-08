@@ -156,4 +156,4 @@ O sistema já inicia com dados carregados para facilitar a correção:
 
 - **Admin:** user: `admin` | senha: `admin`
 - **Secretaria:** user: `secretaria` | senha: `1234`
-- **Médico:** user: `drcaval` | senha: `1234`
+- **Médico:** user: `medico` | senha: `1234`
