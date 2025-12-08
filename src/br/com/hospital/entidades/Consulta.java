@@ -5,10 +5,11 @@ import static br.com.hospital.utilitarios.Utilitarios.*;
 
 public class Consulta implements Validavel {
 
-    private final String id;       // ID único da consulta
-    private Paciente paciente;     // paciente associado
-    private Medico medico;         // médico responsável
-    private String dataHora;       // formato dd/MM/yyyy HH:mm
+    private final String id;         // ID único da consulta
+    private Paciente paciente;       // paciente associado
+    private Medico medico;           // médico responsável
+    private String dataHora;
+    private String tipo = "Consulta";// dd/MM/yyyy HH:mm
 
     private String mensagemValidacao = "";
 
@@ -54,6 +55,8 @@ public class Consulta implements Validavel {
         this.dataHora = dataHora;
     }
 
+    public void setTipo(String tipo) { this.tipo = tipo; }
+
     // -------------------
     // Validação
     // -------------------
@@ -98,8 +101,11 @@ public class Consulta implements Validavel {
     public void exibirResumo() {
 
         Printf("""
+                
                 ========================
                 Dados da consulta:
+                ------------------------
+                %s
                 ------------------------
                 Protocolo: %s
                 Data e Hora: %s
@@ -111,7 +117,9 @@ public class Consulta implements Validavel {
                 Médico: %s
                 Especialidade: %s
                 ========================
+                
                 """,
+                this.tipo.toUpperCase(),
                 id,
                 dataHora,
 

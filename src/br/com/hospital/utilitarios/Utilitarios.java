@@ -1,5 +1,7 @@
 package br.com.hospital.utilitarios;
 
+import java.util.Scanner;
+
 public class Utilitarios {
 
     // -----------------------------
@@ -180,7 +182,7 @@ public class Utilitarios {
 
     // ADMIN — pode tudo
     public static void exibirMenuPrincipalAdmin() {
-        System.out.printf("""
+        Printf("""
                 
                 ---- MENU PRINCIPAL (ADMIN) ----
                 
@@ -191,12 +193,12 @@ public class Utilitarios {
                 5. Administrar Funcionários
                 0. Logout
                 
-                Escolha uma opção: """);
+                Escolha uma opção:\t""");
     }
 
     // SECRETARIA — pacientes + consultas
     public static void exibirMenuPrincipalFuncionario() {
-        System.out.printf("""
+        Printf("""
                 
                 ---- MENU PRINCIPAL (SECRETARIA) ----
                 
@@ -204,12 +206,12 @@ public class Utilitarios {
                 2. Consulta
                 0. Logout
                 
-                Escolha uma opção: """);
+                Escolha uma opção:\t""");
     }
 
     // MÉDICO — visualizar consultas
     public static void exibirMenuPrincipalMedico() {
-        System.out.printf("""
+        Printf("""
                 
                 ---- MENU PRINCIPAL (MÉDICO) ----
                 
@@ -217,11 +219,11 @@ public class Utilitarios {
                 2. Solicitar retorno
                 0. Logout
                 
-                Escolha uma opção: """);
+                Escolha uma opção:\t""");
     }
 
     public static void exibirMenuMedico() {
-        System.out.printf("""
+        Print("""
                 
                 --- MENU MÉDICO ---
                 
@@ -232,11 +234,11 @@ public class Utilitarios {
                 5. Buscar Médico
                 0. Voltar
                 
-                Escolha uma opção: """);
+                Escolha uma opção:\t""");
     }
 
     public static void exibirMenuPaciente() {
-        System.out.printf("""
+        Printf("""
                 
                 --- MENU PACIENTE ---
                 
@@ -247,11 +249,11 @@ public class Utilitarios {
                 5. Buscar Paciente
                 0. Voltar
                 
-                Escolha uma opção: """);
+                Escolha uma opção:\t""");
     }
 
     public static void exibirMenuConsulta() {
-        System.out.printf("""
+        Printf("""
                 
                 --- MENU CONSULTA ---
                 
@@ -262,7 +264,17 @@ public class Utilitarios {
                 5. Solicitar retorno
                 0. Voltar
                 
-                Escolha uma opção: """);
+                Escolha uma opção:\t""");
+    }
+
+    public static void limparTela() {
+        for (int i = 0; i < 60; i++) {
+            System.out.println();
+        }
+    }
+    public static void pausar(Scanner sc) {
+        Print("\nPressione ENTER para continuar...");
+        sc.nextLine();
     }
 
     public static void exibirMenuAdministraFuncionario() {

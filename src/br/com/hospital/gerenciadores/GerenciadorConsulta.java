@@ -195,8 +195,13 @@ public class GerenciadorConsulta implements Agendavel {
             return;
         }
 
+        // Remove
         hospital.getConsultas().remove(c);
-        Println("Consulta cancelada com sucesso.\n");
+
+        Println("\nConsulta cancelada com sucesso!");
+        Println("Paciente: " + c.getPaciente().getNome());
+        Println("Médico:   " + c.getMedico().getNome());
+        Println("Data/Hora: " + c.getDataHora() + "\n");
     }
 
     // ------------------------------------------------------------
@@ -256,20 +261,22 @@ public class GerenciadorConsulta implements Agendavel {
 
     @Override
     public void buscarConsulta() {
-        Print("Informe o nome do paciente: ");
-        String nome = sc.nextLine().toLowerCase();
+        Print("Informe o CPF do paciente: ");
+        String cpfBuscado = sc.nextLine().trim();
 
         boolean encontrado = false;
 
         for (Consulta c : hospital.getConsultas()) {
-            if (c.getPaciente().getNome().toLowerCase().contains(nome)) {
+            String cpfPaciente = c.getPaciente().getCpf().trim();
+
+            if (cpfPaciente.equals(cpfBuscado)) {
                 c.exibirResumo();
                 encontrado = true;
             }
         }
 
         if (!encontrado) {
-            Println("Nenhuma consulta encontrada.\n");
+            Println("Nenhuma consulta encontrada para o CPF informado.\n");
         }
     }
 
@@ -287,35 +294,58 @@ public class GerenciadorConsulta implements Agendavel {
     // ------------------------------------------------------------
     // SOLICITAR RETORNO
     // ------------------------------------------------------------
-
     public void solicitarRetorno() {
-        Println("\n=== SOLICITAÇÃO DE RETORNO ===");
+        Println("\n=== AGENDAR RETORNO ===");
 
-        // 1. Escolhe o paciente
+        // seleciona o Paciente
         Paciente paciente = escolherPaciente();
+        if (paciente == null) return;
 
-        if (paciente != null) {
+        // seleciona o Médico
+        // (Mesmo se for médico logado, selecionamos aqui para manter o código simples e reutilizável)
+        Medico medico = escolherMedico();
+        if (medico == null) return;
 
-            // pergunta o motivo (Ex: Trazer exames)
-            Print("Motivo do retorno: ");
-            String motivo = sc.nextLine();
+        // define a data
+        String dataHora = null;
+        while (dataHora == null) {
+            Print("Data e Hora do Retorno (dd/MM/yyyy HH:mm): ");
+            String dh = sc.nextLine();
 
-            // pergunta a previsão (Ex: 15 dias)
-            Print("Prazo sugerido (ex: 7 dias, 1 mês): ");
-            String prazo = sc.nextLine();
+            // usa as mesmas validações do agendar para evitar erros
+            if (dataHoraValida(dh) && dataNoFuturo(dh)) {
+                if (!medicoOcupado(medico, dh)) {
+                    dataHora = dh; // Data válida e livre
+                } else {
+                    Println("Erro: O médico já tem consulta neste horário.");
+                }
+            } else {
+                Println("Erro: Data inválida ou no passado.");
+            }
+        }
 
-            // imprime um "Ticket" de confirmação formatado
-            Println("\n------------------------------------------------");
-            Println("       COMPROVANTE DE SOLICITAÇÃO DE RETORNO      ");
-            Println("------------------------------------------------");
+        // cria e salva transformando o retorno em uma nova consulta
+        Consulta consultaRetorno = new Consulta(
+                gerarIdUnico(), // Gera ID automático
+                paciente,
+                medico,
+                dataHora
+        );
+
+        consultaRetorno.setTipo("RETORNO");
+
+        // Valida e salva na lista oficial do hospital
+        if (consultaRetorno.validar()) {
+            hospital.adicionarConsulta(consultaRetorno);
+
+            // printa de confirmação
+            Println("\n************************************************");
+            Println(">>> SUCESSO: Retorno agendado e salvo na lista!");
             Printf(" PACIENTE: %s\n", paciente.getNome());
-            Printf(" CPF:      %s\n", paciente.getCpf());
-            Println("------------------------------------------------");
-            Printf(" MOTIVO:   %s\n", motivo);
-            Printf(" PRAZO:    %s\n", prazo);
-            Println("------------------------------------------------");
-            Println(" >>> Solicitação registrada com sucesso!");
-            Println("------------------------------------------------\n");
+            Printf(" DATA:     %s\n", dataHora);
+            Println("************************************************\n");
+        } else {
+            Println("Erro ao validar dados do retorno.");
         }
     }
 }

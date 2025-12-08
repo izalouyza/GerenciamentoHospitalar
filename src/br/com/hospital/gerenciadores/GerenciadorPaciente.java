@@ -200,10 +200,21 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
         Print("CPF do paciente para remover: ");
         String cpf = sc.nextLine();
 
-        if (remover(cpf)) {
-            Println("Paciente removido com sucesso!\n");
-        } else {
+        // Buscar antes de remover
+        Paciente p = buscar(cpf);
+
+        if (p == null) {
             Println("Paciente não encontrado.\n");
+            return;
+        }
+
+        // Remover
+        if (remover(cpf)) {
+            Println("Paciente removido com sucesso!");
+            Println("Nome: " + p.getNome());
+            Println("CPF: " + p.getCpf() + "\n");
+        } else {
+            Println("Erro ao remover paciente.\n");
         }
     }
 
@@ -290,19 +301,19 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
 
     private String lerEmail() {
         while (true) {
-            Print("Email: ");
+            Print("E-mail: ");
             String e = sc.nextLine();
             if (emailValido(e)) return e;
-            Println("Email inválido!");
+            Println("E-mail inválido!");
         }
     }
 
     private String lerEmailOpcional(String atual) {
-        Print("Novo email (atual: " + atual + "): ");
+        Print("Novo e-mail (atual: " + atual + "): ");
         String e = sc.nextLine();
         if (!textoNaoVazio(e)) return atual;
         if (!emailValido(e)) {
-            Println("Email inválido.");
+            Println("E-mail inválido.");
             return atual;
         }
         return e;

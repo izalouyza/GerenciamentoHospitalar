@@ -13,39 +13,49 @@ O sistema tem como objetivo aplicar, na prática, os principais princípios de P
 
 ## Sumário
 - [Autores](#autores)
+- [Documentação](#documentação)
 - [Propósito do Projeto](#propósito-do-projeto)
 - [Funcionalidades Principais](#funcionalidades-principais)
 - [Arquitetura Orientada a Objetos](#arquitetura-orientada-a-objetos)
 - [Estrutura de Pastas](#estrutura-de-pastas)
-- [Funcionamento do Sistema](#funcionamento-do-sistema)
 - [Como Compilar e Executar](#como-compilar-e-executar)
 
 ## Autores
 
-**Professor:**  
-[Bruno Borges da Silva](https://github.com/silv4bufersa)
+**Professor:** [Bruno Borges da Silva](https://github.com/silv4bufersa)
 
 <b>Discentes:</b><br>
-<a href="https://github.com/alexb7z">Alex Bruno Duarte</a><br>
-<a href="https://github.com/harleylsb">Harley Lucas de Souza Batista</a><br>
-<a href="https://github.com/izalouyza">Izadora Louyza Silva Figueiredo</a><br>
-<a href="https://github.com/LeonardAugusto">Leonardo Augusto Silva de Souza</a><br>
-<a href="https://github.com/livianlucena">Lívian Maria Lucena Gomes Pinheiro</a><br>
-<a href="https://github.com/MarceloCaat">Marcelo Caat Amaral do Nascimento</a><br>
-<a href="https://github.com/tivitoriarocha">Maria Vitória Fernandes Rocha</a>
+<a href="https://github.com/alexb7z">Alex Bruno Duarte</a> - Matrícula: 2025022557<br>
+<a href="https://github.com/harleylsb">Harley Lucas de Souza Batista</a> - Matrícula: 2025022526<br>
+<a href="https://github.com/izalouyza">Izadora Louyza Silva Figueiredo</a> - Matrícula: 2024010176<br>
+<a href="https://github.com/LeonardAugusto">Leonardo Augusto Silva de Souza</a> - Matrícula: 2023011257<br>
+<a href="https://github.com/livianlucena">Lívian Maria Lucena Gomes Pinheiro</a> - Matrícula: 2024010084<br>
+<a href="https://github.com/MarceloCaat">Marcelo Caat Amaral do Nascimento</a> - Matrícula: 2025011536<br>
+<a href="https://github.com/tivitoriarocha">Maria Vitória Fernandes Rocha</a> - Matrícula: 2024010257
+
+---
 
 ## Propósito do Projeto
 
 O projeto tem como finalidade simular um ambiente hospitalar básico, permitindo:
 
-- Gerenciar usuários (médicos, pacientes).
+- Gerenciar usuários (médicos e pacientes).
 - Realizar login com diferentes níveis de acesso.
-- Agendar, visualizar e gerenciar consultas.
+- Agendar, visualizar e administrar consultas.
 - Aplicar conceitos fundamentais de Programação Orientada a Objetos.
 
-O foco principal é demonstrar a **arquitetura POO limpa, modular e extensível**, estruturada em pacotes bem definidos.
+O foco principal é demonstrar uma **arquitetura POO limpa, modular e extensível**, organizada em pacotes bem definidos.
 
 ---
+
+## Documentação
+
+Para detalhes aprofundados sobre a arquitetura, classes e descrição técnica das entidades, acesse o documento oficial na pasta `doc/`:
+
+📄 **[Acessar Documentação do Projeto (PDF)](doc/Documentacao_Projeto.pdf)**
+
+---
+
 
 ## Funcionalidades Principais
 
@@ -63,41 +73,30 @@ O foco principal é demonstrar a **arquitetura POO limpa, modular e extensível*
 ## Arquitetura Orientada a Objetos
 
 ### Entidades
-
-- Consulta
-- Funcionario
-- Medico
+- Pessoa (Classe Abstrata)
 - Paciente
-- Pessoa
+- Medico
+- Funcionario
+- Consulta
 
 ### Interfaces
+- Agendavel
+- Gerenciavel
+- Validavel
 
-- Agendavel  
-- Gerenciavel  
-- Validavel  
+### Enums
+- NivelAcesso
 
 ### Gerenciadores
-
 - GerenciadorConsulta
 - GerenciadorMedico
 - GerenciadorPaciente
 
-### Exceções Personalizadas
-
-- LoginException
-
-
-### Utilitários
-
-- Validações e funções auxiliares em `Utilitarios.java`
-
 ### Sistema Principal
-
-- Hospital  
+- Hospital
 - Login
-- NívelAcesso
 - UsuarioSistema
-- Main (ponto de entrada)  
+- Main
 
 ---
 
@@ -105,74 +104,56 @@ O foco principal é demonstrar a **arquitetura POO limpa, modular e extensível*
 
 ```bash
 GerenciamentoHospitalar/
+├── doc/
+│   └── Documentacao_Projeto.pdf
 ├── src/
-│   └── br/
-│       └── com/
-│           └── hospital/
-│               ├── entidades/
-│               │   ├── Consulta.java
-│               │   ├── Funcionario.java
-│               │   ├── Medico.java
-│               │   ├── Paciente.java
-│               │   └── Pessoa.java
-│               ├── exceptions/
-│               │   └── LoginException.java
-│               ├── gerenciadores/
-│               │   ├── GerenciadorConsulta.java
-│               │   ├── GerenciadorMedico.java
-│               │   └── GerenciadorPaciente.java
-│               ├── interfaces/
-│               │   ├── Agendavel.java
-│               │   ├── Gerenciavel.java
-│               │   └── Validavel.java
-│               ├── sistema/
-│               │   ├── Hospital.java
-│               │   ├── Login.java
-│               │   ├── NivelAcesso.java
-│               │   └── UsuarioSistema.java
-│               ├── utilitarios/
-│               │   └── Utilitarios.java
-│               └── Main.java
+│   └── br/com/hospital/
+│       ├── entidades/
+│       ├── enums/         
+│       ├── exceptions/
+│       ├── gerenciadores/
+│       ├── interfaces/
+│       ├── sistema/
+│       ├── utilitarios/
+│       └── Main.java
 └── README.md
+
 ```
-
-## Funcionamento do Sistema
-
-O acesso ocorre via terminal:
-
-```bash
-====== SISTEMA HOSPITALAR ======
-1 - Fazer login
-0 - Sair
-Opção:
-```
-
-Após o login, médicos e pacientes visualizam menus diferentes, alinhados aos seus níveis de permissão.
-
----
 
 ## Como Compilar e Executar
 
-### 1. Certifique-se de ter o Java instalado  
-Recomenda-se Java 17 ou superior.
+### Pré-requisitos
+* Java JDK 17 ou superior instalado.
+* Git instalado.
 
-### 2. Clone o repositório
+### 1. Clonar o Repositório
 
+Abra o terminal e digite:
 ```bash
 git clone https://github.com/izalouyza/GerenciamentoHospitalar
 ```
 
-### 3. Acesse a pasta do projeto
-```bash
-cd GerenciamentoHospitalar/src/br/com/hospital
+### 2. Executar o Projeto
+Navegue até a pasta `src` do projeto:
+```
+cd GerenciamentoHospitalar/src
 ```
 
-### 4. Compile o programa
-```bash
-javac Main.java
+Compile o código:
+
+```
+javac br/com/hospital/Main.java
 ```
 
-### 5. Execute o programa
-```bash
-java Main
+Execute o sistema:
+
 ```
+java br.com.hospital.Main
+```
+
+## 🔑 Dados para Teste (Login)
+O sistema já inicia com dados carregados para facilitar a correção:
+
+- **Admin:** user: `admin` | senha: `admin`
+- **Secretaria:** user: `secretaria` | senha: `1234`
+- **Médico:** user: `medico` | senha: `1234`

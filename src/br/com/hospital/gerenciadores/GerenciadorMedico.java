@@ -51,6 +51,12 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
         Print("Endereço: ");
         String endereco = sc.nextLine();
 
+        // CRM
+        String crm = lerCRM();
+
+        // Especialidade
+        String especialidade = lerCampoObrigatorio("Especialidade");
+
         // LOGIN DO MÉDICO
         Print("Usuário para login: ");
         String usuario = sc.nextLine();
@@ -65,12 +71,6 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
 
         // registra esse usuário na lista usada pelo Login
         usuariosSistema.add(credenciais);
-
-        // CRM
-        String crm = lerCRM();
-
-        // Especialidade
-        String especialidade = lerCampoObrigatorio("Especialidade");
 
         // Criar objeto médico
         Medico medico = new Medico(
@@ -229,10 +229,21 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
         Print("CRM do médico para remover: ");
         String crm = sc.nextLine();
 
-        if (remover(crm)) {
-            Println("Médico removido com sucesso!\n");
-        } else {
+        // Buscar antes de remover
+        Medico m = buscar(crm);
+
+        if (m == null) {
             Println("Médico não encontrado.\n");
+            return;
+        }
+
+        // Agora remover
+        if (remover(crm)) {
+            Println("Médico removido com sucesso!");
+            Println("Nome: " + m.getNome());
+            Println("CRM: " + m.getCrm() + "\n");
+        } else {
+            Println("Erro ao remover médico.\n");
         }
     }
 
@@ -294,19 +305,19 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
 
     private String lerEmail() {
         while (true) {
-            Print("Email: ");
+            Print("E-mail: ");
             String e = sc.nextLine();
             if (emailValido(e)) return e;
-            Println("Email inválido!");
+            Println("E-mail inválido!");
         }
     }
 
     private String lerEmailOpcional(String atual) {
-        Print("Novo email (atual: " + atual + "): ");
+        Print("Novo e-mail (atual: " + atual + "): ");
         String e = sc.nextLine();
         if (!textoNaoVazio(e)) return atual;
         if (!emailValido(e)) {
-            Println("Email inválido.");
+            Println("E-mail inválido.");
             return atual;
         }
         return e;
