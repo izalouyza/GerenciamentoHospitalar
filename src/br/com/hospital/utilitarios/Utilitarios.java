@@ -190,7 +190,7 @@ public class Utilitarios {
                 4. Busca Geral
                 0. Logout
                 
-                Escolha uma opção: """);
+                Escolha uma opção:\t""");
     }
 
     // SECRETARIA — pacientes + consultas
@@ -203,7 +203,7 @@ public class Utilitarios {
                 2. Consulta
                 0. Logout
                 
-                Escolha uma opção: """);
+                Escolha uma opção:\t""");
     }
 
     // MÉDICO — visualizar consultas
@@ -216,7 +216,7 @@ public class Utilitarios {
                 2. Solicitar retorno
                 0. Logout
                 
-                Escolha uma opção: """);
+                Escolha uma opção:\t""");
     }
 
     public static void exibirMenuMedico() {
@@ -231,7 +231,7 @@ public class Utilitarios {
                 5. Buscar Médico
                 0. Voltar
                 
-                Escolha uma opção: """);
+                Escolha uma opção:\t""");
     }
 
     public static void exibirMenuPaciente() {
@@ -246,7 +246,7 @@ public class Utilitarios {
                 5. Buscar Paciente
                 0. Voltar
                 
-                Escolha uma opção: """);
+                Escolha uma opção:\t""");
     }
 
     public static void exibirMenuConsulta() {
@@ -261,6 +261,6 @@ public class Utilitarios {
                 5. Solicitar retorno
                 0. Voltar
                 
-                Escolha uma opção: """);
+                Escolha uma opção:\t""");
     }
 }
