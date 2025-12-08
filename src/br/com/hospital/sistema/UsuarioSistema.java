@@ -1,5 +1,7 @@
 package br.com.hospital.sistema;
 
+import br.com.hospital.enums.NivelAcesso;
+
 public class UsuarioSistema {
 
     private String usuario;     // login
