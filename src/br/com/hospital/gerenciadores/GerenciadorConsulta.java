@@ -249,4 +249,40 @@ public class GerenciadorConsulta implements Agendavel {
         }
         return null;
     }
+
+    // ------------------------------------------------------------
+    // SOLICITAR RETORNO
+    // ------------------------------------------------------------
+
+    public void solicitarRetorno() {
+        Println("\n=== SOLICITAÇÃO DE RETORNO ===");
+
+        // 1. Escolhe o paciente
+        Paciente paciente = escolherPaciente();
+
+        if (paciente != null) {
+
+            // pergunta o motivo (Ex: Trazer exames)
+            Print("Motivo do retorno: ");
+            String motivo = sc.nextLine();
+
+            // pergunta a previsão (Ex: 15 dias)
+            Print("Prazo sugerido (ex: 7 dias, 1 mês): ");
+            String prazo = sc.nextLine();
+
+            // imprime um "Ticket" de confirmação formatado
+            Println("\n------------------------------------------------");
+            Println("       COMPROVANTE DE SOLICITAÇÃO DE RETORNO      ");
+            Println("------------------------------------------------");
+            Printf(" PACIENTE: %s\n", paciente.getNome());
+            Printf(" CPF:      %s\n", paciente.getCpf());
+            Println("------------------------------------------------");
+            Printf(" MOTIVO:   %s\n", motivo);
+            Printf(" PRAZO:    %s\n", prazo);
+            Println("------------------------------------------------");
+            Println(" >>> Solicitação registrada com sucesso!");
+            Println("------------------------------------------------\n");
+        }
+    }
+
 }
