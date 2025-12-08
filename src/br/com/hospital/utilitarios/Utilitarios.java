@@ -180,7 +180,7 @@ public class Utilitarios {
 
     // ADMIN — pode tudo
     public static void exibirMenuPrincipalAdmin() {
-        System.out.printf("""
+        Printf("""
                 
                 ---- MENU PRINCIPAL (ADMIN) ----
                 
@@ -195,7 +195,7 @@ public class Utilitarios {
 
     // SECRETARIA — pacientes + consultas
     public static void exibirMenuPrincipalFuncionario() {
-        System.out.printf("""
+        Printf("""
                 
                 ---- MENU PRINCIPAL (SECRETARIA) ----
                 
@@ -208,7 +208,7 @@ public class Utilitarios {
 
     // MÉDICO — visualizar consultas
     public static void exibirMenuPrincipalMedico() {
-        System.out.printf("""
+        Printf("""
                 
                 ---- MENU PRINCIPAL (MÉDICO) ----
                 
@@ -220,7 +220,7 @@ public class Utilitarios {
     }
 
     public static void exibirMenuMedico() {
-        System.out.printf("""
+        Print("""
                 
                 --- MENU MÉDICO ---
                 
@@ -235,7 +235,7 @@ public class Utilitarios {
     }
 
     public static void exibirMenuPaciente() {
-        System.out.printf("""
+        Printf("""
                 
                 --- MENU PACIENTE ---
                 
@@ -250,7 +250,7 @@ public class Utilitarios {
     }
 
     public static void exibirMenuConsulta() {
-        System.out.printf("""
+        Printf("""
                 
                 --- MENU CONSULTA ---
                 
