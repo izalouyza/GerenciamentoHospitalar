@@ -3,7 +3,7 @@ package br.com.hospital.utilitarios;
 import br.com.hospital.entidades.Medico;
 import br.com.hospital.entidades.Paciente;
 import br.com.hospital.sistema.Hospital;
-import br.com.hospital.sistema.NivelAcesso;
+import br.com.hospital.enums.NivelAcesso;
 import br.com.hospital.sistema.UsuarioSistema;
 
 import java.util.List;
