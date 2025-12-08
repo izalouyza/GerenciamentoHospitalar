@@ -22,14 +22,16 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         Hospital hospital = new Hospital();
 
-        // Lista de usuários
+        // 1) Lista de usuários do sistema (compartilhada com Login e GerenciadorMedico)
         List<UsuarioSistema> usuarios = new ArrayList<>();
         usuarios.add(new UsuarioSistema("admin", "admin", NivelAcesso.ADMIN));
         usuarios.add(new UsuarioSistema("secretaria", "1234", NivelAcesso.SECRETARIA));
-        usuarios.add(new UsuarioSistema("medico", "1234", NivelAcesso.MEDICO)); // médico padrão
+        usuarios.add(new UsuarioSistema("medico", "1234", NivelAcesso.MEDICO)); // médico padrão de teste
 
+        // 2) Login usa essa lista
         Login login = new Login(usuarios);
 
+        // 3) Gerenciadores
         GerenciadorMedico gerMedico = new GerenciadorMedico(hospital, sc, usuarios);
         GerenciadorPaciente gerPaciente = new GerenciadorPaciente(hospital, sc);
         GerenciadorConsulta gerConsulta = new GerenciadorConsulta(sc, hospital);
@@ -40,55 +42,14 @@ public class Main {
 
             UsuarioSistema usuarioLogado = null;
 
-            // ================================================================
-            // MENU INICIAL (ANTES DO LOGIN)
-            // ================================================================
-            int escolhaInicial = -1;
-
-            while (escolhaInicial != 0 && escolhaInicial != 1) {
-
-                Println("""
-                        
-                        --- MENU INICIAL ---
-                        
-                        1. Fazer login
-                        0. Encerrar sistema
-                        
-                        Escolha uma opção:
-                        """);
-
-                try {
-                    escolhaInicial = Integer.parseInt(sc.nextLine());
-                } catch (Exception e) {
-                    Println("Opção inválida.\n");
-                    continue;
-                }
-
-                if (escolhaInicial == 0) {
-                    Println("Encerrando sistema...");
-                    sc.close();
-                    return;
-                }
-
-                if (escolhaInicial != 1) {
-                    Println("Opção inválida.\n");
-                }
-            }
-
-            // ================================================================
+            // -----------------------------
             // LOGIN
-            // ================================================================
+            // -----------------------------
             while (usuarioLogado == null) {
 
                 Println("--- LOGIN ---\n");
-                Print("Usuário (digite 0 para voltar): ");
+                Print("Usuário: ");
                 String loginDigitado = sc.nextLine();
-
-                // voltar ao menu inicial
-                if (loginDigitado.equals("0")) {
-                    usuarioLogado = null;
-                    break;
-                }
 
                 Print("Senha: ");
                 String senhaDigitada = sc.nextLine();
@@ -101,17 +62,12 @@ public class Main {
                 }
             }
 
-            // voltou ao menu inicial
-            if (usuarioLogado == null) {
-                continue;
-            }
-
-            // ================================================================
-            // MENU PRINCIPAL (APÓS LOGIN)
-            // ================================================================
             NivelAcesso nivel = usuarioLogado.getNivel();
             int opcaoPrincipal = -1;
 
+            // -----------------------------
+            // MENU PRINCIPAL
+            // -----------------------------
             while (opcaoPrincipal != 0) {
 
                 switch (nivel) {
@@ -159,9 +115,9 @@ public class Main {
         }
     }
 
-    // ================================================================
+    // -----------------------------
     // SUBMENUS
-    // ================================================================
+    // -----------------------------
     private static void menuMedico(Scanner sc, GerenciadorMedico gm) {
         int opcao = -1;
         while (opcao != 0) {

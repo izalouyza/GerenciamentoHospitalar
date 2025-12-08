@@ -107,6 +107,7 @@ GerenciamentoHospitalar/
 ├── src/
 │   └── br/com/hospital/
 │       ├── entidades/
+│       ├── enums/         
 │       ├── exceptions/
 │       ├── gerenciadores/
 │       ├── interfaces/
@@ -114,6 +115,7 @@ GerenciamentoHospitalar/
 │       ├── utilitarios/
 │       └── Main.java
 └── README.md
+
 ```
 
 ## Como Compilar e Executar
@@ -152,4 +154,4 @@ O sistema já inicia com dados carregados para facilitar a correção:
 
 - **Admin:** user: `admin` | senha: `admin`
 - **Secretaria:** user: `secretaria` | senha: `1234`
-- **Médico:** user: `drana` | senha: `1234`
+- **Médico:** user: `drcaval` | senha: `1234`
