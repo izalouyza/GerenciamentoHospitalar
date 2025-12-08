@@ -1,5 +1,7 @@
 package br.com.hospital.utilitarios;
 
+import java.util.Scanner;
+
 public class Utilitarios {
 
     // -----------------------------
@@ -262,5 +264,15 @@ public class Utilitarios {
                 0. Voltar
                 
                 Escolha uma opção:\t""");
+    }
+
+    public static void limparTela() {
+        for (int i = 0; i < 60; i++) {
+            System.out.println();
+        }
+    }
+    public static void pausar(Scanner sc) {
+        Print("\nPressione ENTER para continuar...");
+        sc.nextLine();
     }
 }
