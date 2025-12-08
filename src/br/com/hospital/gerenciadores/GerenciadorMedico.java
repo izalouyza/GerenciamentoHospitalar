@@ -4,7 +4,7 @@ import br.com.hospital.entidades.Medico;
 import br.com.hospital.interfaces.Gerenciavel;
 import br.com.hospital.sistema.Hospital;
 import br.com.hospital.sistema.UsuarioSistema;
-import br.com.hospital.sistema.NivelAcesso;
+import br.com.hospital.enums.NivelAcesso;
 import static br.com.hospital.utilitarios.Utilitarios.*;
 
 import java.util.Comparator;
