@@ -1,5 +1,6 @@
 package br.com.hospital;
 
+import br.com.hospital.entidades.Pessoa;
 import br.com.hospital.exceptions.LoginException;
 import br.com.hospital.gerenciadores.GerenciadorConsulta;
 import br.com.hospital.gerenciadores.GerenciadorFuncionario;
