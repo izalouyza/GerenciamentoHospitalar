@@ -1,6 +1,7 @@
 package br.com.hospital.interfaces;
 
 public interface Gerenciavel<T> {
+
     void adicionar(T elemento);
 
     void listar();

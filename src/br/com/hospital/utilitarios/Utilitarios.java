@@ -4,70 +4,75 @@ import java.util.List;
 
 public class Utilitarios {
 
-    // Gerador incremental de IDs
+    // -----------------------------
+    //        GERAÇÃO DE ID
+    // -----------------------------
     private static int contadorId = 1;
 
     public static int gerarIdIncremental() {
-        int idAtual = contadorId; // guarda o valor atual
-        contadorId = contadorId + 1; // incrementa para próximo ID
-        return idAtual;
+        return contadorId++;
     }
 
     public static String gerarIdUnico() {
-        return String.valueOf(gerarIdIncremental()); //  número incremental
+        return String.valueOf(gerarIdIncremental());
     }
 
-    // Comparar IDs ignorando maiúsculas/minúsculas
+    // -----------------------------
+    //        COMPARAÇÕES
+    // -----------------------------
     public static boolean compararIdentificadores(String id1, String id2) {
         if (id1 == null || id2 == null) return false;
         return id1.equalsIgnoreCase(id2);
     }
 
-    // Verifica se texto não é nulo ou vazio
+    // -----------------------------
+    //      VALIDAÇÃO DE TEXTO
+    // -----------------------------
     public static boolean textoNaoVazio(String txt) {
         return txt != null && !txt.isBlank();
     }
 
-    /* método não utilizado
-
-    // Verifica se lista é nula ou vazia
-    public static boolean listaVazia(List<?> lista) {
-        return lista == null || lista.isEmpty();
-    }
-
-     */
-
-    // Validação simples de email
+    // -----------------------------
+    //      VALIDAÇÃO DE EMAIL
+    // -----------------------------
     public static boolean emailValido(String email) {
         if (email == null) return false;
         String tratado = email.trim();
         return tratado.contains("@") && tratado.contains(".");
     }
 
-    // Validação de CRM
+    // -----------------------------
+    //        VALIDAÇÃO CRM
+    // -----------------------------
     public static boolean crmValido(String crm) {
         if (crm == null) return false;
         String tratado = crm.trim();
         if (tratado.length() > 13) return false;
 
+        // permite CRM com UF ou apenas número
         String regex = "^[1-9]\\d*-(AC|AL|AP|AM|BA|CE|DF|ES|GO|MA|MT|MS|MG|PA|PB|PR|PE|PI|RJ|RN|RS|RO|RR|SC|SP|SE|TO)$"
                 + "|^[1-9]\\d*$";
         return tratado.matches(regex);
     }
 
-    // Telefone válido (8 a 13 dígitos)
+    // -----------------------------
+    //     VALIDAÇÃO DE TELEFONE
+    // -----------------------------
     public static boolean telefoneValido(String telefone) {
         if (telefone == null) return false;
         String digitos = telefone.replaceAll("\\D", "");
         return digitos.matches("\\d{8,13}");
     }
 
-    // CPF válido
+    // -----------------------------
+    //       VALIDAÇÃO CPF
+    // -----------------------------
     public static boolean cpfValido(String cpf) {
         if (cpf == null) return false;
+
         String num = cpf.replaceAll("\\D", "");
         if (num.length() != 11) return false;
-        if (num.chars().distinct().count() == 1) return false; // todos iguais
+        if (num.chars().distinct().count() == 1) return false;
 
         try {
             int soma = 0;
@@ -87,27 +92,9 @@ public class Utilitarios {
         }
     }
 
-    /* método não utilizado
-
-    // Verifica tamanho mínimo
-    public static boolean tamanhoMinimo(String txt, int min) {
-        return txt != null && txt.trim().length() >= min;
-    }
-
-    */
-
-    /* método não utilizado
-
-    // Especialidade médica válida (mínimo 3 caracteres e pelo menos uma letra)
-    public static boolean especialidadeValida(String esp) {
-        if (esp == null) return false;
-        String trat = esp.trim();
-        return trat.length() >= 3 && trat.matches(".*[A-Za-z].*");
-    }
-
-     */
-
-    // Verifica formato de data/hora dd/MM/yyyy HH:mm
+    // -----------------------------
+    //   VALIDAÇÃO DATA E HORA
+    // -----------------------------
     public static boolean dataHoraValida(String dataHora) {
         if (dataHora == null || dataHora.length() != 16) return false;
         if (dataHora.charAt(2) != '/' || dataHora.charAt(5) != '/' || dataHora.charAt(10) != ' '
@@ -127,10 +114,8 @@ public class Utilitarios {
         }
     }
 
-    // Verifica se a data/hora está no futuro
     public static boolean dataNoFuturo(String dataHora) {
         if (!dataHoraValida(dataHora)) return false;
-
         try {
             int dia = Integer.parseInt(dataHora.substring(0, 2));
             int mes = Integer.parseInt(dataHora.substring(3, 5));
@@ -138,37 +123,47 @@ public class Utilitarios {
             int hora = Integer.parseInt(dataHora.substring(11, 13));
             int minuto = Integer.parseInt(dataHora.substring(14, 16));
 
-            java.time.LocalDateTime dataConsulta = java.time.LocalDateTime.of(ano, mes, dia, hora, minuto);
+            java.time.LocalDateTime dataConsulta =
+                    java.time.LocalDateTime.of(ano, mes, dia, hora, minuto);
+
             return dataConsulta.isAfter(java.time.LocalDateTime.now());
         } catch (Exception e) {
             return false;
         }
     }
 
-    // Normaliza texto removendo acentos e caracteres especiais
+    // -----------------------------
+    //     NORMALIZAÇÃO DE TEXTO
+    // -----------------------------
     public static String normalizarTexto(String texto) {
         if (texto == null) return null;
         String semAcento = java.text.Normalizer
                 .normalize(texto, java.text.Normalizer.Form.NFD)
                 .replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
-        semAcento = semAcento.replaceAll("[^a-zA-Z0-9 ]", "").replaceAll("\\s+", " ").trim();
-        return semAcento;
+
+        return semAcento.replaceAll("[^a-zA-Z0-9 ]", "")
+                .replaceAll("\\s+", " ")
+                .trim();
     }
 
-    // Capitaliza nomes (primeira letra maiúscula)
     public static String capitalizarNome(String nome) {
         if (nome == null) return null;
         String[] partes = nome.trim().toLowerCase().split("\\s+");
         StringBuilder sb = new StringBuilder();
+
         for (String p : partes) {
             if (p.length() > 0) {
-                sb.append(Character.toUpperCase(p.charAt(0))).append(p.substring(1)).append(" ");
+                sb.append(Character.toUpperCase(p.charAt(0)))
+                        .append(p.substring(1))
+                        .append(" ");
             }
         }
         return sb.toString().trim();
     }
 
-    // Métodos de print simplificados
+    // -----------------------------
+    //         PRINTS
+    // -----------------------------
     public static void Print(String string) {
         System.out.print(string);
     }
@@ -180,100 +175,93 @@ public class Utilitarios {
     public static void Printf(String string, Object... args) {
         System.out.printf(string, args);
     }
+
+    // -----------------------------
+    //     MENUS DO SISTEMA
+    // -----------------------------
+
+    // ADMIN — pode tudo
     public static void exibirMenuPrincipalAdmin() {
         System.out.printf("""
-                        
-                        ---- MENU PRINCIPAL ----
-                     
-                        1. Médico
-                        2. Paciente
-                        3. Consulta
-                        7. Logout
-                        0. Fechar
-                        
-                        Escolha uma opção: """);
+                
+                ---- MENU PRINCIPAL (ADMIN) ----
+                
+                1. Médico
+                2. Paciente
+                3. Consulta
+                0. Logout
+                
+                Escolha uma opção: """);
     }
 
+    // SECRETARIA — pacientes + consultas
     public static void exibirMenuPrincipalFuncionario() {
         System.out.printf("""
-                        
-                        ---- MENU PRINCIPAL ----
-                  
-                        1. Paciente
-                        2. Consulta
-                        3. Logout
-                        0. Fechar
-                        
-                        Escolha uma opção: """);
+                
+                ---- MENU PRINCIPAL (SECRETARIA) ----
+                
+                1. Paciente
+                2. Consulta
+                0. Logout
+                
+                Escolha uma opção: """);
     }
 
-    public static void exibirMenuPrincipalPaciente() {
-        System.out.printf("""
-                        
-                        ---- MENU PRINCIPAL ----
-                  
-                        1. Ver data da consulta
-                        2. Cancelar Consulta
-                        3. Logout
-                        0. Fechar
-                        
-                        Escolha uma opção: """);
-    }
-
+    // MÉDICO — visualizar consultas
     public static void exibirMenuPrincipalMedico() {
         System.out.printf("""
-                        
-                        ---- MENU PRINCIPAL ----
-                  
-                        1. Ver minhas consultas
-                        2. Solicitar retorno
-                        3. Logout
-                        0. Fechar
-                        
-                        Escolha uma opção: """);
+                
+                ---- MENU PRINCIPAL (MÉDICO) ----
+                
+                1. Minhas consultas
+                2. Solicitar retorno
+                0. Logout
+                
+                Escolha uma opção: """);
     }
 
     public static void exibirMenuMedico() {
         System.out.printf("""
-                        
-                        --- MENU MÉDICO ---
-                        
-                        1. Cadastrar Médico
-                        2. Editar Médico
-                        3. Listar Médicos
-                        4. Remover Médico
-                        5. Buscar Médico
-                        0. Voltar
-                        
-                        Escolha uma opção: """);
+                
+                --- MENU MÉDICO ---
+                
+                1. Cadastrar Médico
+                2. Editar Médico
+                3. Listar Médicos
+                4. Remover Médico
+                5. Buscar Médico
+                0. Voltar
+                
+                Escolha uma opção: """);
     }
 
     public static void exibirMenuPaciente() {
         System.out.printf("""
-                        
-                        --- MENU PACIENTE ---
-                        
-                        1. Cadastrar Paciente
-                        2. Editar Paciente
-                        3. Listar Pacientes
-                        4. Remover Paciente
-                        5. Buscar Paciente
-                        0. Voltar
-                        
-                        Escolha uma opção: """);
+                
+                --- MENU PACIENTE ---
+                
+                1. Cadastrar Paciente
+                2. Editar Paciente
+                3. Listar Pacientes
+                4. Remover Paciente
+                5. Buscar Paciente
+                0. Voltar
+                
+                Escolha uma opção: """);
     }
 
     public static void exibirMenuConsulta() {
         System.out.printf("""
-                        
-                        --- MENU CONSULTA ---
-                        
-                        1. Agendar Consulta
-                        2. Cancelar Consulta
-                        3. Listar Consultas
-                        4. Buscar Consulta por Paciente
-                        0. Voltar
-                        
-                        Escolha uma opção: """);
+                
+                --- MENU CONSULTA ---
+                
+                1. Agendar Consulta
+                2. Cancelar Consulta
+                3. Listar Consultas
+                4. Buscar Consulta por Paciente
+                5. Solicitar retorno
+                0. Voltar
+                
+                Escolha uma opção: """);
     }
 }

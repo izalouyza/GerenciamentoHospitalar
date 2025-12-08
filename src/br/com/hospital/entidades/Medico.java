@@ -1,6 +1,9 @@
 package br.com.hospital.entidades;
 
 import br.com.hospital.interfaces.Validavel;
+import br.com.hospital.sistema.UsuarioSistema;
+import br.com.hospital.sistema.NivelAcesso;
+
 import static br.com.hospital.utilitarios.Utilitarios.*;
 
 public class Medico extends Pessoa implements Validavel {
@@ -8,16 +11,30 @@ public class Medico extends Pessoa implements Validavel {
     private final String crm;
     private String especialidade;
 
+    private UsuarioSistema credenciais;  // LOGIN do médico
     private String mensagemValidacao = "";
 
-    public Medico(String id, String nome, String cpf, String telefone, String email,
-                  String endereco, String senha, String crm, String especialidade) {
-
-        super(id, nome, cpf, telefone, email, endereco, senha, "MEDICO");
+    public Medico(
+            String id,
+            String nome,
+            String cpf,
+            String telefone,
+            String email,
+            String endereco,
+            String crm,
+            String especialidade,
+            UsuarioSistema credenciais
+    ) {
+        super(id, nome, cpf, telefone, email, endereco);
 
         this.crm = crm;
         this.especialidade = normalizarTexto(especialidade);
+        this.credenciais = credenciais;
     }
+
+    // ----------------------------
+    // Getters próprios da classe
+    // ----------------------------
 
     public String getCrm() {
         return crm;
@@ -27,11 +44,9 @@ public class Medico extends Pessoa implements Validavel {
         return especialidade;
     }
 
-    /* método não utilizado
-    public void setEspecialidade(String especialidade) {
-        this.especialidade = normalizarTexto(especialidade);
+    public UsuarioSistema getCredenciais() {
+        return credenciais;
     }
-     */
 
     @Override
     public void exibirInformacoes() {
@@ -40,11 +55,14 @@ public class Medico extends Pessoa implements Validavel {
         Println("Especialidade: " + especialidade);
     }
 
-    // Implementação Validável
+    // ----------------------------
+    // Validação
+    // ----------------------------
+
     @Override
     public boolean validar() {
 
-        // Valida campos herdados de Pessoa
+        // Valida dados da classe Pessoa
         if (!super.validar()) {
             mensagemValidacao = super.getMensagemValidacao();
             return false;
@@ -61,9 +79,20 @@ public class Medico extends Pessoa implements Validavel {
             return false;
         }
 
-        // Validação Especialidade
+        // Validação especialidade
         if (especialidade == null || especialidade.isBlank()) {
             mensagemValidacao = "A especialidade não pode ser vazia.";
+            return false;
+        }
+
+        // Validação credenciais
+        if (credenciais == null) {
+            mensagemValidacao = "Credenciais de acesso não foram atribuídas ao médico.";
+            return false;
+        }
+
+        if (credenciais.getNivel() != NivelAcesso.MEDICO) {
+            mensagemValidacao = "Credenciais incompatíveis: o médico deve ter nível de acesso MÉDICO.";
             return false;
         }
 

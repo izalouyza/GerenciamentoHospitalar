@@ -8,65 +8,72 @@ public class Paciente extends Pessoa implements Validavel {
     private int idade;
     private String principalQueixa;
 
-    private String mensagemValidacao = ""; // Armazena mensagem de erro na validação
+    private String mensagemValidacao = "";
 
-    public Paciente(String id, String nome, String cpf, String telefone, String email,
-                    String endereco, String senha, int idade, String principalQueixa) {
+    public Paciente(
+            String id,
+            String nome,
+            String cpf,
+            String telefone,
+            String email,
+            String endereco,
+            int idade,
+            String principalQueixa
+    ) {
+        // Pessoa já não recebe mais senha ou nível de acesso
+        super(id, nome, cpf, telefone, email, endereco);
 
-        super(id, nome, cpf, telefone, email, endereco, senha, "PACIENTE"); // Define nível de acesso como PACIENTE
         this.idade = idade;
-        this.principalQueixa = normalizarTexto(principalQueixa); // Remove acentos e caracteres indesejados
+        this.principalQueixa = normalizarTexto(principalQueixa);
     }
 
-    // ------------------- GETTERS E SETTERS ---------------------
+    // -------------------
+    // GETTERS
+    // -------------------
 
     public int getIdade() {
         return idade;
     }
 
-    /* método não utilizado
-    public void setIdade(int idade) {
-        this.idade = idade;
-    }
-    */
-
     public String getPrincipalQueixa() {
         return principalQueixa;
     }
 
-    /* método não utilizado
-    public void setPrincipalQueixa(String principalQueixa) {
-        this.principalQueixa = normalizarTexto(principalQueixa); // Sempre normaliza o texto
-    }
-    */
+    // -------------------
+    // Exibição
+    // -------------------
 
     @Override
     public void exibirInformacoes() {
-        super.exibirInformacoes(); // Exibe informações comuns de Pessoa
+        super.exibirInformacoes();
         Println("Idade: " + idade);
         Println("Principal queixa: " + principalQueixa);
     }
 
-    // Implementação da interface Validavel
+    // -------------------
+    // Validação
+    // -------------------
+
     @Override
     public boolean validar() {
 
-        if (!super.validar()) { // Valida atributos da classe Pessoa
+        // Valida dados da classe Pessoa
+        if (!super.validar()) {
             mensagemValidacao = super.getMensagemValidacao();
             return false;
         }
 
-        if (idade <= 0) { // Idade deve ser positiva
+        if (idade <= 0) {
             mensagemValidacao = "A idade deve ser maior que zero.";
             return false;
         }
 
-        if (principalQueixa == null || principalQueixa.isBlank()) { // Queixa não pode estar vazia
+        if (principalQueixa == null || principalQueixa.isBlank()) {
             mensagemValidacao = "A principal queixa não pode ser vazia.";
             return false;
         }
 
-        mensagemValidacao = ""; // Tudo ok
+        mensagemValidacao = "";
         return true;
     }
 

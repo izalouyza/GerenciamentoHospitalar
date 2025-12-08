@@ -1,67 +1,47 @@
 package br.com.hospital.sistema;
 
-import br.com.hospital.entidades.Funcionario;
-import br.com.hospital.entidades.Pessoa;
 import br.com.hospital.exceptions.LoginException;
-
 import java.util.List;
 
 public class Login {
 
-    private final List<Pessoa> usuarios; // lista de todos os usuários do sistema
-    private Pessoa usuarioLogado; // armazena o usuário que está logado no momento
+    private final List<UsuarioSistema> usuarios;
+    private UsuarioSistema usuarioLogado;
 
-    public Login(List<Pessoa> usuarios) {
+    public Login(List<UsuarioSistema> usuarios) {
         this.usuarios = usuarios;
     }
 
-    // Autenticação
-    // Login permitido somente para funcionários (inclui médicos)
-    public boolean autenticar(String cpf, String senha) throws LoginException {
+    public UsuarioSistema autenticar(String login, String senha) throws LoginException {
 
-        if (cpf == null || senha == null) { // valida entrada
-            throw new LoginException("CPF e senha não podem ser vazios.");
+        if (login == null || senha == null) {
+            throw new LoginException("Usuário e senha não podem ser vazios.");
         }
 
-        // remove letras, espaços, pontos e traços do CPF digitado
-        String cpfDigitado = cpf.replaceAll("\\D", "");
-        String senhaDigitada = senha.trim(); // remove espaços extras
+        String loginDigitado = login.trim();
+        String senhaDigitada = senha.trim();
 
-        for (Pessoa p : usuarios) {
+        for (UsuarioSistema u : usuarios) {
 
-            if (p instanceof Funcionario) { // apenas funcionários podem logar
+            if (u.getUsuario().equals(loginDigitado)) {
 
-                String cpfPessoa = p.getCpf().replaceAll("\\D", "");
-
-                if (cpfPessoa.equals(cpfDigitado)) { // verifica CPF
-
-                    if (p.getSenha().equals(senhaDigitada)) { // verifica senha
-                        usuarioLogado = p; // login bem-sucedido
-                        return true;
-                    } else {
-                        throw new LoginException("Senha incorreta."); // senha inválida
-                    }
+                if (u.getSenha().equals(senhaDigitada)) {
+                    usuarioLogado = u;
+                    return u; // retorna o objeto com nível de acesso
+                } else {
+                    throw new LoginException("Senha incorreta.");
                 }
             }
         }
 
-        // CPF não encontrado ou usuário não é funcionário
-        throw new LoginException("CPF não encontrado ou usuário não é funcionário.");
+        throw new LoginException("Usuário não encontrado.");
     }
 
-    /* método não utilizado
-
-    public Pessoa getUsuarioLogado() {
-        return usuarioLogado; // retorna usuário logado
+    public UsuarioSistema getUsuarioLogado() {
+        return usuarioLogado;
     }
-
-     */
-
-    /* método não utilizado
 
     public void logout() {
-        usuarioLogado = null; // efetua logout
+        usuarioLogado = null;
     }
-
-     */
 }
