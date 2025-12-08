@@ -1,5 +1,6 @@
 package br.com.hospital;
 
+import br.com.hospital.entidades.Pessoa;
 import br.com.hospital.exceptions.LoginException;
 import br.com.hospital.gerenciadores.GerenciadorConsulta;
 import br.com.hospital.gerenciadores.GerenciadorMedico;
@@ -89,10 +90,12 @@ public class Main {
                         case 1 -> menuMedico(sc, gerMedico);
                         case 2 -> menuPaciente(sc, gerPaciente);
                         case 3 -> menuConsulta(sc, gerConsulta);
+                        case 4 -> buscaGeral(sc, hospital);
                         case 0 -> Println("Logout realizado.\n");
                         default -> Println("Opção inválida.\n");
                     }
                 }
+
                 // SECRETARIA
                 else if (nivel == NivelAcesso.SECRETARIA) {
                     switch (opcaoPrincipal) {
@@ -182,5 +185,31 @@ public class Main {
                 default -> Println("Opção inválida.\n");
             }
         }
+    }
+
+    private static void buscaGeral(Scanner sc, Hospital hospital) {
+        Print("Digite o nome para buscar: ");
+        String termo = sc.nextLine().toLowerCase();
+        boolean encontrou = false;
+
+        Println("\n--- RESULTADO DA BUSCA ---");
+
+        // Uso de for-each na lista única da Superclasse
+        for (Pessoa p : hospital.getPessoas()) {
+
+            // Verificamos apenas o NOME (comum a todos).
+            // NÃO usamos if(p instanceof Medico) nem switch.
+            if (p.getNome().toLowerCase().contains(termo)) {
+
+                // O Java decide qual exibirInformacoes chamar
+                p.exibirInformacoes();
+                encontrou = true;
+            }
+        }
+
+        if (!encontrou) {
+            Println("Nenhuma pessoa encontrada.");
+        }
+        Println("--------------------------\n");
     }
 }
