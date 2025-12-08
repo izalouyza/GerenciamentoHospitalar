@@ -6,7 +6,7 @@ import br.com.hospital.gerenciadores.GerenciadorMedico;
 import br.com.hospital.gerenciadores.GerenciadorPaciente;
 import br.com.hospital.sistema.Hospital;
 import br.com.hospital.sistema.Login;
-import br.com.hospital.sistema.NivelAcesso;
+import br.com.hospital.enums.NivelAcesso;
 import br.com.hospital.sistema.UsuarioSistema;
 import static br.com.hospital.utilitarios.Utilitarios.*;
 
