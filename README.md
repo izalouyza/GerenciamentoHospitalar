@@ -72,10 +72,8 @@ O foco principal é demonstrar a **arquitetura POO limpa, modular e extensível*
 
 ### Interfaces
 
-- Acessavel  
 - Agendavel  
 - Gerenciavel  
-- Identificavel  
 - Validavel  
 
 ### Gerenciadores
@@ -86,15 +84,8 @@ O foco principal é demonstrar a **arquitetura POO limpa, modular e extensível*
 
 ### Exceções Personalizadas
 
-- ConsultaException
-- FuncionarioException
-- GerenciadorConsultaException
-- HospitalException
 - LoginException
-- MedicoException
-- PacienteException
-- PessoaException
-- UtilitariosException
+
 
 ### Utilitários
 
@@ -103,7 +94,9 @@ O foco principal é demonstrar a **arquitetura POO limpa, modular e extensível*
 ### Sistema Principal
 
 - Hospital  
-- Login  
+- Login
+- NívelAcesso
+- UsuarioSistema
 - Main (ponto de entrada)  
 
 ---
@@ -123,28 +116,20 @@ GerenciamentoHospitalar/
 │               │   ├── Paciente.java
 │               │   └── Pessoa.java
 │               ├── exceptions/
-│               │   ├── ConsultaException.java
-│               │   ├── FuncionarioException.java
-│               │   ├── GerenciadorConsultaException.java
-│               │   ├── HospitalException.java
-│               │   ├── LoginException.java
-│               │   ├── MedicoException.java
-│               │   ├── PacienteException.java
-│               │   ├── PessoaException.java
-│               │   └── UtilitariosException.java
+│               │   └── LoginException.java
 │               ├── gerenciadores/
 │               │   ├── GerenciadorConsulta.java
 │               │   ├── GerenciadorMedico.java
 │               │   └── GerenciadorPaciente.java
 │               ├── interfaces/
-│               │   ├── Acessavel.java
 │               │   ├── Agendavel.java
 │               │   ├── Gerenciavel.java
-│               │   ├── Identificavel.java
 │               │   └── Validavel.java
 │               ├── sistema/
 │               │   ├── Hospital.java
-│               │   └── Login.java
+│               │   ├── Login.java
+│               │   ├── NivelAcesso.java
+│               │   └── UsuarioSistema.java
 │               ├── utilitarios/
 │               │   └── Utilitarios.java
 │               └── Main.java
