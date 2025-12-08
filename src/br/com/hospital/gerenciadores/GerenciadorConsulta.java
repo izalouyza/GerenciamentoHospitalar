@@ -256,20 +256,22 @@ public class GerenciadorConsulta implements Agendavel {
 
     @Override
     public void buscarConsulta() {
-        Print("Informe o nome do paciente: ");
-        String nome = sc.nextLine().toLowerCase();
+        Print("Informe o CPF do paciente: ");
+        String cpfBuscado = sc.nextLine().trim();
 
         boolean encontrado = false;
 
         for (Consulta c : hospital.getConsultas()) {
-            if (c.getPaciente().getNome().toLowerCase().contains(nome)) {
+            String cpfPaciente = c.getPaciente().getCpf().trim();
+
+            if (cpfPaciente.equals(cpfBuscado)) {
                 c.exibirResumo();
                 encontrado = true;
             }
         }
 
         if (!encontrado) {
-            Println("Nenhuma consulta encontrada.\n");
+            Println("Nenhuma consulta encontrada para o CPF informado.\n");
         }
     }
 
