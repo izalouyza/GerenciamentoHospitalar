@@ -102,19 +102,17 @@ Para detalhes aprofundados sobre a arquitetura, classes e descrição técnica d
 
 ```bash
 GerenciamentoHospitalar/
-├── src/
-│   └── br/
-│       └── com/
-│           └── hospital/
-│               ├── entidades/
-│               ├── exceptions/
-│               ├── gerenciadores/
-│               ├── interfaces/
-│               ├── sistema/
-│               ├── utilitarios/
-│               └── Main.java
 ├── doc/
 │   └── Documentacao_Projeto.pdf
+├── src/
+│   └── br/com/hospital/
+│       ├── entidades/
+│       ├── exceptions/
+│       ├── gerenciadores/
+│       ├── interfaces/
+│       ├── sistema/
+│       ├── utilitarios/
+│       └── Main.java
 └── README.md
 ```
 
