@@ -45,9 +45,10 @@ public class Paciente extends Pessoa implements Validavel {
 
     @Override
     public void exibirInformacoes() {
-        super.exibirInformacoes();
+        super.exibirDadosBasicos(); // Mudou aqui
         Println("Idade: " + idade);
         Println("Principal queixa: " + principalQueixa);
+        Println("--------------------------------------------------");
     }
 
     // -------------------

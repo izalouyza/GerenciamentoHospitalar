@@ -5,12 +5,14 @@ import br.com.hospital.entidades.Medico;
 import br.com.hospital.entidades.Paciente;
 import br.com.hospital.interfaces.Agendavel;
 import br.com.hospital.sistema.Hospital;
-
-import static br.com.hospital.utilitarios.Utilitarios.*;
+import br.com.hospital.sistema.UsuarioSistema;
+import br.com.hospital.sistema.NivelAcesso;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+
+import static br.com.hospital.utilitarios.Utilitarios.*;
 
 public class GerenciadorConsulta implements Agendavel {
 
@@ -114,7 +116,8 @@ public class GerenciadorConsulta implements Agendavel {
 
     private boolean medicoOcupado(Medico m, String dataHora) {
         for (Consulta c : hospital.getConsultas()) {
-            if (c.getMedico().getId().equals(m.getId()) &&
+            if (c.getMedico() != null &&
+                    c.getMedico().getId().equals(m.getId()) &&
                     c.getDataHora().equals(dataHora)) {
                 return true;
             }
@@ -123,7 +126,7 @@ public class GerenciadorConsulta implements Agendavel {
     }
 
     // ------------------------------------------------------------
-    // AGENDA CONSULTA
+    // AGENDAR CONSULTA
     // ------------------------------------------------------------
 
     @Override
@@ -197,7 +200,7 @@ public class GerenciadorConsulta implements Agendavel {
     }
 
     // ------------------------------------------------------------
-    // LISTAR CONSULTAS
+    // LISTAR TODAS AS CONSULTAS
     // ------------------------------------------------------------
 
     @Override
@@ -213,6 +216,37 @@ public class GerenciadorConsulta implements Agendavel {
 
         Println("\n--- CONSULTAS AGENDADAS ---");
         consultas.forEach(Consulta::exibirResumo);
+        Println("");
+    }
+
+    // ------------------------------------------------------------
+    // LISTAR CONSULTAS DO MÉDICO LOGADO
+    // ------------------------------------------------------------
+
+    public void listarConsultasPorMedico(UsuarioSistema usuario) {
+        if (usuario == null || usuario.getNivel() != NivelAcesso.MEDICO) {
+            Println("Usuário logado não é médico.\n");
+            return;
+        }
+
+        var consultasMedico = hospital.getConsultas().stream()
+                .filter(c -> c.getMedico() != null &&
+                        c.getMedico().getCredenciais() != null &&
+                        usuario.getUsuario().equals(
+                                c.getMedico().getCredenciais().getUsuario()
+                        ))
+                .sorted(Comparator.comparing(Consulta::getDataHora))
+                .toList();
+
+        if (consultasMedico.isEmpty()) {
+            Println("Nenhuma consulta encontrada para este médico.\n");
+            return;
+        }
+
+        Println("\n--- MINHAS CONSULTAS ---");
+        for (Consulta c : consultasMedico) {
+            c.exibirResumo();
+        }
         Println("");
     }
 
@@ -284,5 +318,4 @@ public class GerenciadorConsulta implements Agendavel {
             Println("------------------------------------------------\n");
         }
     }
-
 }
