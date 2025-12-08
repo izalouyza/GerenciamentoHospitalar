@@ -290,19 +290,19 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
 
     private String lerEmail() {
         while (true) {
-            Print("Email: ");
+            Print("E-mail: ");
             String e = sc.nextLine();
             if (emailValido(e)) return e;
-            Println("Email inválido!");
+            Println("E-mail inválido!");
         }
     }
 
     private String lerEmailOpcional(String atual) {
-        Print("Novo email (atual: " + atual + "): ");
+        Print("Novo e-mail (atual: " + atual + "): ");
         String e = sc.nextLine();
         if (!textoNaoVazio(e)) return atual;
         if (!emailValido(e)) {
-            Println("Email inválido.");
+            Println("E-mail inválido.");
             return atual;
         }
         return e;
