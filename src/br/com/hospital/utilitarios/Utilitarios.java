@@ -214,6 +214,7 @@ public class Utilitarios {
                 ---- MENU PRINCIPAL (MÉDICO) ----
                 
                 1. Minhas consultas
+                2. Solicitar retorno
                 0. Logout
                 
                 Escolha uma opção: """);
@@ -258,6 +259,7 @@ public class Utilitarios {
                 2. Cancelar Consulta
                 3. Listar Consultas
                 4. Buscar Consulta por Paciente
+                5. Solicitar retorno
                 0. Voltar
                 
                 Escolha uma opção: """);
