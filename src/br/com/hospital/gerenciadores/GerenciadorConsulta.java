@@ -258,20 +258,17 @@ public class GerenciadorConsulta implements Agendavel {
         Println("");
     }
 
-    // ---------------- LISTAR CONSULTAS DO MÉDICO ----------------
+    // ---------------- LISTAR CONSULTAS DO MÉDICO (INCLUINDO RETORNOS) ----------------
 
-    public void listarConsultasPorMedico(UsuarioSistema usuario) {
-        if (usuario == null || usuario.getNivel() != NivelAcesso.MEDICO) {
-            Println("Usuário logado não é médico.\n");
+    public void listarConsultasPorMedico(Medico medicoLogado) {
+        if (medicoLogado == null) {
+            Println("Médico não logado.\n");
             return;
         }
 
-        var consultasMedico = hospital.getConsultas().stream()
+        List<Consulta> consultasMedico = hospital.getConsultas().stream()
                 .filter(c -> c.getMedico() != null &&
-                        c.getMedico().getCredenciais() != null &&
-                        usuario.getUsuario().equals(
-                                c.getMedico().getCredenciais().getUsuario()
-                        ))
+                        c.getMedico().getId().equals(medicoLogado.getId()))
                 .sorted(Comparator.comparing(Consulta::getDataHora))
                 .toList();
 
@@ -280,8 +277,10 @@ public class GerenciadorConsulta implements Agendavel {
             return;
         }
 
-        Println("\n--- MINHAS CONSULTAS ---");
+        Println("\n--- MINHAS CONSULTAS (INCLUINDO RETORNOS) ---");
         for (Consulta c : consultasMedico) {
+            String tipo = c.getTipo() != null ? c.getTipo() : "CONSULTA";
+            Printf("[%s]\n", tipo);
             c.exibirResumo();
         }
         Println("");
@@ -372,11 +371,6 @@ public class GerenciadorConsulta implements Agendavel {
                 dataHora
         );
         consultaRetorno.setTipo("RETORNO");
-
-        if (!consultaRetorno.validar()) {
-            Println("Erro ao validar dados do retorno.");
-            return;
-        }
 
         // Confirmação antes de salvar o retorno
         Println("\nDeseja confirmar o agendamento do retorno?");
