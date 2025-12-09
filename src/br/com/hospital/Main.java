@@ -132,8 +132,8 @@ public class Main {
                         case 1 -> menuMedico(sc, gerMedico);
                         case 2 -> menuPaciente(sc, gerPaciente);
                         case 3 -> menuConsulta(sc, gerConsulta);
-                        case 4 -> buscaGeral(sc, hospital);
-                        case 5 -> menuFuncionario(sc,gerFuncionario);
+                        case 4 -> menuFuncionario(sc,gerFuncionario);
+                        case 5 -> buscaGeral(sc, hospital);
                         case 0 -> Println("Logout realizado.\n");
                         default -> Println("Opção inválida.\n");
                     }
@@ -238,6 +238,8 @@ public class Main {
     private static void menuFuncionario(Scanner sc, GerenciadorFuncionario gf) {
         int opcao = -1;
         while (opcao != 0) {
+
+            limparTela();
             exibirMenuAdministraFuncionario();
             try {
                 opcao = Integer.parseInt(sc.nextLine());
@@ -245,12 +247,12 @@ public class Main {
                 continue;
             }
             switch (opcao) {
-                case 1 -> gf.cadastrarFuncionario();
-                case 2 -> gf.listarFuncionarios();
-                case 3 -> gf.buscarFuncionario();
-                case 4 -> gf.editarFuncionario();
-                case 5 -> gf.removerFuncionario();
-                case 0 -> Println("Voltando...\n");
+                case 1 -> {gf.cadastrarFuncionario(); pausar(sc);}
+                case 2 -> {gf.listarFuncionarios(); pausar(sc);}
+                case 3 -> {gf.buscarFuncionario(); pausar(sc);}
+                case 4 -> {gf.editarFuncionario(); pausar(sc);}
+                case 5 -> {gf.removerFuncionario(); pausar(sc);}
+                case 0 -> {}
                 default -> Println("Opção inválida.\n");
             }
         }
