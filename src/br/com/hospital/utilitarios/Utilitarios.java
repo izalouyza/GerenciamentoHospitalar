@@ -268,10 +268,12 @@ public class Utilitarios {
     }
 
     public static void limparTela() {
-        for (int i = 0; i < 60; i++) {
+        // Imprime 50 linhas vazias para "empurrar" o texto antigo para cima
+        for (int i = 0; i < 1; i++) {
             System.out.println();
         }
     }
+
     public static void pausar(Scanner sc) {
         Print("\nPressione ENTER para continuar...");
         sc.nextLine();
