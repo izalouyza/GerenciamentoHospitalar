@@ -161,6 +161,6 @@ public class Povoamento {
         usuarios.add(new UsuarioSistema("secretaria", "1234", NivelAcesso.SECRETARIA));
         usuarios.add(new UsuarioSistema("medico", "1234", NivelAcesso.MEDICO));
 
-        Println("Usuários de teste carregados: " + usuarios.size());
+      Println("\nUsuários de teste carregados: " + usuarios.size());
     }
 }
