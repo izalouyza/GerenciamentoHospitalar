@@ -1,8 +1,6 @@
 package br.com.hospital.entidades;
 
 import br.com.hospital.interfaces.Validavel;
-import br.com.hospital.utilitarios.Utilitarios;
-
 import static br.com.hospital.utilitarios.Utilitarios.*;
 
 // Agora a classe define um contrato abstrato para exibição
@@ -53,9 +51,9 @@ public abstract class Pessoa implements Validavel {
     // --------------------------
     public String getId() { return id; }
     public String getNome() { return nome; }
-    public String getCpf() { return formatarCpf(cpf); }
-    public String getTelefone() { return formatarTelefone(telefone); }
-    public String getEmail() { return email;}
+    public String getCpf() { return cpf; }
+    public String getTelefone() { return telefone; }
+    public String getEmail() { return email; }
     public String getEndereco() { return endereco; }
 
     // --------------------------
@@ -70,8 +68,8 @@ public abstract class Pessoa implements Validavel {
         Println("--------------------------------------------------");
         Println("ID: " + id);
         Println("Nome: " + nome);
-        Println("CPF: " + formatarCpf(cpf));
-        Println("Telefone: " + formatarTelefone(telefone));
+        Println("CPF: " + cpf);
+        Println("Telefone: " + telefone);
         Println("Email: " + email);
         Println("Endereço: " + endereco);
     }

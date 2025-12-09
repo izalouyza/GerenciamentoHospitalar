@@ -24,7 +24,9 @@ public class GerenciadorConsulta implements Agendavel {
         this.hospital = hospital;
     }
 
-    // ---------------- MÉTODOS AUXILIARES ----------------
+    // ------------------------------------------------------------
+    // MÉTODOS AUXILIARES PARA OBTENÇÃO DE PACIENTES E MÉDICOS
+    // ------------------------------------------------------------
 
     private List<Paciente> getPacientes() {
         return hospital.getPessoas()
@@ -42,6 +44,10 @@ public class GerenciadorConsulta implements Agendavel {
                 .toList();
     }
 
+    // ------------------------------------------------------------
+    // MÉTODOS PARA SELEÇÃO DO PACIENTE E MÉDICO
+    // ------------------------------------------------------------
+
     private Paciente escolherPaciente() {
         List<Paciente> pacientes = getPacientes();
 
@@ -56,9 +62,8 @@ public class GerenciadorConsulta implements Agendavel {
         }
 
         while (true) {
-            Print("Escolha o paciente pelo número (0 para cancelar): ");
+            Print("Escolha o paciente pelo número: ");
             String input = sc.nextLine();
-            if (input.equals("0")) return null;
 
             try {
                 int idx = Integer.parseInt(input) - 1;
@@ -91,9 +96,8 @@ public class GerenciadorConsulta implements Agendavel {
         }
 
         while (true) {
-            Print("Escolha o médico pelo número (0 para cancelar): ");
+            Print("Escolha o médico pelo número: ");
             String input = sc.nextLine();
-            if (input.equals("0")) return null;
 
             try {
                 int idx = Integer.parseInt(input) - 1;
@@ -106,6 +110,10 @@ public class GerenciadorConsulta implements Agendavel {
         }
     }
 
+    // ------------------------------------------------------------
+    // VERIFICAR DISPONIBILIDADE DO MÉDICO
+    // ------------------------------------------------------------
+
     private boolean medicoOcupado(Medico m, String dataHora) {
         for (Consulta c : hospital.getConsultas()) {
             if (c.getMedico() != null &&
@@ -117,33 +125,23 @@ public class GerenciadorConsulta implements Agendavel {
         return false;
     }
 
-    // ---------------- AGENDAR CONSULTA ----------------
+    // ------------------------------------------------------------
+    // AGENDAR CONSULTA
+    // ------------------------------------------------------------
 
     @Override
     public void agendar() {
-        Println("\n--- AGENDAR CONSULTA ---");
-        Println("Digite 0 em qualquer etapa para cancelar a operação.\n");
-
         Paciente paciente = escolherPaciente();
-        if (paciente == null) {
-            Println("Agendamento cancelado.\n");
-            return;
-        }
+        if (paciente == null) return;
 
         Medico medico = escolherMedico();
-        if (medico == null) {
-            Println("Agendamento cancelado.\n");
-            return;
-        }
+        if (medico == null) return;
 
         String dataHora = null;
         while (dataHora == null) {
-            Print("Informe a data e hora (dd/MM/yyyy HH:mm) ou 0 para cancelar: ");
+
+            Print("Informe a data e hora (dd/MM/yyyy HH:mm): ");
             String dh = sc.nextLine();
-            if (dh.equals("0")) {
-                Println("Agendamento cancelado.\n");
-                return;
-            }
 
             if (!dataHoraValida(dh)) {
                 Println("Data/hora inválida.");
@@ -175,72 +173,35 @@ public class GerenciadorConsulta implements Agendavel {
             return;
         }
 
-        // Confirmação antes de salvar
-        Println("\nDeseja confirmar o agendamento da consulta?");
-        Println("1 - Confirmar");
-        Println("0 - Cancelar");
-        while (true) {
-            Print("Escolha: ");
-            String opcao = sc.nextLine();
-            if (opcao.equals("1")) {
-                hospital.adicionarConsulta(consulta);
-                Println("Consulta agendada com sucesso!\n");
-                return;
-            } else if (opcao.equals("0")) {
-                Println("Agendamento cancelado.\n");
-                return;
-            } else {
-                Println("Opção inválida! Digite 1 para confirmar ou 0 para cancelar.");
-            }
-        }
+        hospital.adicionarConsulta(consulta);
+        Println("Consulta agendada com sucesso!\n");
     }
 
-    // ---------------- CANCELAR CONSULTA ----------------
+    // ------------------------------------------------------------
+    // CANCELAR CONSULTA
+    // ------------------------------------------------------------
 
     @Override
     public void cancelarAgendamento() {
-        Println("\n--- CANCELAR CONSULTA ---");
-        Println("Digite 0 para voltar a qualquer momento.\n");
-
         listarConsultas();
 
-        while (true) {
-            Print("Informe o número do protocolo (ou 0 para cancelar): ");
-            String id = sc.nextLine();
-            if (id.equals("0")) {
-                Println("Operação cancelada.\n");
-                return;
-            }
+        Print("Informe o número do protocolo: ");
+        String id = sc.nextLine();
 
-            Consulta c = buscarPorId(id);
-            if (c == null) {
-                Println("Consulta não encontrada. Tente novamente.");
-            } else {
-                Println("\nDeseja realmente cancelar esta consulta?");
-                Println("1 - Confirmar");
-                Println("0 - Cancelar");
-                while (true) {
-                    Print("Escolha: ");
-                    String opcao = sc.nextLine();
-                    if (opcao.equals("1")) {
-                        hospital.getConsultas().remove(c);
-                        Println("\nConsulta cancelada com sucesso!");
-                        Println("Paciente: " + c.getPaciente().getNome());
-                        Println("Médico:   " + c.getMedico().getNome());
-                        Println("Data/Hora: " + c.getDataHora() + "\n");
-                        return;
-                    } else if (opcao.equals("0")) {
-                        Println("Cancelamento abortado.\n");
-                        return;
-                    } else {
-                        Println("Opção inválida! Digite 1 para confirmar ou 0 para cancelar.");
-                    }
-                }
-            }
+        Consulta c = buscarPorId(id);
+
+        if (c == null) {
+            Println("Consulta não encontrada.\n");
+            return;
         }
+
+        hospital.getConsultas().remove(c);
+        Println("Consulta cancelada com sucesso.\n");
     }
 
-    // ---------------- LISTAR CONSULTAS ----------------
+    // ------------------------------------------------------------
+    // LISTAR TODAS AS CONSULTAS
+    // ------------------------------------------------------------
 
     @Override
     public void listarConsultas() {
@@ -258,17 +219,22 @@ public class GerenciadorConsulta implements Agendavel {
         Println("");
     }
 
-    // ---------------- LISTAR CONSULTAS DO MÉDICO (INCLUINDO RETORNOS) ----------------
+    // ------------------------------------------------------------
+    // LISTAR CONSULTAS DO MÉDICO LOGADO
+    // ------------------------------------------------------------
 
-    public void listarConsultasPorMedico(Medico medicoLogado) {
-        if (medicoLogado == null) {
-            Println("Médico não logado.\n");
+    public void listarConsultasPorMedico(UsuarioSistema usuario) {
+        if (usuario == null || usuario.getNivel() != NivelAcesso.MEDICO) {
+            Println("Usuário logado não é médico.\n");
             return;
         }
 
-        List<Consulta> consultasMedico = hospital.getConsultas().stream()
+        var consultasMedico = hospital.getConsultas().stream()
                 .filter(c -> c.getMedico() != null &&
-                        c.getMedico().getId().equals(medicoLogado.getId()))
+                        c.getMedico().getCredenciais() != null &&
+                        usuario.getUsuario().equals(
+                                c.getMedico().getCredenciais().getUsuario()
+                        ))
                 .sorted(Comparator.comparing(Consulta::getDataHora))
                 .toList();
 
@@ -277,47 +243,39 @@ public class GerenciadorConsulta implements Agendavel {
             return;
         }
 
-        Println("\n--- MINHAS CONSULTAS (INCLUINDO RETORNOS) ---");
+        Println("\n--- MINHAS CONSULTAS ---");
         for (Consulta c : consultasMedico) {
-            String tipo = c.getTipo() != null ? c.getTipo() : "CONSULTA";
-            Printf("[%s]\n", tipo);
             c.exibirResumo();
         }
         Println("");
     }
 
-    // ---------------- BUSCAR CONSULTA POR PACIENTE ----------------
+    // ------------------------------------------------------------
+    // BUSCAR CONSULTA POR NOME DO PACIENTE
+    // ------------------------------------------------------------
 
     @Override
     public void buscarConsulta() {
-        while (true) {
-            Print("Informe o CPF do paciente (ou 0 para cancelar): ");
-            String cpfBuscado = sc.nextLine().trim();
-            if (cpfBuscado.equals("0")) {
-                Println("Busca cancelada.\n");
-                return;
+        Print("Informe o nome do paciente: ");
+        String nome = sc.nextLine().toLowerCase();
+
+        boolean encontrado = false;
+
+        for (Consulta c : hospital.getConsultas()) {
+            if (c.getPaciente().getNome().toLowerCase().contains(nome)) {
+                c.exibirResumo();
+                encontrado = true;
             }
+        }
 
-            boolean encontrado = false;
-
-            for (Consulta c : hospital.getConsultas()) {
-                String cpfPaciente = c.getPaciente().getCpf().trim();
-
-                if (cpfPaciente.equals(cpfBuscado)) {
-                    c.exibirResumo();
-                    encontrado = true;
-                }
-            }
-
-            if (!encontrado) {
-                Println("Nenhuma consulta encontrada para o CPF informado. Tente novamente.\n");
-            } else {
-                break;
-            }
+        if (!encontrado) {
+            Println("Nenhuma consulta encontrada.\n");
         }
     }
 
-    // ---------------- BUSCAR POR ID ----------------
+    // ------------------------------------------------------------
+    // BUSCA POR ID
+    // ------------------------------------------------------------
 
     private Consulta buscarPorId(String id) {
         for (Consulta c : hospital.getConsultas()) {
@@ -326,36 +284,31 @@ public class GerenciadorConsulta implements Agendavel {
         return null;
     }
 
-    // ---------------- SOLICITAR RETORNO ----------------
-
+    // ------------------------------------------------------------
+    // SOLICITAR RETORNO
+    // ------------------------------------------------------------
     public void solicitarRetorno() {
         Println("\n=== AGENDAR RETORNO ===");
-        Println("Digite 0 em qualquer etapa para cancelar a operação.\n");
 
+        // seleciona o Paciente
         Paciente paciente = escolherPaciente();
-        if (paciente == null) {
-            Println("Operação cancelada.\n");
-            return;
-        }
+        if (paciente == null) return;
 
+        // seleciona o Médico
+        // (Mesmo se for médico logado, selecionamos aqui para manter o código simples e reutilizável)
         Medico medico = escolherMedico();
-        if (medico == null) {
-            Println("Operação cancelada.\n");
-            return;
-        }
+        if (medico == null) return;
 
+        // define a data
         String dataHora = null;
         while (dataHora == null) {
-            Print("Data e Hora do Retorno (dd/MM/yyyy HH:mm) ou 0 para cancelar: ");
+            Print("Data e Hora do Retorno (dd/MM/yyyy HH:mm): ");
             String dh = sc.nextLine();
-            if (dh.equals("0")) {
-                Println("Operação cancelada.\n");
-                return;
-            }
 
+            // usa as mesmas validações do agendar para evitar erros
             if (dataHoraValida(dh) && dataNoFuturo(dh)) {
                 if (!medicoOcupado(medico, dh)) {
-                    dataHora = dh;
+                    dataHora = dh; // Data válida e livre
                 } else {
                     Println("Erro: O médico já tem consulta neste horário.");
                 }
@@ -364,33 +317,28 @@ public class GerenciadorConsulta implements Agendavel {
             }
         }
 
+        // cria e salva transformando o retorno em uma nova consulta
         Consulta consultaRetorno = new Consulta(
-                gerarIdUnico(),
+                gerarIdUnico(), // Gera ID automático
                 paciente,
                 medico,
                 dataHora
         );
+
         consultaRetorno.setTipo("RETORNO");
 
-        // Confirmação antes de salvar o retorno
-        Println("\nDeseja confirmar o agendamento do retorno?");
-        Println("1 - Confirmar");
-        Println("0 - Cancelar");
-        while (true) {
-            Print("Escolha: ");
-            String opcao = sc.nextLine();
-            if (opcao.equals("1")) {
-                hospital.adicionarConsulta(consultaRetorno);
-                Println("\nRetorno agendado com sucesso!");
-                Printf("PACIENTE: %s\n", paciente.getNome());
-                Printf("DATA:     %s\n", dataHora);
-                return;
-            } else if (opcao.equals("0")) {
-                Println("Agendamento de retorno cancelado.\n");
-                return;
-            } else {
-                Println("Opção inválida! Digite 1 para confirmar ou 0 para cancelar.");
-            }
+        // Valida e salva na lista oficial do hospital
+        if (consultaRetorno.validar()) {
+            hospital.adicionarConsulta(consultaRetorno);
+
+            // printa de confirmação
+            Println("\n************************************************");
+            Println(">>> SUCESSO: Retorno agendado e salvo na lista!");
+            Printf(" PACIENTE: %s\n", paciente.getNome());
+            Printf(" DATA:     %s\n", dataHora);
+            Println("************************************************\n");
+        } else {
+            Println("Erro ao validar dados do retorno.");
         }
     }
 }

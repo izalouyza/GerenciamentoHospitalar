@@ -1,7 +1,5 @@
 package br.com.hospital.utilitarios;
 
-import java.util.Scanner;
-
 public class Utilitarios {
 
     // -----------------------------
@@ -189,11 +187,10 @@ public class Utilitarios {
                 1. Médico
                 2. Paciente
                 3. Consulta
-                4. Funcionários
-                5. Busca Geral
+                4. Busca Geral
                 0. Logout
                 
-                Escolha uma opção:\t""");
+                Escolha uma opção: """);
     }
 
     // SECRETARIA — pacientes + consultas
@@ -206,7 +203,7 @@ public class Utilitarios {
                 2. Consulta
                 0. Logout
                 
-                Escolha uma opção:\t""");
+                Escolha uma opção: """);
     }
 
     // MÉDICO — visualizar consultas
@@ -219,7 +216,7 @@ public class Utilitarios {
                 2. Solicitar retorno
                 0. Logout
                 
-                Escolha uma opção:\t""");
+                Escolha uma opção: """);
     }
 
     public static void exibirMenuMedico() {
@@ -234,7 +231,7 @@ public class Utilitarios {
                 5. Buscar Médico
                 0. Voltar
                 
-                Escolha uma opção:\t""");
+                Escolha uma opção: """);
     }
 
     public static void exibirMenuPaciente() {
@@ -249,7 +246,7 @@ public class Utilitarios {
                 5. Buscar Paciente
                 0. Voltar
                 
-                Escolha uma opção:\t""");
+                Escolha uma opção: """);
     }
 
     public static void exibirMenuConsulta() {
@@ -264,53 +261,6 @@ public class Utilitarios {
                 5. Solicitar retorno
                 0. Voltar
                 
-                Escolha uma opção:\t""");
-    }
-
-    public static void limparTela() {
-        // Imprime 50 linhas vazias para "empurrar" o texto antigo para cima
-        for (int i = 0; i < 1; i++) {
-            System.out.println();
-        }
-    }
-
-    public static void pausar(Scanner sc) {
-        Print("\nPressione ENTER para continuar...");
-        sc.nextLine();
-    }
-
-    public static void exibirMenuAdministraFuncionario() {
-        System.out.printf("""
-                
-                --- MENU ADMIN FUNCIONÁRIOS ---
-                
-                1. Cadastrar Funcionário
-                2. Listar Funcionários
-                3. Buscar Funcionário
-                4. Editar Funcionário
-                5. Remover Funcionário
-                0. Voltar ao menu anterior
-                
                 Escolha uma opção: """);
     }
-
-    // Formata CPF: 12345678900 → 123.456.789-00
-    public static String formatarCpf(String cpf) {
-        if (cpf == null || cpf.length() != 11) return cpf;
-        return cpf.substring(0, 3) + "." +
-                cpf.substring(3, 6) + "." +
-                cpf.substring(6, 9) + "-" +
-                cpf.substring(9, 11);
-    }
-
-    // Formata Telefone: 11987654321 → (11) 98765-4321
-    public static String formatarTelefone(String telefone) {
-        if (telefone == null || (telefone.length() != 10 && telefone.length() != 11)) return telefone;
-        String ddd = telefone.substring(0, 2);
-        String parte1 = telefone.length() == 11 ? telefone.substring(2, 7) : telefone.substring(2, 6);
-        String parte2 = telefone.length() == 11 ? telefone.substring(7) : telefone.substring(6);
-        return "(" + ddd + ") " + parte1 + "-" + parte2;
-    }
-
 }
-
