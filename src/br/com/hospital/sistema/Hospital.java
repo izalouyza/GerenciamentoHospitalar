@@ -103,4 +103,10 @@ public class Hospital {
         }
         return null;
     }
+
+    public boolean emailExiste(String email) {
+        return pessoas.stream()
+                .anyMatch(p -> p.getEmail().equalsIgnoreCase(email));
+    }
+
 }
