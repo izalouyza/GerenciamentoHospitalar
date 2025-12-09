@@ -277,19 +277,37 @@ public class GerenciadorFuncionario implements Gerenciavel<Funcionario> {
         while (true) {
             Print("Email: ");
             String e = sc.nextLine();
-            if (emailValido(e)) return e;
-            Println("Email inválido!");
+
+            if (!emailValido(e)) {
+                Println("Email inválido!");
+                continue;
+            }
+
+            if (hospital.emailExiste(e)) {
+                Println("Esse email já está cadastrado!");
+                continue;
+            }
+
+            return e;
         }
     }
 
     private String lerEmailOpcional(String atual) {
         Print("Novo email (atual: " + atual + "): ");
         String e = sc.nextLine();
+
         if (!textoNaoVazio(e)) return atual;
+
         if (!emailValido(e)) {
             Println("Email inválido.");
             return atual;
         }
+
+        if (hospital.emailExiste(e)) {
+            Println("Email já cadastrado.");
+            return atual;
+        }
+
         return e;
     }
 
