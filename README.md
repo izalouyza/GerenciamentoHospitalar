@@ -93,6 +93,10 @@ Para detalhes aprofundados sobre a arquitetura, classes e descrição técnica d
 - GerenciadorMedico
 - GerenciadorPaciente
 
+### Utilitários
+- Utilitarios
+- Povoamento
+
 ### Sistema Principal
 - Hospital
 - Login
