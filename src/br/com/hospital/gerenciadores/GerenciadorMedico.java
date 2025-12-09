@@ -5,6 +5,7 @@ import br.com.hospital.interfaces.Gerenciavel;
 import br.com.hospital.sistema.Hospital;
 import br.com.hospital.sistema.UsuarioSistema;
 import br.com.hospital.enums.NivelAcesso;
+
 import static br.com.hospital.utilitarios.Utilitarios.*;
 
 import java.util.Comparator;
@@ -15,7 +16,7 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
 
     private final Hospital hospital;
     private final Scanner sc;
-    private final List<UsuarioSistema> usuariosSistema; // lista usada pelo Login
+    private final List<UsuarioSistema> usuariosSistema;
 
     public GerenciadorMedico(Hospital hospital, Scanner sc, List<UsuarioSistema> usuariosSistema) {
         this.hospital = hospital;
@@ -23,9 +24,29 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
         this.usuariosSistema = usuariosSistema;
     }
 
-    // -------------------------
-    // Adicionar
-    // -------------------------
+    // ======================================================
+    // CONFIRMAR 0 OU 1
+    // ======================================================
+
+    private boolean confirmarZeroUm(String msg) {
+        while (true) {
+            Print(msg + " (1 = SIM / 0 = CANCELAR): ");
+            String r = sc.nextLine().trim();
+
+            if (r.equals("1")) return true;
+            if (r.equals("0")) return false;
+
+            Println("Opção inválida! Digite apenas 1 ou 0.");
+        }
+    }
+
+    private boolean cancelouComZero(String s) {
+        return s != null && s.trim().equals("0");
+    }
+
+    // ======================================================
+    // ADICIONAR
+    // ======================================================
 
     @Override
     public void adicionar(Medico medico) {
@@ -35,44 +56,60 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
 
     public void cadastrarMedico() {
         Println("\n--- CADASTRO DE MÉDICO ---");
+        Println("(Digite 0 para CANCELAR a qualquer momento)");
 
-        String nome = lerCampoObrigatorio("Nome");
+        // Nome
+        String nome = lerCampoObrigatorioComCancelarZero("Nome");
+        if (nome == null) return;
 
         // CPF
-        String cpf = lerCpfNovo();
+        String cpf = lerCpfNovoComCancelarZero();
+        if (cpf == null) return;
 
         // Telefone
-        String telefone = lerTelefone();
+        String telefone = lerTelefoneComCancelarZero();
+        if (telefone == null) return;
 
         // Email
-        String email = lerEmail();
+        String email = lerEmailComCancelarZero();
+        if (email == null) return;
 
         // Endereço
-        Print("Endereço: ");
-        String endereco = sc.nextLine();
+        String endereco = lerCampoObrigatorioComCancelarZero("Endereço");
+        if (endereco == null) return;
 
         // CRM
-        String crm = lerCRM();
+        String crm = lerCRMComCancelarZero();
+        if (crm == null) return;
 
         // Especialidade
-        String especialidade = lerCampoObrigatorio("Especialidade");
+        String especialidade = lerCampoObrigatorioComCancelarZero("Especialidade");
+        if (especialidade == null) return;
 
-        // LOGIN DO MÉDICO
-        Print("Usuário para login: ");
+        // Login
+        Print("Usuário para login (0 = cancelar): ");
         String usuario = sc.nextLine();
+        if (cancelouComZero(usuario)) return;
 
-        String senha = lerSenha();
+        String senha = lerSenhaComCancelarZero();
+        if (senha == null) return;
 
-        UsuarioSistema credenciais = new UsuarioSistema(
-                usuario,
-                senha,
-                NivelAcesso.MEDICO
-        );
-
-        // registra esse usuário na lista usada pelo Login
+        UsuarioSistema credenciais = new UsuarioSistema(usuario, senha, NivelAcesso.MEDICO);
         usuariosSistema.add(credenciais);
 
-        // Criar objeto médico
+        // CONFIRMAR DADOS
+        Println("\n--- CONFIRMAR CADASTRO ---");
+        Println("Nome: " + nome);
+        Println("CPF: " + cpf);
+        Println("Telefone: " + telefone);
+        Println("Email: " + email);
+        Println("Endereço: " + endereco);
+        Println("CRM: " + crm);
+        Println("Especialidade: " + especialidade);
+        Println("Usuário: " + usuario);
+
+        if (!confirmarZeroUm("Confirmar cadastro?")) return;
+
         Medico medico = new Medico(
                 gerarIdUnico(),
                 capitalizarNome(nome),
@@ -85,21 +122,15 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
                 credenciais
         );
 
-        if (!medico.validar()) {
-            Println("ERRO: " + medico.getMensagemValidacao());
-            return;
-        }
-
         adicionar(medico);
     }
 
-    // -------------------------
-    // Listar
-    // -------------------------
+    // ======================================================
+    // LISTAR
+    // ======================================================
 
     @Override
     public void listar() {
-
         List<Medico> medicos = hospital.getPessoas()
                 .stream()
                 .filter(p -> p instanceof Medico)
@@ -123,9 +154,9 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
         listar();
     }
 
-    // -------------------------
-    // Buscar
-    // -------------------------
+    // ======================================================
+    // BUSCAR (LOOP ATÉ ACHAR)
+    // ======================================================
 
     @Override
     public Medico buscar(String crm) {
@@ -134,28 +165,32 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
     }
 
     public void buscarMedico() {
-        Print("Informe o CRM do médico: ");
-        String crm = sc.nextLine();
+        while (true) {
+            Print("Informe o CRM (ou 0 para CANCELAR): ");
+            String crm = sc.nextLine();
 
-        Medico m = buscar(crm);
-        if (m == null) {
-            Println("Médico não encontrado.\n");
+            if (crm.equals("0")) return;
+
+            Medico m = buscar(crm);
+            if (m == null) {
+                Println("Médico não encontrado! Tente novamente.\n");
+                continue;
+            }
+
+            Println("\n--- DADOS DO MÉDICO ---");
+            m.exibirInformacoes();
+            Println("---------------------------\n");
             return;
         }
-
-        Println("\n--- DADOS DO MÉDICO ---");
-        m.exibirInformacoes();
-        Println("---------------------------\n");
     }
 
-    // -------------------------
-    // Editar
-    // -------------------------
+    // ======================================================
+    // EDITAR (PADRÃO PACIENTE)
+    // ======================================================
 
     @Override
     public boolean editar(String crm, Medico novo) {
         Medico antigo = buscar(crm);
-
         if (antigo == null) return false;
 
         hospital.getPessoas().remove(antigo);
@@ -165,28 +200,50 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
 
     public void editarMedico() {
 
-        Print("Informe o CRM do médico a editar: ");
-        String crm = sc.nextLine();
-
-        Medico antigo = buscar(crm);
-        if (antigo == null) {
-            Println("Médico não encontrado.\n");
-            return;
-        }
-
         Println("\n--- EDITAR MÉDICO ---");
 
-        String nome = lerCampoOpcional("Novo nome", antigo.getNome());
-        String telefone = lerTelefoneOpcional(antigo.getTelefone());
-        String email = lerEmailOpcional(antigo.getEmail());
+        Medico antigo;
+
+        while (true) {
+            Print("CRM do médico (ou 0 para cancelar): ");
+            String crm = sc.nextLine();
+            if (crm.equals("0")) return;
+
+            antigo = buscar(crm);
+            if (antigo != null) break;
+
+            Println("Médico não encontrado! Tente novamente.\n");
+        }
+
+        Println("\n(ENTER = manter atual / 0 = CANCELAR)");
+
+        String nome = lerCampoOpcionalComCancelarZeroLoop("Novo nome", antigo.getNome());
+        if (nome == null) return;
+
+        String telefone = lerTelefoneOpcionalComCancelarZeroLoop(antigo.getTelefone());
+        if (telefone == null) return;
+
+        String email = lerEmailOpcionalComCancelarZeroLoop(antigo.getEmail());
+        if (email == null) return;
 
         Print("Novo endereço (atual: " + antigo.getEndereco() + "): ");
         String endereco = sc.nextLine();
+        if (cancelouComZero(endereco)) return;
         if (!textoNaoVazio(endereco)) endereco = antigo.getEndereco();
 
-        String especialidade = lerCampoOpcional("Nova especialidade", antigo.getEspecialidade());
+        String especialidade = lerCampoOpcionalComCancelarZeroLoop("Nova especialidade", antigo.getEspecialidade());
+        if (especialidade == null) return;
 
-        // Mantém CRM e credenciais
+        // CONFIRMAR
+        Println("\n--- CONFIRMAR ALTERAÇÕES ---");
+        Println("Nome: " + nome);
+        Println("Telefone: " + telefone);
+        Println("Email: " + email);
+        Println("Endereço: " + endereco);
+        Println("Especialidade: " + especialidade);
+
+        if (!confirmarZeroUm("Confirmar alterações?")) return;
+
         Medico novo = new Medico(
                 antigo.getId(),
                 capitalizarNome(nome),
@@ -199,21 +256,13 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
                 antigo.getCredenciais()
         );
 
-        if (!novo.validar()) {
-            Println("ERRO: " + novo.getMensagemValidacao());
-            return;
-        }
-
-        if (editar(crm, novo)) {
-            Println("Médico atualizado com sucesso!\n");
-        } else {
-            Println("Erro ao atualizar médico.\n");
-        }
+        editar(antigo.getCrm(), novo);
+        Println("Médico atualizado com sucesso!\n");
     }
 
-    // -------------------------
-    // Remover
-    // -------------------------
+    // ======================================================
+    // REMOVER (LOOP + CONFIRMAÇÃO)
+    // ======================================================
 
     @Override
     public boolean remover(String crm) {
@@ -226,87 +275,112 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
     }
 
     public void removerMedico() {
-        Print("CRM do médico para remover: ");
-        String crm = sc.nextLine();
+        Println("\n--- REMOVER MÉDICO ---");
 
-        // Buscar antes de remover
-        Medico m = buscar(crm);
+        Medico m;
 
-        if (m == null) {
-            Println("Médico não encontrado.\n");
-            return;
+        while (true) {
+            Print("Informe o CRM (ou 0 para CANCELAR): ");
+            String crm = sc.nextLine();
+
+            if (crm.equals("0")) return;
+
+            m = buscar(crm);
+            if (m != null) break;
+
+            Println("Médico não encontrado! Tente novamente.\n");
         }
 
-        // Agora remover
-        if (remover(crm)) {
-            Println("Médico removido com sucesso!");
-            Println("Nome: " + m.getNome());
-            Println("CRM: " + m.getCrm() + "\n");
-        } else {
-            Println("Erro ao remover médico.\n");
-        }
+        Println("\n--- CONFIRMAR REMOÇÃO ---");
+        m.exibirInformacoes();
+
+        if (!confirmarZeroUm("Deseja realmente remover?")) return;
+
+        remover(m.getCrm());
+        Println("Médico removido com sucesso!");
     }
 
-    // ============================================================
-    // MÉTODOS AUXILIARES
-    // ============================================================
+    // ======================================================
+    // MÉTODOS AUXILIARES REUTILIZADOS DO PACIENTE
+    // ======================================================
 
-    private String lerCampoObrigatorio(String nomeCampo) {
-        String valor = "";
-        while (!textoNaoVazio(valor)) {
+    private String lerCampoObrigatorioComCancelarZero(String nomeCampo) {
+        while (true) {
             Print(nomeCampo + ": ");
-            valor = sc.nextLine();
+            String valor = sc.nextLine();
+
+            if (cancelouComZero(valor)) return null;
             if (!textoNaoVazio(valor)) {
                 Println(nomeCampo + " não pode ficar vazio.");
+                continue;
             }
+            return valor;
         }
-        return valor;
     }
 
-    private String lerCampoOpcional(String mensagem, String atual) {
-        Print(mensagem + " (atual: " + atual + "): ");
-        String valor = sc.nextLine();
-        return textoNaoVazio(valor) ? valor : atual;
+    private String lerCampoOpcionalComCancelarZeroLoop(String msg, String atual) {
+        while (true) {
+            Print(msg + " (atual: " + atual + "): ");
+            String v = sc.nextLine();
+
+            if (cancelouComZero(v)) return null;
+            if (!textoNaoVazio(v)) return atual;
+            return v;
+        }
     }
 
-    private String lerCpfNovo() {
+    private String lerCpfNovoComCancelarZero() {
         while (true) {
             Print("CPF: ");
             String cpf = sc.nextLine();
+
+            if (cancelouComZero(cpf)) return null;
+
             if (!cpfValido(cpf)) {
                 Println("CPF inválido!");
-            } else if (hospital.cpfExiste(cpf)) {
-                Println("CPF já cadastrado!");
-            } else {
-                return cpf;
+                continue;
             }
+
+            if (hospital.cpfExiste(cpf)) {
+                Println("CPF já cadastrado!");
+                continue;
+            }
+
+            return cpf;
         }
     }
 
-    private String lerTelefone() {
+    private String lerTelefoneComCancelarZero() {
         while (true) {
             Print("Telefone: ");
             String t = sc.nextLine();
+
+            if (cancelouComZero(t)) return null;
             if (telefoneValido(t)) return t;
-            Println("Telefone inválido!");
-        }
-    }
 
-    private String lerTelefoneOpcional(String atual) {
-        Print("Novo telefone (atual: " + atual + "): ");
-        String t = sc.nextLine();
-        if (!textoNaoVazio(t)) return atual;
-        if (!telefoneValido(t)) {
             Println("Telefone inválido.");
-            return atual;
         }
-        return t;
     }
 
-    private String lerEmail() {
+    private String lerTelefoneOpcionalComCancelarZeroLoop(String atual) {
+        while (true) {
+            Print("Novo telefone (atual: " + atual + "): ");
+            String t = sc.nextLine();
+
+            if (cancelouComZero(t)) return null;
+            if (!textoNaoVazio(t)) return atual;
+
+            if (telefoneValido(t)) return t;
+            Println("Telefone inválido.");
+        }
+    }
+
+    private String lerEmailComCancelarZero() {
         while (true) {
             Print("Email: ");
             String e = sc.nextLine();
+
+            if (cancelouComZero(e)) return null;
 
             if (!emailValido(e)) {
                 Println("Email inválido!");
@@ -314,7 +388,7 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
             }
 
             if (hospital.emailExiste(e)) {
-                Println("Esse email já está cadastrado!");
+                Println("Email já cadastrado!");
                 continue;
             }
 
@@ -322,36 +396,46 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
         }
     }
 
-    private String lerEmailOpcional(String atual) {
-        Print("Novo email (atual: " + atual + "): ");
-        String e = sc.nextLine();
+    private String lerEmailOpcionalComCancelarZeroLoop(String atual) {
+        while (true) {
+            Print("Novo email (atual: " + atual + "): ");
+            String e = sc.nextLine();
 
-        if (!textoNaoVazio(e)) return atual;
+            if (cancelouComZero(e)) return null;
+            if (!textoNaoVazio(e)) return atual;
 
-        if (!emailValido(e)) {
-            Println("Email inválido.");
-            return atual;
+            if (!emailValido(e)) {
+                Println("Email inválido.");
+                continue;
+            }
+
+            if (hospital.emailExiste(e)) {
+                Println("Email já cadastrado.");
+                continue;
+            }
+
+            return e;
         }
-
-        if (hospital.emailExiste(e)) {
-            Println("Email já cadastrado.");
-            return atual;
-        }
-
-        return e;
     }
 
-    private String lerCRM() {
+    private String lerCRMComCancelarZero() {
         while (true) {
             Print("CRM: ");
             String crm = sc.nextLine();
+
+            if (cancelouComZero(crm)) return null;
+
             if (!crmValido(crm)) {
                 Println("CRM inválido!");
-            } else if (crmExiste(crm)) {
-                Println("Já existe um médico com esse CRM!");
-            } else {
-                return crm;
+                continue;
             }
+
+            if (crmExiste(crm)) {
+                Println("CRM já cadastrado!");
+                continue;
+            }
+
+            return crm;
         }
     }
 
@@ -362,15 +446,18 @@ public class GerenciadorMedico implements Gerenciavel<Medico> {
                 .anyMatch(m -> compararIdentificadores(m.getCrm(), crm));
     }
 
-    private String lerSenha() {
-        String senha = "";
-        while (senha.isBlank()) {
+    private String lerSenhaComCancelarZero() {
+        while (true) {
             Print("Senha para login: ");
-            senha = sc.nextLine();
-            if (senha.isBlank()) {
-                Println("A senha não pode ser vazia!");
+            String s = sc.nextLine();
+
+            if (cancelouComZero(s)) return null;
+            if (!textoNaoVazio(s)) {
+                Println("Senha não pode ser vazia.");
+                continue;
             }
+
+            return s;
         }
-        return senha;
     }
 }
