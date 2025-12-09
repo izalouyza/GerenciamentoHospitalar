@@ -24,7 +24,9 @@ public class GerenciadorFuncionario implements Gerenciavel<Funcionario> {
         this.usuariosSistema = usuariosSistema;
     }
 
+    // -------------------------
     // Adicionar/Cadastrar
+    // -------------------------
     @Override
     public void adicionar(Funcionario funcionario) {
         hospital.adicionarPessoa(funcionario);
@@ -33,41 +35,40 @@ public class GerenciadorFuncionario implements Gerenciavel<Funcionario> {
 
     public void cadastrarFuncionario() {
         Println("\n--- CADASTRO DE FUNCIONÁRIO ---");
+        Println("Digite 0 em qualquer campo para cancelar o cadastro.\n");
 
-        String nome = lerCampoObrigatorio("Nome");
+        String nome = lerCampoObrigatorioOuCancelar("Nome");
+        if (nome == null) return;
 
-        // CPF
-        String cpf = lerCpfNovo();
+        String cpf = lerCpfNovoOuCancelar();
+        if (cpf == null) return;
 
-        // Telefone
-        String telefone = lerTelefone();
+        String telefone = lerTelefoneOuCancelar();
+        if (telefone == null) return;
 
-        // Email
-        String email = lerEmail();
+        String email = lerEmailOuCancelar();
+        if (email == null) return;
 
-        // Endereço
         Print("Endereço: ");
         String endereco = sc.nextLine();
+        if (endereco.equals("0")) return;
 
-        // LOGIN DO FUNCIONÁRIO
         Print("Usuário para login: ");
         String usuario = sc.nextLine();
+        if (usuario.equals("0")) return;
 
-        String senha = lerSenha();
+        String senha = lerSenhaOuCancelar();
+        if (senha == null) return;
 
         NivelAcesso nivel = escolherNivelAcesso();
-
-        UsuarioSistema credenciais = new UsuarioSistema(
-                usuario,
-                senha,
-                nivel
-        );
-
+        UsuarioSistema credenciais = new UsuarioSistema(usuario, senha, nivel);
         usuariosSistema.add(credenciais);
 
-        // Cargo e Setor
-        String cargo = lerCampoObrigatorio("Cargo");
-        String setor = lerCampoObrigatorio("Setor");
+        String cargo = lerCampoObrigatorioOuCancelar("Cargo");
+        if (cargo == null) return;
+
+        String setor = lerCampoObrigatorioOuCancelar("Setor");
+        if (setor == null) return;
 
         Funcionario funcionario = new Funcionario(
                 gerarIdUnico(),
@@ -89,10 +90,11 @@ public class GerenciadorFuncionario implements Gerenciavel<Funcionario> {
         adicionar(funcionario);
     }
 
+    // -------------------------
     // Listar
+    // -------------------------
     @Override
     public void listar() {
-
         List<Funcionario> funcionarios = hospital.getPessoas()
                 .stream()
                 .filter(p -> p instanceof Funcionario)
@@ -116,7 +118,9 @@ public class GerenciadorFuncionario implements Gerenciavel<Funcionario> {
         listar();
     }
 
-    //Buscar
+    // -------------------------
+    // Buscar
+    // -------------------------
     @Override
     public Funcionario buscar(String cpf) {
         var pessoa = hospital.buscarPessoa(cpf);
@@ -124,21 +128,29 @@ public class GerenciadorFuncionario implements Gerenciavel<Funcionario> {
     }
 
     public void buscarFuncionario() {
-        Print("Informe o CPF do funcionário: ");
-        String cpf = sc.nextLine();
+        while (true) {
+            Print("Informe o CPF do funcionário (ou 0 para voltar): ");
+            String cpf = sc.nextLine();
+            if (cpf.equals("0")) {
+                Println("Operação cancelada.\n");
+                break;
+            }
 
-        Funcionario f = buscar(cpf);
-        if (f == null) {
-            Println("Funcionário não encontrado.\n");
-            return;
+            Funcionario f = buscar(cpf);
+            if (f == null) {
+                Println("Funcionário não encontrado. Tente novamente.\n");
+            } else {
+                Println("\n--- DADOS DO FUNCIONÁRIO ---");
+                f.exibirInformacoes();
+                Println("---------------------------\n");
+                break;
+            }
         }
-
-        Println("\n--- DADOS DO FUNCIONÁRIO ---");
-        f.exibirInformacoes();
-        Println("---------------------------\n");
     }
 
-    //Editar
+    // -------------------------
+    // Editar
+    // -------------------------
     @Override
     public boolean editar(String cpf, Funcionario novo) {
         Funcionario antigo = buscar(cpf);
@@ -151,54 +163,86 @@ public class GerenciadorFuncionario implements Gerenciavel<Funcionario> {
     }
 
     public void editarFuncionario() {
+        while (true) {
+            Print("Informe o CPF do funcionário a editar (ou 0 para voltar): ");
+            String cpf = sc.nextLine();
+            if (cpf.equals("0")) {
+                Println("Operação cancelada.\n");
+                break;
+            }
 
-        Print("Informe o CPF do funcionário a editar: ");
-        String cpf = sc.nextLine();
+            Funcionario antigo = buscar(cpf);
+            if (antigo == null) {
+                Println("Funcionário não encontrado. Tente novamente.\n");
+            } else {
+                Println("\n--- EDITAR FUNCIONÁRIO ---");
+                Println("Digite 0 em qualquer campo para cancelar a edição.\n");
 
-        Funcionario antigo = buscar(cpf);
-        if (antigo == null) {
-            Println("Funcionário não encontrado.\n");
-            return;
-        }
+                String nome = lerCampoOpcionalOuCancelar("Novo nome", antigo.getNome());
+                if (nome == null) return;
 
-        Println("\n--- EDITAR FUNCIONÁRIO ---");
+                String telefone = lerTelefoneOpcionalOuCancelar(antigo.getTelefone());
+                if (telefone == null) return;
 
-        String nome = lerCampoOpcional("Novo nome", antigo.getNome());
-        String telefone = lerTelefoneOpcional(antigo.getTelefone());
-        String email = lerEmailOpcional(antigo.getEmail());
+                String email = lerEmailOpcionalOuCancelar(antigo.getEmail());
+                if (email == null) return;
 
-        Print("Novo endereço (atual: " + antigo.getEndereco() + "): ");
-        String endereco = sc.nextLine();
-        if (!textoNaoVazio(endereco)) endereco = antigo.getEndereco();
+                Print("Novo endereço (atual: " + antigo.getEndereco() + "): ");
+                String endereco = sc.nextLine();
+                if (endereco.equals("0")) return;
+                if (!textoNaoVazio(endereco)) endereco = antigo.getEndereco();
 
-        String cargo = lerCampoOpcional("Novo cargo", antigo.getCargo());
-        String setor = lerCampoOpcional("Novo setor", antigo.getSetor());
+                String cargo = lerCampoOpcionalOuCancelar("Novo cargo", antigo.getCargo());
+                if (cargo == null) return;
 
-        Funcionario novo = new Funcionario(
-                antigo.getId(),
-                capitalizarNome(nome),
-                antigo.getCpf(),
-                telefone,
-                email,
-                endereco,
-                cargo,
-                setor,
-                antigo.getCredenciais() // mantém usuário e senha
-        );
+                String setor = lerCampoOpcionalOuCancelar("Novo setor", antigo.getSetor());
+                if (setor == null) return;
 
-        if (!novo.validar()) {
-            Println("ERRO: " + novo.getMensagemValidacao());
-            return;
-        }
+                Funcionario novo = new Funcionario(
+                        antigo.getId(),
+                        capitalizarNome(nome),
+                        antigo.getCpf(),
+                        telefone,
+                        email,
+                        endereco,
+                        cargo,
+                        setor,
+                        antigo.getCredenciais()
+                );
 
-        if (editar(cpf, novo)) {
-            Println("Funcionário atualizado com sucesso!\n");
-        } else {
-            Println("Erro ao atualizar funcionário.\n");
+                if (!novo.validar()) {
+                    Println("ERRO: " + novo.getMensagemValidacao());
+                    return;
+                }
+
+                Println("\nDeseja realmente atualizar este funcionário?");
+                Println("1 - Confirmar");
+                Println("0 - Cancelar");
+                while (true) {
+                    Print("Escolha: ");
+                    String opcao = sc.nextLine();
+                    if (opcao.equals("1")) {
+                        if (editar(cpf, novo)) {
+                            Println("Funcionário atualizado com sucesso!\n");
+                        } else {
+                            Println("Erro ao atualizar funcionário.\n");
+                        }
+                        break;
+                    } else if (opcao.equals("0")) {
+                        Println("Edição cancelada.\n");
+                        break;
+                    } else {
+                        Println("Opção inválida! Digite 1 para confirmar ou 0 para cancelar.");
+                    }
+                }
+                break;
+            }
         }
     }
 
-    //Remover
+    // -------------------------
+    // Remover
+    // -------------------------
     @Override
     public boolean remover(String cpf) {
         Funcionario f = buscar(cpf);
@@ -210,22 +254,54 @@ public class GerenciadorFuncionario implements Gerenciavel<Funcionario> {
     }
 
     public void removerFuncionario() {
-        Print("CPF do funcionário para remover: ");
-        String cpf = sc.nextLine();
+        while (true) {
+            Print("CPF do funcionário para remover (ou 0 para voltar): ");
+            String cpf = sc.nextLine();
+            if (cpf.equals("0")) {
+                Println("Operação cancelada.\n");
+                break;
+            }
 
-        if (remover(cpf)) {
-            Println("Funcionário removido com sucesso!\n");
-        } else {
-            Println("Funcionário não encontrado.\n");
+            Funcionario f = buscar(cpf);
+            if (f == null) {
+                Println("Funcionário não encontrado. Tente novamente.\n");
+            } else {
+                Println("\nDeseja realmente remover este funcionário?");
+                Println("1 - Confirmar");
+                Println("0 - Cancelar");
+                while (true) {
+                    Print("Escolha: ");
+                    String opcao = sc.nextLine();
+                    if (opcao.equals("1")) {
+                        if (remover(cpf)) {
+                            Println("Funcionário removido com sucesso!");
+                            Println("Nome: " + f.getNome());
+                            Println("CPF: " + f.getCpf() + "\n");
+                        } else {
+                            Println("Erro ao remover funcionário.\n");
+                        }
+                        break;
+                    } else if (opcao.equals("0")) {
+                        Println("Remoção cancelada.\n");
+                        break;
+                    } else {
+                        Println("Opção inválida! Digite 1 para confirmar ou 0 para cancelar.");
+                    }
+                }
+                break;
+            }
         }
     }
 
-   // Métodos de Auxílio
-    private String lerCampoObrigatorio(String nomeCampo) {
+    // -------------------------
+    // Métodos auxiliares
+    // -------------------------
+    private String lerCampoObrigatorioOuCancelar(String nomeCampo) {
         String valor = "";
         while (!textoNaoVazio(valor)) {
             Print(nomeCampo + ": ");
             valor = sc.nextLine();
+            if (valor.equals("0")) return null;
             if (!textoNaoVazio(valor)) {
                 Println(nomeCampo + " não pode ficar vazio.");
             }
@@ -233,16 +309,18 @@ public class GerenciadorFuncionario implements Gerenciavel<Funcionario> {
         return valor;
     }
 
-    private String lerCampoOpcional(String mensagem, String atual) {
+    private String lerCampoOpcionalOuCancelar(String mensagem, String atual) {
         Print(mensagem + " (atual: " + atual + "): ");
         String valor = sc.nextLine();
+        if (valor.equals("0")) return null;
         return textoNaoVazio(valor) ? valor : atual;
     }
 
-    private String lerCpfNovo() {
+    private String lerCpfNovoOuCancelar() {
         while (true) {
             Print("CPF: ");
             String cpf = sc.nextLine();
+            if (cpf.equals("0")) return null;
             if (!cpfValido(cpf)) {
                 Println("CPF inválido!");
             } else if (hospital.cpfExiste(cpf)) {
@@ -253,18 +331,20 @@ public class GerenciadorFuncionario implements Gerenciavel<Funcionario> {
         }
     }
 
-    private String lerTelefone() {
+    private String lerTelefoneOuCancelar() {
         while (true) {
             Print("Telefone: ");
             String t = sc.nextLine();
+            if (t.equals("0")) return null;
             if (telefoneValido(t)) return t;
             Println("Telefone inválido!");
         }
     }
 
-    private String lerTelefoneOpcional(String atual) {
+    private String lerTelefoneOpcionalOuCancelar(String atual) {
         Print("Novo telefone (atual: " + atual + "): ");
         String t = sc.nextLine();
+        if (t.equals("0")) return null;
         if (!textoNaoVazio(t)) return atual;
         if (!telefoneValido(t)) {
             Println("Telefone inválido.");
@@ -273,49 +353,45 @@ public class GerenciadorFuncionario implements Gerenciavel<Funcionario> {
         return t;
     }
 
-    private String lerEmail() {
+    private String lerEmailOuCancelar() {
         while (true) {
             Print("Email: ");
             String e = sc.nextLine();
-
+            if (e.equals("0")) return null;
             if (!emailValido(e)) {
                 Println("Email inválido!");
                 continue;
             }
-
             if (hospital.emailExiste(e)) {
                 Println("Esse email já está cadastrado!");
                 continue;
             }
-
             return e;
         }
     }
 
-    private String lerEmailOpcional(String atual) {
+    private String lerEmailOpcionalOuCancelar(String atual) {
         Print("Novo email (atual: " + atual + "): ");
         String e = sc.nextLine();
-
+        if (e.equals("0")) return null;
         if (!textoNaoVazio(e)) return atual;
-
         if (!emailValido(e)) {
             Println("Email inválido.");
             return atual;
         }
-
         if (hospital.emailExiste(e)) {
             Println("Email já cadastrado.");
             return atual;
         }
-
         return e;
     }
 
-    private String lerSenha() {
+    private String lerSenhaOuCancelar() {
         String senha = "";
         while (senha.isBlank()) {
             Print("Senha para login: ");
             senha = sc.nextLine();
+            if (senha.equals("0")) return null;
             if (senha.isBlank()) {
                 Println("A senha não pode ser vazia!");
             }
