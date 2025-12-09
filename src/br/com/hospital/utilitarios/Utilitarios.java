@@ -301,5 +301,14 @@ public class Utilitarios {
                 cpf.substring(9, 11);
     }
 
+    // Formata Telefone: 11987654321 → (11) 98765-4321
+    public static String formatarTelefone(String telefone) {
+        if (telefone == null || (telefone.length() != 10 && telefone.length() != 11)) return telefone;
+        String ddd = telefone.substring(0, 2);
+        String parte1 = telefone.length() == 11 ? telefone.substring(2, 7) : telefone.substring(2, 6);
+        String parte2 = telefone.length() == 11 ? telefone.substring(7) : telefone.substring(6);
+        return "(" + ddd + ") " + parte1 + "-" + parte2;
+    }
+
 }
 
