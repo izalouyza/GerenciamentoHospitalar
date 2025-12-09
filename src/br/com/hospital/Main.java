@@ -133,7 +133,7 @@ public class Main {
                         case 2 -> menuPaciente(sc, gerPaciente);
                         case 3 -> menuConsulta(sc, gerConsulta);
                         case 4 -> menuFuncionario(sc,gerFuncionario);
-                        case 5 -> buscaGeral(sc, hospital);
+                        case 5 -> {buscaGeral(sc, hospital); pausar(sc);}
                         case 0 -> Println("Logout realizado.\n");
                         default -> Println("Opção inválida.\n");
                     }
