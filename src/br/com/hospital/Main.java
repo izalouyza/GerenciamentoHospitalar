@@ -28,8 +28,8 @@ public class Main {
         // Lista de usuários
         List<UsuarioSistema> usuarios = new ArrayList<>();
         usuariosTeste(usuarios);
-        carregarmedicos(hospital, usuarios);
-        carregarpacientes(hospital);
+        carregarMedicos(hospital, usuarios);
+        carregarPacientes(hospital);
 
         Login login = new Login(usuarios);
 
