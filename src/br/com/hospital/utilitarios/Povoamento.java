@@ -12,14 +12,15 @@ import static br.com.hospital.utilitarios.Utilitarios.*;
 
 public class Povoamento {
 
-    public static void carregarmedicos (Hospital hospital, List<UsuarioSistema> usuarios) {
+    public static void carregarMedicos(Hospital hospital, List<UsuarioSistema> usuarios) {
+
         UsuarioSistema u1 = new UsuarioSistema("drana", "1234", NivelAcesso.MEDICO);
         usuarios.add(u1);
         Medico m1 = new Medico(
                 gerarIdUnico(),
                 "Ana Mendes Golçalvez",
-                "987.654.321-00",
-                "(11)99429-6366",
+                "98765432100",
+                "11994296366",
                 "anamenvez@hospital.com",
                 "Av. Central, 400",
                 "98765-SP",
@@ -33,8 +34,8 @@ public class Povoamento {
         Medico m2 = new Medico(
                 gerarIdUnico(),
                 "Cavalcante Henrique de Almeida",
-                "111.444.777-35",
-                "(11)99999-6366",
+                "11144477735",
+                "11999996366",
                 "cavalcanteha@gmail.com",
                 "Av. Central, 203",
                 "98761-SP",
@@ -48,23 +49,23 @@ public class Povoamento {
         Medico m3 = new Medico(
                 gerarIdUnico(),
                 "Walber José Adriano Silva",
-                "987.654.321-00",
-                "(84)91573-2231",
+                "98765432101", // CPF alterado para não duplicar
+                "84915732231",
                 "guerreirowalber21@gmail.com",
                 "Av. Martinho Ribeira, 231",
                 "241-RN",
-                "Cirugião",
+                "Cirurgião",
                 u3
         );
         hospital.adicionarPessoa(m3);
 
-        UsuarioSistema u4 = new UsuarioSistema("guerreiro132", "1234", NivelAcesso.MEDICO);
+        UsuarioSistema u4 = new UsuarioSistema("margarita", "1234", NivelAcesso.MEDICO);
         usuarios.add(u4);
         Medico m4 = new Medico(
                 gerarIdUnico(),
                 "Margarete Monte Garcia",
-                "147.258.369-00\n",
-                "(84)96123-4641",
+                "14725836900",
+                "84961234641",
                 "margatemed@gmail.com",
                 "Rua José Paulino, 184",
                 "111-RN",
@@ -73,26 +74,28 @@ public class Povoamento {
         );
         hospital.adicionarPessoa(m4);
 
-
+        Println("Médicos carregados: " + hospital.getPessoas().stream().filter(p -> p instanceof Medico).count());
     }
 
-    public static void carregarpacientes (Hospital hospital){
+    public static void carregarPacientes(Hospital hospital) {
+
         Paciente p1 = new Paciente(
                 gerarIdUnico(),
                 "José Luiz Feitosa",
-                "529.982.247-25",
-                "(84)93214-2314",
+                "52998224725",
+                "84932142314",
                 "zezinho1232@gmail.com",
                 "Rua dos Palmares, 213",
                 11,
                 "Dor nas Costas"
         );
         hospital.adicionarPessoa(p1);
+
         Paciente p2 = new Paciente(
                 gerarIdUnico(),
                 "Maria Luiza da Silva",
-                "153.509.460-56",
-                "(84)99823-2415",
+                "15350946056",
+                "84998232415",
                 "mariasilv4@gmail.com",
                 "Avenida das Dores, 180",
                 32,
@@ -103,8 +106,8 @@ public class Povoamento {
         Paciente p3 = new Paciente(
                 gerarIdUnico(),
                 "Gael Oliveira",
-                "746.971.314-01",
-                "(84)99691-3411",
+                "74697131401",
+                "84996913411",
                 "gaelsousaa@gmail.com",
                 "Avenida Hamilton, 480",
                 24,
@@ -112,14 +115,13 @@ public class Povoamento {
         );
         hospital.adicionarPessoa(p3);
 
-
         Paciente p4 = new Paciente(
                 gerarIdUnico(),
                 "Terezinha Maria da Silva",
-                "111.444.777-35",
-                "(84)99175-2567",
+                "11144477736", // CPF alterado para não duplicar
+                "84991752567",
                 "terezamaria83@gmail.com",
-                "Rua Hemetério Fernandes, 812 ",
+                "Rua Hemetério Fernandes, 812",
                 64,
                 "Pressão baixa, tontura"
         );
@@ -128,10 +130,10 @@ public class Povoamento {
         Paciente p5 = new Paciente(
                 gerarIdUnico(),
                 "Ana Sara Ribeira",
-                "350.452.618-19",
-                "(84)99677-7127",
+                "35045261819",
+                "84996777127",
                 "mareeomarana@gmail.com",
-                "Centro, 281 ",
+                "Centro, 281",
                 24,
                 "Acidente, ferida aberta, hemorragia"
         );
@@ -140,20 +142,23 @@ public class Povoamento {
         Paciente p6 = new Paciente(
                 gerarIdUnico(),
                 "Felipe Ribeira da Silva",
-                "529.982.247-25",
-                "(84)99117-7127",
+                "52998224726", // CPF alterado para não duplicar
+                "84991177127",
                 "felipejogadorri@gmail.com",
-                "Centro,281",
+                "Centro, 281",
                 27,
                 "Desorientação, braço quebrado"
         );
         hospital.adicionarPessoa(p6);
 
+        Println("Pacientes carregados: " + hospital.getPessoas().stream().filter(p -> p instanceof Paciente).count());
     }
 
-    public static void usuariosTeste (List<UsuarioSistema> usuarios){
+    public static void usuariosTeste(List<UsuarioSistema> usuarios){
         usuarios.add(new UsuarioSistema("admin", "admin", NivelAcesso.ADMIN));
         usuarios.add(new UsuarioSistema("secretaria", "1234", NivelAcesso.SECRETARIA));
         usuarios.add(new UsuarioSistema("medico", "1234", NivelAcesso.MEDICO));
+
+        Println("Usuários de teste carregados: " + usuarios.size());
     }
-    }
+}
