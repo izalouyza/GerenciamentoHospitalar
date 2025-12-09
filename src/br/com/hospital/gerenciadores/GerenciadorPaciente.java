@@ -301,21 +301,39 @@ public class GerenciadorPaciente implements Gerenciavel<Paciente> {
 
     private String lerEmail() {
         while (true) {
-            Print("E-mail: ");
+            Print("Email: ");
             String e = sc.nextLine();
-            if (emailValido(e)) return e;
-            Println("E-mail inválido!");
+
+            if (!emailValido(e)) {
+                Println("Email inválido!");
+                continue;
+            }
+
+            if (hospital.emailExiste(e)) {
+                Println("Esse email já está cadastrado!");
+                continue;
+            }
+
+            return e;
         }
     }
 
     private String lerEmailOpcional(String atual) {
-        Print("Novo e-mail (atual: " + atual + "): ");
+        Print("Novo email (atual: " + atual + "): ");
         String e = sc.nextLine();
+
         if (!textoNaoVazio(e)) return atual;
+
         if (!emailValido(e)) {
-            Println("E-mail inválido.");
+            Println("Email inválido.");
             return atual;
         }
+
+        if (hospital.emailExiste(e)) {
+            Println("Email já cadastrado.");
+            return atual;
+        }
+
         return e;
     }
 }
