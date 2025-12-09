@@ -9,7 +9,7 @@ public class Consulta implements Validavel {
     private Paciente paciente;       // paciente associado
     private Medico medico;           // médico responsável
     private String dataHora;
-    private String tipo = "Consulta";// dd/MM/yyyy HH:mm
+    private String tipo = "Consulta";
 
     private String mensagemValidacao = "";
 
@@ -56,6 +56,8 @@ public class Consulta implements Validavel {
     }
 
     public void setTipo(String tipo) { this.tipo = tipo; }
+
+    public String getTipo() { return tipo; }
 
     // -------------------
     // Validação
