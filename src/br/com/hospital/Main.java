@@ -39,10 +39,6 @@ public class Main {
         GerenciadorConsulta gerConsulta = new GerenciadorConsulta(sc, hospital);
         GerenciadorFuncionario gerFuncionario= new GerenciadorFuncionario(hospital, sc, usuarios);
 
-        // pausa para você ver os erros de carregamento antes do menu abrir
-        System.out.println("\nCarregamento concluído. Pressione ENTER para iniciar...");
-        sc.nextLine();
-
         while (true) {
             // =============================================
             // MENU INICIAL
