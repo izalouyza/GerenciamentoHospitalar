@@ -189,8 +189,8 @@ public class Utilitarios {
                 1. Médico
                 2. Paciente
                 3. Consulta
-                4. Busca Geral
-                5. Administrar Funcionários
+                4. Funcionários
+                5. Busca Geral
                 0. Logout
                 
                 Escolha uma opção:\t""");
