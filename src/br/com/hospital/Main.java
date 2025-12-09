@@ -39,10 +39,11 @@ public class Main {
         GerenciadorConsulta gerConsulta = new GerenciadorConsulta(sc, hospital);
         GerenciadorFuncionario gerFuncionario= new GerenciadorFuncionario(hospital, sc, usuarios);
 
-        Println("\n--- SISTEMA HOSPITALAR ---\n");
+        // pausa para você ver os erros de carregamento antes do menu abrir
+        System.out.println("\nCarregamento concluído. Pressione ENTER para iniciar...");
+        sc.nextLine();
 
         while (true) {
-
             // =============================================
             // MENU INICIAL
             // =============================================
@@ -51,7 +52,9 @@ public class Main {
 
             while (escolhaInicial != 0 && escolhaInicial != 1) {
                 limparTela();
+                // Imprime o cabeçalho do sistema e o menu juntos
                 Printf("""
+                        --- SISTEMA HOSPITALAR ---
                         
                         --- MENU INICIAL ---
                         
